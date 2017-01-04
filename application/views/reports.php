@@ -46,6 +46,8 @@ $(document).ready(function(){
     // console.log(<?php echo json_encode($allItems); ?>)
     var damage = <?php echo $allItems; ?>;
     var added = <?php echo $totalItems; ?>;
+    var moved = <?php echo $movedItems; ?>;
+    
     var chart2 = {
         chart: {
             plotBackgroundColor: null,
@@ -91,7 +93,7 @@ $(document).ready(function(){
                 selected: true
             }, {
                 name: 'Moved',
-                y: 10.38
+                y: moved
             }]
         }]
     }    
@@ -108,7 +110,7 @@ $(document).ready(function(){
     <br><br>
     <span style="color: red"><span style="font-size: 50px;font-weight: bold;"><?php echo $totalItems;?>   </span><span style="font-size: 20px">Added Items</span></span><br>
     <span style="color: red"><span style="font-size: 50px;font-weight: bold;"><?php echo $allItems;?>   </span><span style="font-size: 20px"> Damaged Items</span></span><br>
-    <span style="color: red"><span style="font-size: 50px;font-weight: bold;">0   </span><span style="font-size: 20px"> Moved Items</span></span><br>
+    <span style="color: red"><span style="font-size: 50px;font-weight: bold;"><?php echo $movedItems;?>  </span><span style="font-size: 20px"> Moved Items</span></span><br>
 </div>
 <div id='pieChartcontainer' style="float: right;"></div>
 

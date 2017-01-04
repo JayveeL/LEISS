@@ -63,6 +63,11 @@ class EquipmentModel extends CI_Model {
         $this->db->where('comp.labID', $labID);
         $result[] = $this->db->get()->result_array();
 
+        $this->db->select('*');
+        $this->db->from('laboratory');
+        $this->db->where('labID != '.$labID);
+        $result[] = $this->db->get()->result_array();
+
         return $result;
     }
 
@@ -180,16 +185,6 @@ class EquipmentModel extends CI_Model {
         }
     }
 
-    public function getBorrowEquipments(){
-        $this->db->select('*');
-        $this->db->from('equipment');
-        $this->db->where('eqpSerialNum NOT IN (SELECT eqpSerialNum FROM borrowed_list) AND eqpSerialNum NOT IN (SELECT eqpSerialNum FROM damaged_list)', NULL, FALSE);
-        
-        $result = $this->db->get()->result_array();
-
-        return $result;
-    }
-
     public function getEquipmentHistory(){
         $eqpSerial = $_POST['equipmentSerialNum'];
         $result = array();
@@ -260,6 +255,63 @@ class EquipmentModel extends CI_Model {
             $data += intval($query->result()[0]->damagedItems);
         }
         return $data;
+    }
+
+    public function getmovedItems(){
+        $total = 0;
+
+        $this->db->select('count(*) as "totalEqp"');
+        $this->db->where('move', 1);
+        $query = $this->db->get('equipment');
+        $total += intval($query->result()[0]->totalEqp);
+
+        $this->db->select('count(*) as "totalComp"');
+        $this->db->where('move', 1);
+        $query = $this->db->get('component');
+        $total += intval($query->result()[0]->totalComp);
+
+        return $total;
+    }
+
+    public function getmovedItemsPerLab($lab = null){
+        $total = 0;
+
+        $this->db->select('count(*) as "totalEqp"');
+        $this->db->where('move = 1 AND labID = '.$lab);
+        $query = $this->db->get('equipment');
+        $total += intval($query->result()[0]->totalEqp);
+
+        $this->db->select('count(*) as "totalComp"');
+        $this->db->where('move = 1 AND labID = '.$lab);
+        $query = $this->db->get('component');
+        $total += intval($query->result()[0]->totalComp);
+
+        return $total;
+    }
+
+    public function moveItems(){
+        $return = array();
+        foreach ($_POST['items'] as $item) {
+            $serialNum = $item;
+            $this->db->where('eqpSerialNum', $serialNum);
+            $query = $this->db->get('equipment');
+            if ($query->num_rows() > 0){
+                $data = array(
+                    'labID' => $_POST['newLab'],
+                    'move' => 1
+                );
+                $this->db->where('eqpSerialNum', $serialNum);
+                return $this->db->update('equipment', $data);
+            }
+            else{
+                $data = array(
+                    'labID' => $_POST['newLab'],
+                    'move' => 1
+                );
+                $this->db->where('compSerialNum', $serialNum);
+                return $this->db->update('component', $data);
+            }
+        }
     }
     // end
 }
