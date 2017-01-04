@@ -32,7 +32,7 @@
             <div class="toggle-nav">
                 <div class="icon-reorder"><i class="icon_menu"></i></div>
             </div>
-            <a href="index.html" class="logo">BootStrap Template Lab</a>
+            <a href="index.html" class="logo">Laboratory Equipment Inventory Software System</a>
             </div>
       </header>      
       <!--header end-->

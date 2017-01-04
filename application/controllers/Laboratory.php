@@ -25,6 +25,9 @@ class Laboratory extends CI_Controller {
 		$result = $this->LaboratoryModel->deleteLaboratory();
 
 		header('Content-Type: application/json');
-		echo json_encode($result);		
+		echo json_encode($result);	
+
+		// $this->load->view('index'); 
+         // redirect(site_url('/index'));
 	}
 }

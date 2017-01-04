@@ -87,12 +87,11 @@ class EquipmentModel extends CI_Model {
 
         if($_POST['labID']){
             $this->db->where('labID',$_POST['labID']);
-        }
+        }else{ }
 
         if($_POST['labID'] && $filter == 'available'){
             $this->db->where('labID='.$_POST['labID'].' and eqpSerialNum NOT IN (SELECT eqpSerialNum FROM borrowed_list) and eqpSerialNum NOT IN (SELECT eqpSerialNum FROM damaged_list)');
         }
-
 
     	$list = $this->db->get()->result_array();
     	$equipmentList = array();
@@ -100,6 +99,21 @@ class EquipmentModel extends CI_Model {
     		$equipmentList[] = $key['eqpSerialNum']." - ".$key['eqpName'];
     	}
     	return $equipmentList;
+    }
+
+    public function getEquipmentsList(){
+
+        $this->db->select('eqpSerialNum, eqpName');
+        $this->db->from('equipment');
+
+        
+
+        $list = $this->db->get()->result_array();
+        $equipmentList = array();
+        foreach ($list as $key) {
+            $equipmentList[] = $key['eqpSerialNum']." - ".$key['eqpName'];
+        }
+        return $equipmentList;
     }
 
     public function searchEquipment(){

@@ -43,7 +43,7 @@
         <div class="row">
           <div class="col-lg-12">          
             <ol class="breadcrumb">
-               <li><i class=" icon_menu-square_alt2"></i>All</li>
+               <li class="pointer"><i class=" icon_menu-square_alt2"></i><a onClick="window.location.reload()">All</a></li>
                <li class="pointer"><i class="arrow_carrot-2up_alt2"></i><a data-toggle="modal" data-target="#borrowModal" id="borrow">Borrow</a></li>
                <li class="pointer"><i class="arrow_triangle-down_alt2"></i><a data-toggle="modal" data-target="#returnModal" id="return">Return</a></li>
                <li class="pointer"><i class=" icon_error-circle_alt"></i><a data-toggle="modal" data-target="#damageModal" id="fde">File Damaged Equipment</a></li>
@@ -54,7 +54,7 @@
                   <span class="input-group-btn">
                     <i class=" icon_search"></i>
                   </span>   
-                  <input type="text" style= "margin-left: 5px" class="form-control" placeholder="Search for..." id="searchEquipment">    
+                  <input type="text" style= "margin-left: 5px" class="form-control" placeholder="Search in <?php echo $equipList[0][0]['labName']; ?> for..." id="searchEquipment">    
           </div>             
          		
           </br>              
@@ -67,7 +67,7 @@
                    <th class="th"><i class="icon_clipboard"></i> Name</th>
                    <th class="th"><i class="icon_clipboard"></i> Type</th>
                    <th class="th"><i class="icon_cogs"></i> Actions
-                      <img src="<?php echo base_url();?>img/icons/move-icon.png" class="move-icon" data-target="#moveModal" data-toggle="modal" rel="tooltip" title="Move">               
+                      <img src="<?php echo base_url();?>img/icons/move-icon.png" class="move-icon" data-target="#moveModal" data-toggle="modal" rel="tooltip" title="Move">             
                    </th> 
               </tr></thead>
                 <tbody>
@@ -108,8 +108,7 @@
                   ?>
                    <tr>
                       <td>No records to display..</td>
-                      <td></td>
-                      <td></td>
+                      <td></td><td></td><td></td>
                    </tr>
                   <?php } ?>
                 </tbody>
@@ -411,7 +410,7 @@
               <div class="modal-body" >
 
               Damaged Equipments:
-                <input type="text" class="input" id="searchDamaged" placeholder="Search equipments">
+               <!--  <input type="text" class="input" id="searchDamaged" placeholder="Search equipments"> -->
                 <table class="table" id="returnModalTable">
                   <thead id='repairModalHeader' class="th displayBlock">
                   </thead>
