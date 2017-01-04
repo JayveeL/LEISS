@@ -157,14 +157,16 @@
                    <td align="center">From </td><td> <?php echo $equipList[0][0]['labName']; ?> </td>
                  </tr><tr>
                    <td align="center">To </td>
-                   <td><select class="input" id="moveLabList">
+                   <td><select class="input" id="moveLabList" onchange="clearError()">
                         <option selected="true" disabled>Select Laboratory</option>
                     <?php if(null != $equipList[3]){
                               for($i = 0; $i < count($equipList[3]); $i++){ 
                                 echo '<option value="'.$equipList[3][$i]['labID'].'">'.$equipList[3][$i]['labName'].'</option>';
                               }
                           }?>                      
-                   </select></td>
+                   </select>
+                    <p class="idNumValidate" id="moveValidate"></p>
+                   </td>                   
                  </tr>
               </table>
               </div>
