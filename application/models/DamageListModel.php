@@ -28,9 +28,11 @@ class DamageListModel extends CI_Model {
 
     public function getDamageEquipmentList(){
 
+      $labID=$_POST['labID'];
       $this->db->select("D.compSerialNum,D.eqpSerialNum,D.dateReported, E.eqpName");
       $this->db->from('damaged_list D');
       $this->db->join('equipment E', 'E.eqpSerialNum = D.eqpSerialNum', 'left');
+      $this->db->where('D.labID',  $_POST['labID']);
       $result = $this->db->get()->result_array();
 
       return $result;
