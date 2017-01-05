@@ -54,5 +54,14 @@ class Reports extends CI_Controller {
 
 		$this->load->view('reports', $data);
 	}
+
+	public function storeLog(){
+		$this->load->model('LaboratoryModel');
+
+		$result = $this->LaboratoryModel->storeLog();
+
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
 	// end
 }

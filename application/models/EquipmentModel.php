@@ -183,19 +183,15 @@ class EquipmentModel extends CI_Model {
 
     public function getEquipmentHistory(){
         $eqpSerial = $_POST['equipmentSerialNum'];
-        $result = array();
+        $result;
 
-        $this->db->select('D.dateReported, S.studentID, S.studentName');
-        $this->db->from('damaged_list D');
-        $this->db->join('student S', 'S.studentID = D.damagerIDNum', 'left');
-        $this->db->where('D.eqpSerialNum', $eqpSerial);
-        $result[] = $this->db->get()->result_array();
-
-        $this->db->select('B.borrowedDate, S.studentID, S.studentName');
-        $this->db->from('borrowed_list B');
-        $this->db->join('student S', 'S.studentID = B.borrowerIDNum', 'left');
-        $this->db->where('B.eqpSerialNum', $eqpSerial);
-        $result[] = $this->db->get()->result_array();
+        $this->db->select('l.*, e.eqpName, lab.labName, S.studentID, S.studentName');
+        $this->db->from('log l');
+        $this->db->join('student S', 'S.studentID = l.studentID', 'left');
+        $this->db->join('laboratory lab', 'lab.labID = l.labID', 'left');
+        $this->db->join('equipment e', 'e.eqpSerialNum = l.serialNum', 'left');
+        $this->db->where('l.serialNum', $eqpSerial);
+        $result = $this->db->get()->result_array();
 
         return $result;
     }
@@ -256,15 +252,13 @@ class EquipmentModel extends CI_Model {
     public function getmovedItems(){
         $total = 0;
 
-        $this->db->select('count(*) as "totalEqp"');
-        $this->db->where('move', 1);
+        $this->db->select('SUM(move) as "items"');
         $query = $this->db->get('equipment');
-        $total += intval($query->result()[0]->totalEqp);
+        $total += intval($query->result()[0]->items);
 
-        $this->db->select('count(*) as "totalComp"');
-        $this->db->where('move', 1);
+        $this->db->select('SUM(move) as "items"');
         $query = $this->db->get('component');
-        $total += intval($query->result()[0]->totalComp);
+        $total += intval($query->result()[0]->items);
 
         return $total;
     }
@@ -272,15 +266,15 @@ class EquipmentModel extends CI_Model {
     public function getmovedItemsPerLab($lab = null){
         $total = 0;
 
-        $this->db->select('count(*) as "totalEqp"');
-        $this->db->where('move = 1 AND labID = '.$lab);
+        $this->db->select('SUM(move) as "items"');
+        $this->db->where('labID', $lab);
         $query = $this->db->get('equipment');
-        $total += intval($query->result()[0]->totalEqp);
+        $total += intval($query->result()[0]->items);
 
-        $this->db->select('count(*) as "totalComp"');
-        $this->db->where('move = 1 AND labID = '.$lab);
+        $this->db->select('SUM(move) as "items"');
+        $this->db->where('labID', $lab);
         $query = $this->db->get('component');
-        $total += intval($query->result()[0]->totalComp);
+        $total += intval($query->result()[0]->items);
 
         return $total;
     }
@@ -292,22 +286,19 @@ class EquipmentModel extends CI_Model {
             $this->db->where('eqpSerialNum', $serialNum);
             $query = $this->db->get('equipment');
             if ($query->num_rows() > 0){
-                $data = array(
-                    'labID' => $_POST['newLab'],
-                    'move' => 1
-                );
-                $this->db->where('eqpSerialNum', $serialNum);
-                return $this->db->update('equipment', $data);
+               $this->db->where('eqpSerialNum', $serialNum);
+               $this->db->set('labID', $_POST['newLab']);
+               $this->db->set('move', 'move+1', FALSE);
+               $return[] = $this->db->update('equipment');
             }
             else{
-                $data = array(
-                    'labID' => $_POST['newLab'],
-                    'move' => 1
-                );
                 $this->db->where('compSerialNum', $serialNum);
-                return $this->db->update('component', $data);
+                $this->db->set('labID', $_POST['newLab']);
+                $this->db->set('move', 'move+1', FALSE);                
+                $return[] = $this->db->update('component');
             }
         }
+        return $return;
     }
     // end
 }

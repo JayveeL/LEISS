@@ -39,7 +39,7 @@ class DamageListModel extends CI_Model {
       // return $list->result();
     }
 
-    public function repairEquipments(){
+     public function repairEquipments(){
         $result = array();
         foreach ($_POST['equipment'] as $equipment) {
             $this->db->from('damaged_list');

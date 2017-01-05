@@ -453,6 +453,19 @@
 					       				'labID': $("#currLab").val()
 					       			},
 					       			success: function(data){
+					       				$.ajax({
+						       				url: "<?php echo site_url('Reports/storeLog');?>",
+						       				type: 'POST',
+						       				data: {
+						       					'studentID': $("#damagerID").val(),
+						       					'equipment': equipments,
+						       					'action': 'damage',
+						       					'labID': $("#currLab").val()
+						       				},
+						       				success: function(data){
+						       				}
+						       			});
+
 					       				$("#damageModal").modal('hide');
 								  		$("#notifyModal").modal('show');
 								  		$("#notifyModal .notifyHeader").html('Successfully Filed as Damage');
@@ -645,6 +658,19 @@
 				       					'labID': $("#currLab").val()
 				       				},
 				       				success: function(data){
+				       					$.ajax({
+						       				url: "<?php echo site_url('Reports/storeLog');?>",
+						       				type: 'POST',
+						       				data: {
+						       					'studentID': $("#borrowerID").val(),
+						       					'equipment': equipments,
+						       					'action': 'borrow',
+						       					'labID': $("#currLab").val()
+						       				},
+						       				success: function(data){
+						       				}
+						       			});
+
 				       					$("#borrowModal").modal('hide');
 							       		$("#notifyModal").modal('show');
 										$("#notifyModal .notifyHeader").html('Equipment(s) Successfully Borrowed');
@@ -742,6 +768,19 @@
 			       		type: 'POST',
 			       		data: {'equipment': returnItemsArray},
 			       		success: function(data){
+			       			$.ajax({
+						    	url: "<?php echo site_url('Reports/storeLog');?>",
+						       	type: 'POST',
+						       	data: {
+						       		'studentID': $("#returnerID").val(),
+						       		'equipment': returnItemsArray,
+						       		'action': 'return',
+						       		'labID': $("#currLab").val()
+						       		},
+						        success: function(data){
+						       	}
+						     });
+
 			       			$("#returnModal").modal('hide');
 							$("#notifyModal").modal('show');
 							$("#notifyModal .notifyHeader").html('Successfully Returned Equipment(s)');
@@ -800,6 +839,19 @@
 			       		type: 'POST',
 			       		data: {'equipment': repairItemsArray},
 			       		success: function(data){
+			       			$.ajax({
+						    	url: "<?php echo site_url('Reports/storeLog');?>",
+						       	type: 'POST',
+						       	data: {
+						       		'studentID': '0',
+						       		'equipment': repairItemsArray,
+						       		'action': 'repair',
+						       		'labID': $("#currLab").val()
+						       		},
+						        success: function(data){
+						       	}
+						     });
+
 			       			$("#repairModal").modal('hide');
 							$("#notifyModal").modal('show');
 							$("#notifyModal .notifyHeader").html('Successfully Repaired Equipment(s)');
@@ -1034,24 +1086,25 @@
 				success: function(data){
 					console.log('equipmentHistory', data);
 					var history = '';
-					if(data[0].length != 0){
-						for(var i = 0; i < data[0].length; i++){
+					var action = '';
+					if(data.length != 0){
+						for(var i = 0; i < data.length; i++){
 							history += "<tr>";
-							history += "<td>"+data[0][i].dateReported+"</td>";
-							history += "<td>Filed as damage by:<br>Student ID: "+data[0][i].studentID+"<br>Student Name: "+data[0][i].studentName+"</td>";
+							history += "<td>"+data[i].date+"</td>";
+							switch(data[i].action){
+								case "borrow": action += "<td>Borrowed by:<br>Student ID: "+data[i].studentID+"<br>Student Name: "+data[i].studentName+"</td>"; break;
+								case "return": action += "<td>Returned by:<br>Student ID: "+data[i].studentID+"<br>Student Name: "+data[i].studentName+"</td>"; break;
+								case "damage": action += "<td>Filed as damage by:<br>Student ID: "+data[i].studentID+"<br>Student Name: "+data[i].studentName+"</td>"; break;
+								case "repair": action += "<td>Repaired</td>"; break;
+								case "move": action += "<td>Moved to: "+data[i].labName+"</td>"; break;
+							}
+							history += action;
 							history += "</tr>";
-						}
-					}
-					if(data[1].length != 0){
-						for(var i = 0; i < data[1].length; i++){
-							history += "<tr>";
-							history += "<td>"+data[1][i].borrowedDate+"</td>";
-							history += "<td>Borrowed by:<br>Student ID: "+data[1][i].studentID+"<br>Student Name: "+data[1][i].studentName+"</td>";
-							history += "</tr>";
+							action = '';
 						}
 					}
 					$("#equipmentHistory").html(history);
-					if(data[0].length == 0 && data[1].length == 0){
+					if(data.length == 0){
 						$("#equipmentHistory").html("<tr><td>No records to display...</td><td></td></tr>");
 					}
 				}
@@ -1208,6 +1261,7 @@
 	    function thisLab(labID){
 	    	currentLab = labID;
 	    	console.log("this lab:" +currentLab);
+	    	$("#reports").removeClass("active");
 	    	$("#all").removeClass("active");
 	    	$(".lab").removeClass("active");
 	    	$("#"+labID).addClass("active");			
@@ -1292,6 +1346,18 @@
 						'items': itemsToMoveList},
 					success: function(data){
 						if(data){
+							$.ajax({
+						       	url: "<?php echo site_url('Reports/storeLog');?>",
+						       	type: 'POST',
+						       	data: {
+						       		'studentID': '0',
+						       		'equipment': itemsToMoveList,
+						       		'action': 'move',
+						       		'labID': $("#moveLabList").val()
+						       	},
+						       	success: function(data){
+						       	}
+						    });
 							alert('Item(s) moved..');
 							location.reload();
 						}

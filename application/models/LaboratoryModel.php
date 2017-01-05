@@ -34,5 +34,17 @@ class LaboratoryModel extends CI_Model {
 
     }
 
-    
+    public function storeLog(){
+        $return = array();
+        foreach ($_POST['equipment'] as $equipment) {
+            $data = array(
+                'studentID' => $_POST['studentID'],
+                'labID' => $_POST['labID'],
+                'serialNum' => $equipment,
+                'action' => $_POST['action']
+            );
+           $return[] = $this->db->insert('log',$data);
+        }
+        return $return;
+    }    
 }

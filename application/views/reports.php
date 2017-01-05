@@ -47,7 +47,7 @@ $(document).ready(function(){
     var damage = <?php echo $allItems; ?>;
     var added = <?php echo $totalItems; ?>;
     var moved = <?php echo $movedItems; ?>;
-    
+
     var chart2 = {
         chart: {
             plotBackgroundColor: null,
@@ -117,6 +117,6 @@ $(document).ready(function(){
 <div style="display: flex; background-color: #5daf98; width: 35%; height: 53%;">
     <span style="color: white;font-size: 25px;font-weight: bold;">Recent Actions</span>
     <div style="background-color: white; height: 100px; width: 100px">
-
+        asdasdasdd
     </div>
 </div>
