@@ -1,8 +1,53 @@
 <script src="<?php echo base_url(); ?>js/jquery.js"></script>
 <script src="<?php echo base_url(); ?>js/highcharts.js"></script>  
 
+<style type="text/css">
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+
 <script type="text/javascript">
 $(document).ready(function(){
+    var data = <?php echo json_encode($logs);?>;
+    console.log(data)
+    var history = '';
+    var action = '';
+    if(data.length != 0){
+        history += "<table>";
+        for(var i = 0; i < data.length; i++){
+            history += "<tr>";
+           
+            switch(data[i].action){
+                case "borrow": action += "<td>"+data[i].studentName+" borrowed "+data[i].eqpName+".</td>"; break;
+                case "return": action += "<td>"+data[i].studentName+" returned "+data[i].eqpName+".</td>"; break;
+                case "damage": action += "<td>"+data[i].eqpName+" filed as damage by "+data[i].studentName+".</td>"; break;
+                case "repair": action += "<td>"+data[i].eqpName+" repaired.</td>"; break;
+                case "move": action += "<td>"+data[i].eqpName+" moved to "+data[i].labName+".</td>"; break;
+            }
+            history += action;
+            history += "<td>"+data[i].date+"</td>";
+            history += "</tr>";
+            action = '';
+        }
+        history += "</table>";
+        $("#recentActions").html(history);
+    }else{
+        $("#recentActions").html('No record(s) to display...');
+    }
+
     var months =  <?php echo json_encode($months);?>;
     var items = <?php echo json_encode($eqpList);?>;
     var chart = {  
@@ -115,8 +160,7 @@ $(document).ready(function(){
 <div id='pieChartcontainer' style="float: right;"></div>
 
 <div style="display: flex; background-color: #5daf98; width: 35%; height: 53%;">
-    <span style="color: white;font-size: 25px;font-weight: bold;">Recent Actions</span>
-    <div style="background-color: white; height: 100px; width: 100px">
-        asdasdasdd
-    </div>
+   <!--  <div style="width: 100%; height: 15%;"><span style="color: white;font-size: 25px;font-weight: bold;">Recent Actions</span></div>
+    <br> -->
+    <div style="background-color: white; margin-top: 10%; width: 100%; height: 85%; overflow-y: scroll;" id="recentActions"></div>
 </div>

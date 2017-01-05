@@ -45,11 +45,13 @@ class Reports extends CI_Controller {
 			$data['totalItems'] = $this->EquipmentModel->getAllItems();
 			$data['allItems'] = $this->EquipmentModel->getLogs();
 			$data['movedItems'] = $this->EquipmentModel->getmovedItems();
+			$data['logs'] = $this->EquipmentModel->getRecentAction();
 		}else{
 			$data['eqpList'] = $this->BorrowListModel->getBorrowedListPerLab($months, $lab);
 			$data['totalItems'] = $this->EquipmentModel->getAllLabItems($lab);
 			$data['allItems'] = $this->EquipmentModel->getLogsPerLab($lab);
 			$data['movedItems'] = $this->EquipmentModel->getmovedItemsPerLab($lab);
+			$data['logs'] = $this->EquipmentModel->getRecentActionPerLab($lab);
 		}
 
 		$this->load->view('reports', $data);

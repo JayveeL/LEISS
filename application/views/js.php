@@ -26,6 +26,7 @@
 		var currentLab = 0;
 		var labName ="";
 		var labList=[];
+		var labEquipments=[];
 		var equipListLoad = "";
 		var borrowedEquipListLoad = "";
 		var borrowedEquipmentsArray = [];
@@ -34,14 +35,12 @@
 		
 
 		$(document).ready(function(){
-
 			console.log($("#currLab").val());
 
 			$("#all").click(function(){
 				$("#all").addClass("active");
 				$("#reports").removeClass("active");
 				$(".lab").removeClass("active");
-				$("#addBtn").show();		
 				$("#addBtn").text("Add Laboratory");
 				$("#frame").attr('src', "<?php echo site_url('Index/loadIframe/all');?>");
 				currentLab=0;
@@ -62,7 +61,7 @@
 				$(this).addClass("active");
 				$("#all").removeClass("active");
 				$(".lab").removeClass("active");
-				$("#addBtn").hide();	
+				$("#addBtn").toggle();
 				$("#frame").attr('src', "<?php echo site_url('Index/loadIframe/reports');?>");
 			});		
 	
@@ -107,7 +106,7 @@
 								console.log("Laboratory "+$("#currLab").val()+" Successfully Deleted");							
 								}
 							});
-							window.top.location.href = "http://localhost/liss/"; 
+							
 					    }else{
 							alert("The laboratory cannot be deleted. For a laboratory to be deleted, make sure it contains no equipments.");
 						}
@@ -155,7 +154,7 @@
 						location.reload();
 		       		}
 		       		else{
-		       			alert("You may have left the name empty or the laboratory already exists.");
+		       			alert("Please enter at least a valid name");
 		       		}
 		       		$("#labName").empty();
 		       		$("#description").empty();
@@ -222,87 +221,7 @@
 			});
 	        // END Edit Equipment Module
 
-		  var eqplist=[];
-	        //View All
-	        $.ajax({
-	      	url: "<?php echo site_url('Equipment/getAllEquipments');?>",
-	      	type: 'GET',
-	      	dataType: 'json',
-	      	success: function(data){
-	      		$("#searchAll").autocomplete({
-	      			source: data,
-	                 //if empty results
-	                  response: function(event, ui) {
-	                      if (ui.content.length === 0) {
-	                         var noResult = { value:"",label:"No results found" };
-                			  ui.content.push(noResult);
-	                      } else {
-	                         // $("#empty-message").empty();
-	                      }
-	                  },
-	                  select: function(event, ui) {
-	                  	var thisEquipment = ui.item.value.split(" - ");
-	                  	$.ajax({
-	                  		url: "<?php echo site_url('Equipment/searchEquipment');?>",
-	                  		type: 'POST',
-	                  		data: {'equipmentSerialNum': thisEquipment[0],
-	                  		'equipmentName': thisEquipment[1]
-	                  	},
-	                  	success: function(data){
-	                  		console.log(data);
-	                  		viewAllEquipments(data);
-	                  		eqplist=data;
-	                  	}
-	                  });
-
-	                  }
-	              });
-	      	}
-	      });
-
-	    $("#searchAll").keyup(function(e){
-	      	if(e.which == 13) {
-	      		console.log("enter");
-	      		// viewLaboratoryEquipments(eqplist);
-			}
-	      	if('' == $("#searchAll").val()){
-	      		$.ajax({
-				    url: "<?php echo site_url('Equipment/getAllEquipments');?>",
-				    type: 'GET',
-				    dataType: 'json',
-	      			success: function(data){
-	      				var eq=[];
-	      				console.log(data);
-	      				for(var i = 0; i < data.length; i++){
-	      					var eqp = data[i].split(" - ");
-	      					var item = {
-							   eqpSerialNum : eqp[0],
-							   eqpName  :eqp[1]
-							};
-							eq.push(item);
-	      				}
-	      				viewAllEquipments(eq);
-	      			}
-	      		});  
-	      	}else{}
-	      }); 
-
-	    function viewAllEquipments(data){
-	      	console.log(data);
- 			$("#headEquipments").html("<tr><th class='th'><i class='icon_tag'></i> Serial No.</th><th class='th'><i class='icon_clipboard'></i> Name</th><th class='th'><i class='icon_cogs'></i> Actions</th></tr>");
-	      	var searchResult = "";
-	      	for(var i = 0; i < data.length; i++){
-	      		searchResult += "<tr>";
-		    	searchResult += "<td>"+data[i].eqpSerialNum+"</td>";
-		    	searchResult += "<td>"+data[i].eqpName+"</td>";
-		    	searchResult += '<td><div class="btn-group"><a class="btn btn-primary" onclick = "editEquipment(\''+data[i].eqpSerialNum+'\')" rel="tooltip" title="Edit"><i class="icon_pencil"></i></a><a class="btn btn-success" data-target="#vehModal" data-toggle="modal" rel="tooltip" onclick = "viewEquipmentHistory(\''+data[i].eqpSerialNum+'\', \''+data[i].eqpName+'\')" id="'+data[i].eqpSerialNum+'"  value="'+data[i].eqpSerialNum+'" title="View Equipment History"><i class=" icon_search-2" ></i></a>';
-				searchResult += "</tr>";
-			}
-		    $("#allEquipments").html(searchResult);
-	      }
-
 			// Viewing Laboratory 
-
 	      $.ajax({
 	      	url: "<?php echo site_url('Equipment/getEquipments');?>",
 	      	type: 'POST',
@@ -330,61 +249,41 @@
 	                  		'equipmentName': thisEquipment[1]
 	                  	},
 	                  	success: function(data){
-	                  		viewLaboratoryEquipments(data);
-	                  		eqplist=data;
+	                  		console.log(data);
+	                  		var searchResult = "<tr>";
+	                  		searchResult += "<td>"+data[0].eqpSerialNum+"</td>";
+	                  		searchResult += "<td>"+data[0].eqpName+"</td>";
+	                  		searchResult += '<td><div class="btn-group"><a class="btn btn-primary" onclick = "editEquipment(\''+data[0].eqpSerialNum+'\')" rel="tooltip" title="Edit"><i class="icon_pencil"></i></a><a class="btn btn-success" data-target="#vehModal" data-toggle="modal" rel="tooltip" onclick = "viewEquipmentHistory(\''+data[0].eqpSerialNum+'\', \''+data[0].eqpName+'\')" id="'+data[0].eqpSerialNum+'"  value="'+data[0].eqpSerialNum+'" title="View Equipment History"><i class=" icon_search-2" ></i></a></div><input type="checkbox" class="check" name="checkItem"></td>';
+	                  		searchResult += "</tr>";
+	                  		$("#labEquipmentsTable tbody").html(searchResult);
 	                  	}
 	                  });
-
 	                  }
 	              });
 	      	}
 	      });
 
 	      // Search Equipment module
-	      $("#searchEquipment").keyup(function(e){
-	      	if(e.which == 13) {
-	      		console.log("enter");
-	      		// viewLaboratoryEquipments(eqplist);
-			}
+	      $("#searchEquipment").keyup(function(){
 	      	if('' == $("#searchEquipment").val()){
 	      		$.ajax({
-	      			url: "<?php echo site_url('Equipment/getEquipments');?>",
-			      	type: 'POST',
-			      	data: {'search': 'allEquipments',
-			     			'labID': $("#currLab").val() },
-			      	dataType: 'json',
+	      			url:"<?php echo site_url('Equipment/getEquipments');?>",
+	      			type: 'GET',
+	      			dataType: 'json',
 	      			success: function(data){
-	      				var eq=[];
-	      				console.log(data);
+	      				var searchResult = "";
 	      				for(var i = 0; i < data.length; i++){
-	      					var eqp = data[i].split(" - ");
-	      					var item = {
-							   eqpSerialNum : eqp[0],
-							   eqpName  :eqp[1]
-							};
-							eq.push(item);
+	      					searchResult += "<tr>";
+	      					searchResult += "<td>"+data[i].eqpSerialNum+"</td>";
+	      					searchResult += "<td>"+data[i].eqpName+"</td>";
+	      					searchResult += '<td><div class="btn-group"><a class="btn btn-primary" onclick = "editEquipment(\''+data[i].eqpSerialNum+'\')" rel="tooltip" title="Edit"><i class="icon_pencil"></i></a><a class="btn btn-success" data-target="#vehModal" data-toggle="modal" rel="tooltip" onclick = "viewEquipmentHistory(\''+data[i].eqpSerialNum+'\', \''+data[i].eqpName+'\')"  value="'+data[i].eqpSerialNum+'" title="View Equipment History"><i class=" icon_search-2" ></i></a></div><input type="checkbox" class="check" name="checkItem"></td>';
+	      					searchResult += "</tr>";
 	      				}
-
-	      				//kani ray usba
-	      				viewLaboratoryEquipments(eq);
+	      				$("#labEquipmentsTable tbody").html(searchResult);
 	      			}
 	      		});  
 	      	}else{}
 	      }); 
-
-	      function viewLaboratoryEquipments(data){
-	      	console.log(data);
-	      	var searchResult = "";
-	      	for(var i = 0; i < data.length; i++){
-	      		searchResult += "<tr>";
-		    	searchResult += "<td>"+data[i].eqpSerialNum+"</td>";
-		    	searchResult += "<td>"+data[i].eqpName+"</td>";
-		    	searchResult += "<td>Equipment</td>";
-		    	searchResult += '<td><div class="btn-group"><a class="btn btn-primary" onclick = "editEquipment(\''+data[i].eqpSerialNum+'\')" rel="tooltip" title="Edit"><i class="icon_pencil"></i></a><a class="btn btn-success" data-target="#vehModal" data-toggle="modal" rel="tooltip" onclick = "viewEquipmentHistory(\''+data[i].eqpSerialNum+'\', \''+data[i].eqpName+'\')" id="'+data[i].eqpSerialNum+'"  value="'+data[i].eqpSerialNum+'" title="View Equipment History"><i class=" icon_search-2" ></i></a></div><input type="checkbox"  class="check" name="checkItem"></td>';
-				searchResult += "</tr>";
-			}
-		    $("#labEquipmentsTable tbody").html(searchResult);
-	      }
 	        //  END Search Equipment module
 
 	        //File Damaged Equipment Module
@@ -902,11 +801,10 @@
 			$("#repair").click(function(){
 			$.ajax({
 	        	url: "<?php echo site_url('DamageList/getDamageEquipments');?>",
-	        	type: 'POST',
-	        	data: {'labID': $("#currLab").val()},
+	        	type: 'GET',
 	        	dataType: 'json',
 	        	success: function(data){
-	        		console.log("rpr"+data);
+	        		console.log(data);
 	        		if(data.length != 0){
 		        		var repairEqp = '';
 		        		for(var i = 0; i < data.length; i++){
@@ -966,8 +864,7 @@
 				}else{
 					alert('Choose equipment(s)...');
 				}
-			});
-				
+			});				
 		});
 		//END Repair Equipment Module
 
@@ -1366,9 +1263,7 @@
 	    	$("#reports").removeClass("active");
 	    	$("#all").removeClass("active");
 	    	$(".lab").removeClass("active");
-			$("#reports").removeClass("active");
-	    	$("#"+labID).addClass("active");
-	    	$("#addBtn").show();			
+	    	$("#"+labID).addClass("active");			
 			$("#addBtn").text("Add Equipment");
 			var source = "<?php echo site_url('Index/loadIframe/lab/');?>";
 			var url = source+labID;

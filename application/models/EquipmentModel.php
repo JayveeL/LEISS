@@ -304,5 +304,25 @@ class EquipmentModel extends CI_Model {
         }
         return $return;
     }
+
+    public function getRecentAction(){
+        $this->db->select('l.*, e.eqpName, lab.labName, S.studentID, S.studentName');
+        $this->db->from('log l');
+        $this->db->join('student S', 'S.studentID = l.studentID', 'left');
+        $this->db->join('laboratory lab', 'lab.labID = l.labID', 'left');
+        $this->db->join('equipment e', 'e.eqpSerialNum = l.serialNum', 'left');
+        // $this->db->where('l.serialNum', $eqpSerial);
+        return $this->db->get()->result_array();
+    }
+
+    public function getRecentActionPerLab($lab = null){
+        $this->db->select('l.*, e.eqpName, lab.labName, S.studentID, S.studentName');
+        $this->db->from('log l');
+        $this->db->join('student S', 'S.studentID = l.studentID', 'left');
+        $this->db->join('laboratory lab', 'lab.labID = l.labID', 'left');
+        $this->db->join('equipment e', 'e.eqpSerialNum = l.serialNum', 'left');
+        $this->db->where('l.labID', $lab);
+        return $this->db->get()->result_array();
+    }
     // end
 }
