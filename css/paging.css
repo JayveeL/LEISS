@@ -1,0 +1,47 @@
+
+.pg-normal {
+    color: gray;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    border: 1px solid #ddd;
+    font-size: 18px;
+    display: inline;
+    cursor: pointer; 
+    text-align: center;
+    margin-left: 500px;
+    margin-top: 50px;
+    background-color: white;
+
+}
+.pg-normal:hover {
+    background-color: #f2f2f2;
+}
+
+.pg-snormal {
+    color: gray;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    border: 1px solid #ddd;
+    font-size: 18px;
+    display: inline;
+    cursor: pointer; 
+    text-align: center;
+    background-color: white;
+    margin-top: 50px;
+    margin-left: 10px;
+}
+.pg-snormal:hover {
+    background-color: #f2f2f2;
+}
+.pg-selected {
+    color: black;
+    font-weight: bold;        
+    text-decoration: underline;
+    cursor: pointer;
+    visibility: hidden;
+}
+

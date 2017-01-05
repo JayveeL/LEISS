@@ -1,0 +1,139 @@
+iframe{
+	height: 100%;
+	width: 100%;
+}
+.modal-footer{
+	text-align: center;
+}
+.modalBtn{
+	width:49%;
+	border-radius: 0;
+}
+.modal{
+	top: 5% !important;
+}
+.modal-footer {
+    margin-top: 0;
+}
+.left {
+  float: left
+}
+.first tr{	
+	color: white;
+	padding:0 px;
+}
+.first{
+	background-color:  #6aaf9c;
+}
+
+.check{
+	width: 25px;
+
+}
+.input{
+	border: 1.2px solid #6aaf9c;
+	background-color: #f0f0f0;
+	width: 100%;
+	transition: all 0.4s;
+}
+.input:hover { 
+    background-color: white;
+}
+.header{
+	color: #f0f0f0;
+	background-color: #5daf98;
+}
+.table{
+	border: 2px solid #6aaf9c;
+}
+.th{
+	background-color: #6aaf9c;
+	color: white;
+}
+.add-btn{
+	 position: fixed;
+	 bottom: 0px;
+     left: 0px; 
+	 margin: 1%;
+}
+.modal-header {
+    color: #5daf98;
+}
+.move-icon{
+	margin: -1% 0 0 5%;
+	width:22px;
+	height: 22px;
+	cursor: pointer;
+}
+.allCheck{
+	
+}
+#loadSpinner{
+	margin-left: 220px;
+}
+.parentDiv, #searchBorrowed, #searchDamaged{
+	width: 100%;
+}
+#borrowModalInnerDiv, #damageModalInnerDiv{
+	display: inline-block;
+	width: 50%;
+}
+#borrowModalInnerDiv2, #damageModalInnerDiv2{
+	height: 300px; 
+	width: 100%; 
+	overflow-y: scroll;
+}
+.tbodyData{
+	height: 230px; 
+	display: block; 
+	overflow-y: scroll;
+}
+.tbodyData td{
+	width: 100%;
+}
+.displayBlock{
+	display: block;
+}
+.width80{
+	width: 80%;
+}
+#returnedEquipments{
+	height: 200px; 
+	display: block; 
+	overflow-y: scroll;
+}
+#returnModalTable{
+	height: 45%; width: 100%;
+}
+.floatRightWidth49{
+	float: right; width: 49%;
+}
+.height95Width100{
+	height: 95%; 
+	width: 100%;
+}
+.fa-check{
+	color: green;
+}
+.idNumValidate, .nameValidate, .teacherValidate, .inchargeValidate{
+	font-size: 12px; 
+	color: red
+}
+.notifyHeader{
+	height: 40px;
+	text-align: center;
+    color: #5daf98;
+    font-size: 20px;
+}
+.notifyBody{
+	text-align: center;
+    font-size: 15px;
+}
+.pointer{
+	cursor: pointer;
+}
+#divContent{
+	display: block;
+	height: 75px;
+    overflow-y: scroll;
+}
