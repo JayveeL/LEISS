@@ -1283,7 +1283,8 @@
 	    var itemsToMove = '';
 	    var numItems = 0;
 	    var itemsToMoveList = [];
-	    function moveAll(option){
+
+		function moveAll(option){
 	    	var table = document.getElementById("labEquipmentsTable").getElementsByClassName('itemDetails'); 
 			
 			if(option == 'all'){
@@ -1336,32 +1337,44 @@
 			}
 	    }
 
+	    function clearError(){
+	    	$("#moveValidate").empty();
+	    }
+
 	    function moveEquipments(){
 	    	// console.log(itemsToMoveList); 	
-	    	$.ajax({
-				url: "<?php echo site_url('Equipment/moveItems');?>",
-				type: 'POST',
-				data: {	'newLab': $("#moveLabList").val(),
-						'items': itemsToMoveList},
-					success: function(data){
-						if(data){
-							$.ajax({
-						       	url: "<?php echo site_url('Reports/storeLog');?>",
-						       	type: 'POST',
-						       	data: {
-						       		'studentID': '0',
-						       		'equipment': itemsToMoveList,
-						       		'action': 'move',
-						       		'labID': $("#moveLabList").val()
-						       	},
-						       	success: function(data){
-						       	}
-						    });
-							alert('Item(s) moved..');
-							location.reload();
-						}
-					}
-				});  
+	    	if(numItems==0){
+	    		alert("There are no items to move.");
+	    	}else{
+	    		if(!$("#moveLabList").val()){
+	    			$("#moveValidate").html("Choose a laboratory");
+		    	}else{
+		    		$.ajax({
+						url: "<?php echo site_url('Equipment/moveItems');?>",
+						type: 'POST',
+						data: {	'newLab': $("#moveLabList").val(),
+								'items': itemsToMoveList},
+							success: function(data){
+								if(data){
+									$.ajax({
+								       	url: "<?php echo site_url('Reports/storeLog');?>",
+								       	type: 'POST',
+								       	data: {
+								       		'studentID': '0',
+								       		'equipment': itemsToMoveList,
+								       		'action': 'move',
+								       		'labID': $("#moveLabList").val()
+								       	},
+								       	success: function(data){
+								       	}
+								    });									
+									alert('Item(s) moved..');
+									location.reload();
+								}
+							}
+					}); 
+		    	}
+			} 
 	    }
 	</script>	
 </head>
