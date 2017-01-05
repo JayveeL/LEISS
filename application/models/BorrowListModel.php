@@ -19,6 +19,7 @@ class BorrowListModel extends CI_Model {
         $return = array();
         foreach ($_POST['equipment'] as $equipment) {
            $this->borrowerIDNum = $_POST['borrowerID']; 
+           $this->labID = $_POST['labID'];
            $this->eqpSerialNum = $equipment;
            $this->teacher = $_POST['bteacher'];
            $this->inCharge = $_POST['incharge'];

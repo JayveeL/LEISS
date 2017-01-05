@@ -67,6 +67,7 @@
                    <th class="th"><i class="icon_clipboard"></i> Name</th>
                    <th class="th"><i class="icon_clipboard"></i> Type</th>
                    <th class="th"><i class="icon_cogs"></i> Actions
+                      <input type="checkbox" id="moveAll" onclick="moveAll('all')" class="check">
                       <img src="<?php echo base_url();?>img/icons/move-icon.png" class="move-icon" data-target="#moveModal" data-toggle="modal" rel="tooltip" title="Move">               
                    </th> 
               </tr></thead>
@@ -74,7 +75,7 @@
                  <?php if(null != $equipList[1] || null != $equipList[2]){
                           if(null != $equipList[1]){
                               for($i = 0; $i < count($equipList[1]); $i++){ ?>
-                                <tr>
+                                <tr class="itemDetails" id="<?php echo $equipList[1][$i]['eqpSerialNum'].'tr';?>">
                                   <td><?php echo $equipList[1][$i]['eqpSerialNum'];?></td>
                                   <td><?php echo $equipList[1][$i]['eqpName'];?></td>
                                   <td><?php echo "Equipment"; ?></td>
@@ -83,14 +84,14 @@
                                       <a class="btn btn-primary" onclick = "editEquipment('<?php echo $equipList[1][$i]['eqpSerialNum']; ?>')" id="<?php echo $equipList[1][$i]['eqpSerialNum']; ?>"  value="<?php echo $equipList[1][$i]['eqpSerialNum']; ?>" rel="tooltip" title="Edit"><i class="icon_pencil"></i></a>
                                       <a class="btn btn-success" onclick = "viewEquipmentHistory('<?php echo $equipList[1][$i]['eqpSerialNum']; ?>', '<?php echo $equipList[1][$i]['eqpName']; ?>')" id="<?php echo $equipList[1][$i]['eqpSerialNum']; ?>"  value="<?php echo $equipList[1][$i]['eqpSerialNum']; ?>" rel="tooltip" title="View Equipment History"><i class=" icon_search-2" ></i></a>
                                     </div>
-                                    <input type="checkbox" class="check" name="checkItem">
+                                    <input type="checkbox" class="check equipCheck" name="checkItem" id="<?php echo $equipList[1][$i]['eqpSerialNum'].'checkbox';?>" onclick = "moveAll(this.id)">
                                   </td>
                                 </tr>
                           <?php }  
                           }
                           if(null != $equipList[2]){
                               for($i = 0; $i < count($equipList[2]); $i++){ ?>
-                                <tr>
+                                <tr class="itemDetails">
                                   <td><?php echo $equipList[2][$i]['compSerialNum'];?></td>
                                   <td><?php echo $equipList[2][$i]['compName'];?></td>
                                   <td><?php echo "Component"; ?></td>
@@ -99,7 +100,7 @@
                                       <a class="btn btn-primary" onclick = "editEquipment('<?php echo $equipList[2][$i]['compSerialNum']; ?>')" id="<?php echo $equipList[2][$i]['compSerialNum']; ?>"  value="<?php echo $equipList[2][$i]['compSerialNum']; ?>" rel="tooltip" title="Edit"><i class="icon_pencil"></i></a>
                                       <a class="btn btn-success" onclick = "viewEquipmentHistory('<?php echo $equipList[2][$i]['compSerialNum']; ?>', '<?php echo $equipList[2][$i]['compName']; ?>')" id="<?php echo $equipList[2][$i]['compSerialNum']; ?>"  value="<?php echo $equipList[2][$i]['compSerialNum']; ?>" rel="tooltip" title="View Equipment History"><i class=" icon_search-2" ></i></a>
                                     </div>
-                                    <input type="checkbox" class="check" name="checkItem">
+                                    <input type="checkbox" class="check equipCheck" name="checkItem" id="">
                                   </td>
                                 </tr>
                         <?php } 
@@ -149,21 +150,25 @@
               <div class="modal-body" >
                <table align="center" width="60%">
                 <tr>
-                   <td align="center">Serial No</td><td>this serial</td>
+                   <td align="center">Item(s)</td>
+                   <td><span id="moveItemList">No item(s)</span></td>
                  </tr><tr>
-                   <td align="center">Name </td><td>this name</td>
-                 </tr><tr>
-                   <td align="center">From </td><td> this laboratory </td>
+                   <td align="center">From </td><td> <?php echo $equipList[0][0]['labName']; ?> </td>
                  </tr><tr>
                    <td align="center">To </td>
-                   <td><select class="input">
-                      <option selected="true">Laboratory 2</option>
+                   <td><select class="input" id="moveLabList">
+                        <option selected="true" disabled>Select Laboratory</option>
+                    <?php if(null != $equipList[3]){
+                              for($i = 0; $i < count($equipList[3]); $i++){ 
+                                echo '<option value="'.$equipList[3][$i]['labID'].'">'.$equipList[3][$i]['labName'].'</option>';
+                              }
+                          }?>                      
                    </select></td>
                  </tr>
               </table>
               </div>
               <div class="modal-footer">
-                <button type="button"  class="btn btn-success btn-lg modalBtn" >Save Changes</button>
+                <button type="button"  class="btn btn-success btn-lg modalBtn" onclick="moveEquipments()">Move Equipment(s)</button>
                  <button type="button" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Close</button>
               </div>
             </div>

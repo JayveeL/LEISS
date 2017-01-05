@@ -449,7 +449,8 @@
 					       			data: {
 					       				'damagerID': $("#damagerID").val(),
 					       				'equipment': equipments,
-					       				'damagerTeacher': $("#damagerTeacher").val()
+					       				'damagerTeacher': $("#damagerTeacher").val(),
+					       				'labID': $("#currLab").val()
 					       			},
 					       			success: function(data){
 					       				$("#damageModal").modal('hide');
@@ -640,7 +641,8 @@
 				       					'borrowerID': $("#borrowerID").val(),
 				       					'equipment': equipments,
 				       					'bteacher': $("#borrowerTeacher").val(),
-				       					'incharge': $("#incharge").val()
+				       					'incharge': $("#incharge").val(),
+				       					'labID': $("#currLab").val()
 				       				},
 				       				success: function(data){
 				       					$("#borrowModal").modal('hide');
@@ -1225,6 +1227,77 @@
 	    	$("#labReportFrame").attr('src', url);
 	    }
 
+	    var itemsToMove = '';
+	    var numItems = 0;
+	    var itemsToMoveList = [];
+	    function moveAll(option){
+	    	var table = document.getElementById("labEquipmentsTable").getElementsByClassName('itemDetails'); 
+			
+			if(option == 'all'){
+				itemsToMove = '';
+				numItems = 0;
+				if($("#moveAll").is(':checked')){
+					$(".equipCheck").prop('checked', true);
+					for(var i = 0; i < table.length; i++){
+						itemsToMoveList.push(table[i].children[0].textContent);
+						itemsToMove += table[i].children[0].textContent+' - '+table[i].children[1].textContent;
+			        	itemsToMove += '\n';
+			        	numItems++;
+					}
+					$("#moveItemList").html(numItems+' item(s)');
+					$("#moveItemList").attr('title', itemsToMove);
+				}else{
+					$(".equipCheck").prop('checked', false);
+					numItems = 0;
+					itemsToMove = '';
+					itemsToMoveList = [];
+					$("#moveItemList").html('No item(s)');
+					$("#moveItemList").removeAttr( "title" );
+				}
+			}else{
+				var id = option.replace('checkbox', 'tr');
+				if($("#"+option).is(':checked')){
+					itemsToMoveList.push($("#"+id)[0].children[0].textContent);
+					itemsToMove += $("#"+id)[0].children[0].textContent+' - '+$("#"+id)[0].children[1].textContent;
+					itemsToMove += '\n';
+					numItems++;
+
+					$("#moveItemList").html(numItems+' item(s)');
+					$("#moveItemList").attr('title', itemsToMove);
+				}else{
+					$("#moveAll").prop('checked', false);
+					numItems--;
+					numItems = (numItems <= 0)? 0: numItems;
+					if(numItems == 0){
+						itemsToMoveList = [];
+						$("#moveItemList").html('No item(s)');
+						$("#moveItemList").removeAttr( "title" );
+					}else{
+						itemsToMoveList.splice(itemsToMoveList.indexOf($("#"+id)[0].children[0].textContent), 1);
+						var remove = $("#"+id)[0].children[0].textContent+' - '+$("#"+id)[0].children[1].textContent+'\n';
+						itemsToMove = itemsToMove.replace(remove, '');
+						$("#moveItemList").html(numItems+' item(s)');
+						$("#moveItemList").attr('title', itemsToMove);
+					}
+				}
+			}
+	    }
+
+	    function moveEquipments(){
+	    	// console.log(itemsToMoveList); 	
+	    	$.ajax({
+				url: "<?php echo site_url('Equipment/moveItems');?>",
+				type: 'POST',
+				data: {	'newLab': $("#moveLabList").val(),
+						'items': itemsToMoveList},
+					success: function(data){
+						if(data){
+							alert('Item(s) moved..');
+							location.reload();
+						}
+					}
+				});  
+	    }
 	</script>	
 </head>
 <body></body>

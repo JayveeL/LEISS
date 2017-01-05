@@ -18,6 +18,7 @@ class DamageListModel extends CI_Model {
         $return = array();
         foreach ($_POST['equipment'] as $equipment) {
            $this->damagerIDNum = $_POST['damagerID']; 
+           $this->labID = $_POST['labID'];
            $this->eqpSerialNum = $equipment;
            $this->teacher = $_POST['damagerTeacher'];
            $return[] = $this->db->insert('damaged_list',$this);
