@@ -22,7 +22,8 @@ tr:nth-child(even) {
 <script type="text/javascript">
 $(document).ready(function(){
     var data = <?php echo json_encode($logs);?>;
-    console.log(data)
+    var show = <?php echo json_encode($logShow);?>;
+    console.log(show)
     var history = '';
     var action = '';
     if(data.length != 0){
@@ -36,6 +37,7 @@ $(document).ready(function(){
                 case "damage": action += "<td>"+data[i].eqpName+" filed as damage by "+data[i].studentName+".</td>"; break;
                 case "repair": action += "<td>"+data[i].eqpName+" repaired.</td>"; break;
                 case "move": action += "<td>"+data[i].eqpName+" moved to "+data[i].labName+".</td>"; break;
+                case "add": action += (show == 'All')?"<td>Added "+data[i].eqpName+" to "+data[i].labName+".</td>": "<td>Added "+data[i].eqpName+".</td>"; break;
             }
             history += action;
             history += "<td>"+data[i].date+"</td>";
@@ -145,22 +147,23 @@ $(document).ready(function(){
     $('#pieChartcontainer').highcharts(chart2);
 });
 </script>
-<div style="display: inline-block; height: 15em;">
+<div style="display: inline-block; height: 15em; margin-left: 80px;">
         <span style="font-size: 90px; padding-left: 50px;" id="totalItems"><?php echo $totalItems;?></span><br>
-        <span style="font-size: 20px;">equipments & components</span>
+        <span style="font-size: 20px;">equipment(s) & component(s)</span>
 </div>
 
 <div id='lineChartcontainer' style="float: right"></div><br><br>
 <div style="float: right; margin: 0 5em 0 0">
     <br><br>
-    <span style="color: red"><span style="font-size: 50px;font-weight: bold;"><?php echo $totalItems;?>   </span><span style="font-size: 20px">Added Items</span></span><br>
-    <span style="color: red"><span style="font-size: 50px;font-weight: bold;"><?php echo $allItems;?>   </span><span style="font-size: 20px"> Damaged Items</span></span><br>
-    <span style="color: red"><span style="font-size: 50px;font-weight: bold;"><?php echo $movedItems;?>  </span><span style="font-size: 20px"> Moved Items</span></span><br>
+    <span style="color: #5daf98"><span style="font-size: 50px;font-weight: bold;"><?php echo $totalItems;?>   </span><span style="font-size: 20px">Added Items</span></span><br>
+    <span style="color: #5daf98"><span style="font-size: 50px;font-weight: bold;"><?php echo $allItems;?>   </span><span style="font-size: 20px"> Damaged Items</span></span><br>
+    <span style="color: #5daf98"><span style="font-size: 50px;font-weight: bold;"><?php echo $movedItems;?>  </span><span style="font-size: 20px"> Moved Items</span></span><br>
 </div>
 <div id='pieChartcontainer' style="float: right;"></div>
-
-<div style="display: flex; background-color: #5daf98; width: 35%; height: 53%;">
+<div><span style="color: #5daf98;font-size: 25px;font-weight: bold;">Recent Actions</span>
+<div style="display: flex; width: 35%; height: 53%;">
    <!--  <div style="width: 100%; height: 15%;"><span style="color: white;font-size: 25px;font-weight: bold;">Recent Actions</span></div>
     <br> -->
-    <div style="background-color: white; margin-top: 10%; width: 100%; height: 85%; overflow-y: scroll;" id="recentActions"></div>
+    <div style="background-color: white; width: 100%; height: 85%; overflow-y: scroll;" id="recentActions"></div>
+</div>
 </div>

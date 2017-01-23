@@ -131,6 +131,16 @@ class EquipmentModel extends CI_Model {
 		return $result;
     }
 
+     public function searchEquipmentAll(){
+        $this->db->select('count(*) as "quantity", eqpName');
+        $this->db->from('equipment');
+        $searchThis = array('eqpSerialNum' => $_POST['equipmentSerialNum'], 'eqpName' => $_POST['equipmentName']);
+        $this->db->where($searchThis);
+        $result = $this->db->get()->result_array();
+
+        return $result;
+    }
+
     public function getAvailableEquipments(){
         $labID = $_POST['labID'];
         $where= "labID =".$labID." AND eqpSerialNum NOT IN (SELECT eqpSerialNum FROM damaged_list) AND eqpSerialNum NOT IN (SELECT eqpSerialNum FROM borrowed_list)";
@@ -311,6 +321,7 @@ class EquipmentModel extends CI_Model {
         $this->db->join('student S', 'S.studentID = l.studentID', 'left');
         $this->db->join('laboratory lab', 'lab.labID = l.labID', 'left');
         $this->db->join('equipment e', 'e.eqpSerialNum = l.serialNum', 'left');
+        $this->db->order_by('l.date', 'DESC');
         // $this->db->where('l.serialNum', $eqpSerial);
         return $this->db->get()->result_array();
     }
@@ -322,6 +333,7 @@ class EquipmentModel extends CI_Model {
         $this->db->join('laboratory lab', 'lab.labID = l.labID', 'left');
         $this->db->join('equipment e', 'e.eqpSerialNum = l.serialNum', 'left');
         $this->db->where('l.labID', $lab);
+        $this->db->order_by('l.date', 'DESC');
         return $this->db->get()->result_array();
     }
     // end

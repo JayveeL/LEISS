@@ -52,8 +52,22 @@ class Equipment extends CI_Controller {
 		echo json_encode($result);
 	}
 
+	public function searchEquipmentAll(){
+		$result = $this->EquipmentModel->searchEquipmentAll();
+
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+
 	public function getAllEquipments(){
 		$result = $this->EquipmentModel->getEquipmentsList();
+
+		header('Content-Type: application/json');
+		echo json_encode($result);	
+	}
+
+	public function getAllEquipmentsMain(){
+		$result = $this->EquipmentModel->getAllEquipments();
 
 		header('Content-Type: application/json');
 		echo json_encode($result);	

@@ -95,6 +95,7 @@
                 <h2 class="modal-title">Add Equipment</h2>
               </div>
               <div class="modal-body">
+              <form>
               <table align="center" width="60%">
                 <tr>
                    <td align="center">Serial No</td><td><input type="text" name="eqpSerialNum" id="eqpSerialNum" class="input" required autofocus="true"></td>
@@ -107,11 +108,11 @@
                    <td align="center">Price </td><td><input type="text" onkeypress="return isNumberKey(event)" id="eqpPrice" class="input" name="eqpPrice" required autofocus="true"></td>
                  </tr>
               </table>
-              </div>
               <div class="modal-footer">
-                <button type="button" id="addEquipment" class="btn btn-success btn-lg modalBtn" >Add Equipment</button>
+                <button type="button  " id="addEquipment" class="btn btn-success btn-lg modalBtn" >Add Equipment</button>
                  <button type="button" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Close</button>
               </div>
+              </form>
             </div>
           </div>
         </div>
