@@ -190,11 +190,11 @@
               <div class="modal-body" >
                <table align="center" width="60%">
                 <tr>
-                   <td align="center">Serial No</td><td><input type="text" class="input" id="editSerialNum" disabled></td>
+                   <td align="center">Serial No.</td><td><input type="text" class="input" id="editSerialNum" disabled></td>
                  </tr><tr>
                    <td align="center">Name </td><td><input type="text" class="input" id="editName"></td>
                  </tr><tr>
-                   <td align="center">Price </td><td><input type="text" class="input" id="editPrice"></td>
+                   <td align="center">Price </td><td><input type="text" onkeypress="return isNumberKey(event)" class="input" id="editPrice"></td>
                  </tr>
               </table>
               </div>
@@ -465,6 +465,13 @@
         pager.init(); 
         pager.showPageNav('pager', 'pageNavPosition'); 
         pager.showPage(1);
+
+        function isNumberKey(evt){
+          var charCode = (evt.which) ? evt.which : event.keyCode
+          if (charCode > 31 && (charCode < 48 || charCode > 57))
+              return false;
+          return true;
+        }
     </script>
 
     <!-- javascript imports -->

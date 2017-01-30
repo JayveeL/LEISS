@@ -98,7 +98,7 @@
               <form>
               <table align="center" width="60%">
                 <tr>
-                   <td align="center">Serial No</td><td><input type="text" name="eqpSerialNum" id="eqpSerialNum" class="input" required autofocus="true"></td>
+                   <td align="center">Serial No.</td><td><input type="text" name="eqpSerialNum" id="eqpSerialNum" class="input" required autofocus="true"></td>
                  </tr><br><tr>
                    <td align="center">Name </td><td><input type="text" id="eqpName" name="eqpName" class="input" required autofocus="true"></td>
                  </tr><br><tr align="center">
