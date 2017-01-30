@@ -285,18 +285,22 @@
 				    dataType: 'json',
 	      			success: function(data){
 	      				console.log(data);
-	      // 				var eq=[];
-	      // 				console.log(data);
-	      // 				for(var i = 0; i < data.length; i++){
-	      // 					var eqp = data[i].split(" - ");
-	      // 					var item = {
-							//    eqpSerialNum : eqp[0],
-							//    eqpName  :eqp[1]
-							// };
-							// eq.push(item);
-	      // 				}
-	      				viewAllEquipments(data);
-	      			}
+	      				$("#headEquipments").html('<tr><th class="th"><i class="icon_clipboard"></i> Name</th><th class="th"><i class="icon_datareport_alt"></i> Quantity</th></tr>');
+				      	var searchResult = "";
+				      	for(var i = 0; i < data[0].length; i++){
+				      		searchResult += "<tr>";
+					    	searchResult += "<td>"+data[0][i].eqpName+"</td>";
+					    	searchResult += "<td>"+data[0][i].quantity+"</td>";
+							searchResult += "</tr>";
+						}
+						for(var i = 0; i < data[1].length; i++){
+				      		searchResult += "<tr>";
+					    	searchResult += "<td>"+data[1][i].compName+"</td>";
+					    	searchResult += "<td>"+data[1][i].quantity+"</td>";
+							searchResult += "</tr>";
+						}
+					    $("#allEquipments").html(searchResult);
+				    }
 	      		});  
 	      	}else{}
 	      }); 
@@ -463,13 +467,23 @@
 	        			dataType: 'json',
 	        			success: function(data){
 	        				var equipList = "";
-	        				if(data.length > 0){
-	        					for(var i = 0; i < data.length; i++){
-	        						equipList += "<tr>";
-	        						equipList += "<td>"+data[i].eqpSerialNum+" "+data[i].eqpName+"</td>";
-	        						equipList += "<td><input type='checkbox' class='boxCheckDamage' onclick='checkDamage(this, "+data[i].eqpSerialNum+")' id='"+data[i].eqpSerialNum+"' value='"+data[i].eqpSerialNum+'-'+data[i].eqpName+'-'+data[i].price+"'></td>";
-	        						equipList += "</tr>";  
-	        					}
+	        				if(data[0].length > 0 || data[1].length > 0){
+	        					if(data[0].length > 0){
+			        				for(var i = 0; i < data[0].length; i++){
+				        				equipList += "<tr>";
+				        				equipList += "<td>"+data[0][i].eqpSerialNum+" "+data[0][i].eqpName+"</td>";
+				        				equipList += "<td><input type='checkbox' class='boxCheckDamage' onclick='checkDamage(this, "+data[0][i].eqpSerialNum+")' id='"+data[0][i].eqpSerialNum+"' value='"+data[0][i].eqpSerialNum+'-'+data[0][i].eqpName+'-'+data[0][i].price+"'></td>";
+				        				equipList += "</tr>";  
+				        			}
+		        				}
+		        				if(data[1].length > 0){
+			        				for(var i = 0; i < data[1].length; i++){
+				        				equipList += "<tr>";
+				        				equipList += "<td>"+data[1][i].eqpSerialNum+" "+data[1][i].eqpName+"</td>";
+				        				equipList += "<td><input type='checkbox' class='boxCheckDamage' onclick='checkDamage(this, "+data[1][i].eqpSerialNum+")' id='"+data[1][i].eqpSerialNum+"' value='"+data[1][i].eqpSerialNum+'-'+data[1][i].eqpName+'-'+data[1][i].price+"'></td>";
+				        				equipList += "</tr>";  
+				        			}
+			        			}
 	        					$(".damageItem").css('display', 'block');
 	        					$("#damagedEquipList .damageItem").attr('checked', false);
 	        					$("#damagedList").html(equipList);
@@ -489,7 +503,10 @@
 	        				}
 	        			}
 	        		});  
-	        	}else{}
+	        	}
+	        	else{
+
+	        	}
 	        }); 
 
 	        $("#fde").click(function(){
@@ -502,12 +519,22 @@
 	        	success: function(data){
 	        		console.log(data);
 	        		var equipList = "";
-	        		if(data.length > 0){
-	        			for(var i = 0; i < data.length; i++){
-	        				equipList += "<tr>";
-	        				equipList += "<td>"+data[i].eqpSerialNum+" "+data[i].eqpName+"</td>";
-	        				equipList += "<td><input type='checkbox' class='boxCheckDamage' onclick='checkDamage(this, "+data[i].eqpSerialNum+")' id='"+data[i].eqpSerialNum+"' value='"+data[i].eqpSerialNum+'-'+data[i].eqpName+'-'+data[i].price+"'></td>";
-	        				equipList += "</tr>";  
+	        		if(data[0].length > 0 || data[1].length > 0){
+	        			if(data[0].length > 0){
+	        				for(var i = 0; i < data[0].length; i++){
+		        				equipList += "<tr>";
+		        				equipList += "<td>"+data[0][i].eqpSerialNum+" "+data[0][i].eqpName+"</td>";
+		        				equipList += "<td><input type='checkbox' class='boxCheckDamage' onclick='checkDamage(this, "+data[0][i].eqpSerialNum+")' id='"+data[0][i].eqpSerialNum+"' value='"+data[0][i].eqpSerialNum+'-'+data[0][i].eqpName+'-'+data[0][i].price+"'></td>";
+		        				equipList += "</tr>";  
+		        			}
+	        			}
+	        			if(data[1].length > 0){
+	        				for(var i = 0; i < data[1].length; i++){
+		        				equipList += "<tr>";
+		        				equipList += "<td>"+data[1][i].eqpSerialNum+" "+data[1][i].eqpName+"</td>";
+		        				equipList += "<td><input type='checkbox' class='boxCheckDamage' onclick='checkDamage(this, "+data[1][i].eqpSerialNum+")' id='"+data[1][i].eqpSerialNum+"' value='"+data[1][i].eqpSerialNum+'-'+data[1][i].eqpName+'-'+data[1][i].price+"'></td>";
+		        				equipList += "</tr>";  
+		        			}
 	        			}
 	        			$("#damagedList").html(equipList);
 	        			$("#price").html(0);
@@ -667,13 +694,23 @@
 	        			success: function(data){
 	        				console.log(borrowedEquipmentsArray);
 	        				var equipList = "";
-	        				if(data.length > 0){
-	        					for(var i = 0; i < data.length; i++){
-	        						equipList += "<tr>";
-	        						equipList += "<td>"+data[i].eqpSerialNum+" "+data[i].eqpName+"</td>";
-	        						equipList += "<td><input type='checkbox' class='boxCheck' onclick='checkBorrow(this, "+data[i].eqpSerialNum+")' id='"+data[i].eqpSerialNum+"' value='"+data[i].eqpSerialNum+'-'+data[i].eqpName+'-'+data[i].price+"'></td>";
-	        						equipList += "</tr>";  
-	        					}
+	        				if(data[0].length > 0 || data[1].length > 0){
+			        			if(data[0].length > 0){
+			        				for(var i = 0; i < data[0].length; i++){
+				        				equipList += "<tr>";
+				        				equipList += "<td>"+data[0][i].eqpSerialNum+" "+data[0][i].eqpName+"</td>";
+				        				equipList += "<td><input type='checkbox' class='boxCheck' onclick='checkBorrow(this, "+data[0][i].eqpSerialNum+")' id='"+data[0][i].eqpSerialNum+"' value='"+data[0][i].eqpSerialNum+'-'+data[0][i].eqpName+'-'+data[0][i].price+"'></td>";
+				        				equipList += "</tr>";  
+				        			}
+			        			}
+			        			if(data[1].length > 0){
+			        				for(var i = 0; i < data[1].length; i++){
+				        				equipList += "<tr>";
+				        				equipList += "<td>"+data[1][i].eqpSerialNum+" "+data[1][i].eqpName+"</td>";
+				        				equipList += "<td><input type='checkbox' class='boxCheck' onclick='checkBorrow(this, "+data[1][i].eqpSerialNum+")' id='"+data[1][i].eqpSerialNum+"' value='"+data[1][i].eqpSerialNum+'-'+data[1][i].eqpName+'-'+data[1][i].price+"'></td>";
+				        				equipList += "</tr>";  
+				        			}
+				        		}
 	        					$(".returnItem").css('display', 'block');
 	        					$("#borrowedEquipList .returnItem").attr('checked', false);
 	        					$("#borrowedList").html(equipList);
@@ -707,13 +744,23 @@
 	        	success: function(data){
 	        		console.log(data);
 	        		var equipList = "";
-	        		if(data.length > 0){
-	        			for(var i = 0; i < data.length; i++){
-	        				equipList += "<tr>";
-	        				equipList += "<td>"+data[i].eqpSerialNum+" "+data[i].eqpName+"</td>";
-	        				equipList += "<td><input type='checkbox' class='boxCheck' onclick='checkBorrow(this, "+data[i].eqpSerialNum+")' id='"+data[i].eqpSerialNum+"' value='"+data[i].eqpSerialNum+'-'+data[i].eqpName+'-'+data[i].price+"'></td>";
-	        				equipList += "</tr>";  
-	        			}
+	        		if(data[0].length > 0 || data[1].length > 0){
+			        			if(data[0].length > 0){
+			        				for(var i = 0; i < data[0].length; i++){
+				        				equipList += "<tr>";
+				        				equipList += "<td>"+data[0][i].eqpSerialNum+" "+data[0][i].eqpName+"</td>";
+				        				equipList += "<td><input type='checkbox' class='boxCheck' onclick='checkBorrow(this, "+data[0][i].eqpSerialNum+")' id='"+data[0][i].eqpSerialNum+"' value='"+data[0][i].eqpSerialNum+'-'+data[0][i].eqpName+'-'+data[0][i].price+"'></td>";
+				        				equipList += "</tr>";  
+				        			}
+			        			}
+			        			if(data[1].length > 0){
+			        				for(var i = 0; i < data[1].length; i++){
+				        				equipList += "<tr>";
+				        				equipList += "<td>"+data[1][i].eqpSerialNum+" "+data[1][i].eqpName+"</td>";
+				        				equipList += "<td><input type='checkbox' class='boxCheck' onclick='checkBorrow(this, "+data[1][i].eqpSerialNum+")' id='"+data[1][i].eqpSerialNum+"' value='"+data[1][i].eqpSerialNum+'-'+data[1][i].eqpName+'-'+data[1][i].price+"'></td>";
+				        				equipList += "</tr>";  
+				        			}
+				        		}
 	        			$("#borrowedList").html(equipList);
 	        			borrowedEquipListLoad = equipList;
 	        		}else{
@@ -1052,8 +1099,8 @@
 			}
 			else{
 				damagedEquipmentsArray.splice(damagedEquipmentsArray.indexOf(thisID), 1);
-				if($("#damagedEquipList .returnItem").is(':checked')){
-					$("#damagedEquipList .returnItem").prop('checked', false);
+				if($("#damagedEquipList .damageItem").is(':checked')){
+					$("#damagedEquipList .damageItem").prop('checked', false);
 				}
 				$("#"+id).remove();
 				totalPrice -= parseInt(getValue[2]);

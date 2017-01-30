@@ -2,23 +2,33 @@
 
 class EquipmentModel extends CI_Model {
 
-	public $eqpName;
-	public $eqpSerialNum;
-	public $price;
+    public $eqpName;
+    public $eqpSerialNum;
+    public $price;
     public $compName;
     public $compSerialNum;
     public $compPrice;
 
-	function __construct(){
+    function __construct(){
         parent::__construct();
     }
 
     public function getAllEquipments(){
+        $return = array();
+
         $this->db->select('count(*) as "quantity", eqpName');
         $this->db->from('equipment');
         $this->db->group_by('eqpName'); 
+        $return[] =  $this->db->get()->result_array();
 
-        return $this->db->get()->result_array();
+        $this->db->select('count(*) as "quantity", compName');
+        $this->db->from('component');
+        $this->db->group_by('compName'); 
+        $return[] = $this->db->get()->result_array();
+
+        return $return;
+
+
     }
 
     public function addEquipment(){
@@ -29,7 +39,7 @@ class EquipmentModel extends CI_Model {
             'price' => $_POST['eqpPrice']
         );
 
-    	return $this->db->insert('equipment',$data);
+        return $this->db->insert('equipment',$data);
     }
 
     public function addEquipmentComp(){
@@ -86,6 +96,7 @@ class EquipmentModel extends CI_Model {
 
     public function getEquipments(){
         $filter = $_POST['search'];
+        $equipmentList = array();
 
         $this->db->select('eqpSerialNum, eqpName');
         $this->db->from('equipment');
@@ -98,37 +109,70 @@ class EquipmentModel extends CI_Model {
             $this->db->where('labID='.$_POST['labID'].' and eqpSerialNum NOT IN (SELECT eqpSerialNum FROM borrowed_list) and eqpSerialNum NOT IN (SELECT eqpSerialNum FROM damaged_list)');
         }
 
-    	$list = $this->db->get()->result_array();
-    	$equipmentList = array();
-    	foreach ($list as $key) {
-    		$equipmentList[] = $key['eqpSerialNum']." - ".$key['eqpName'];
-    	}
-    	return $equipmentList;
-    }
-
-    public function getEquipmentsList(){
-
-        $this->db->select('eqpSerialNum, eqpName');
-        $this->db->from('equipment');
-
-        
-
         $list = $this->db->get()->result_array();
-        $equipmentList = array();
+        
         foreach ($list as $key) {
             $equipmentList[] = $key['eqpSerialNum']." - ".$key['eqpName'];
         }
+
+        $this->db->select('compSerialNum, compName');
+        $this->db->from('component');
+
+        if($_POST['labID']){
+            $this->db->where('labID',$_POST['labID']);
+        }else{ }
+
+        if($_POST['labID'] && $filter == 'available'){
+            $this->db->where('labID='.$_POST['labID'].' and compSerialNum NOT IN (SELECT compSerialNum FROM borrowed_list) and compSerialNum NOT IN (SELECT compSerialNum FROM damaged_list)');
+        }
+
+        $list = $this->db->get()->result_array();
+        
+        foreach ($list as $key) {
+            $equipmentList[] = $key['compSerialNum']." - ".$key['compName'];
+        }
+
+
+        return $equipmentList;
+    }
+
+    public function getEquipmentsList(){
+        $equipmentList = array();
+
+        $this->db->select('eqpSerialNum, eqpName');
+        $this->db->from('equipment');
+        $list = $this->db->get()->result_array();
+       
+        foreach ($list as $key) {
+            $equipmentList[] = $key['eqpSerialNum']." - ".$key['eqpName'];
+        }
+
+        $this->db->select('compSerialNum, compName');
+        $this->db->from('component');
+        $list = $this->db->get()->result_array();
+        foreach ($list as $key) {
+            $equipmentList[] = $key['compSerialNum']." - ".$key['compName'];
+        }
+
         return $equipmentList;
     }
 
     public function searchEquipment(){
-    	$this->db->select('*');
-    	$this->db->from('equipment');
-     	$searchThis = array('eqpSerialNum' => $_POST['equipmentSerialNum'], 'eqpName' => $_POST['equipmentName']);
-     	$this->db->where($searchThis);
-    	$result = $this->db->get()->result_array();
+        $this->db->select('*');
+        $this->db->from('equipment');
+        $searchThis = array('eqpSerialNum' => $_POST['equipmentSerialNum'], 'eqpName' => $_POST['equipmentName']);
+        $this->db->where($searchThis);
+        $result = $this->db->get()->result_array();
+        
+        if(count($result) == 0){
+            $this->db->select('compSerialNum as "eqpSerialNum", compName as "eqpName"');
+            $this->db->from('component');
+            $searchThis = array('compSerialNum' => $_POST['equipmentSerialNum'], 'compName' => $_POST['equipmentName']);
+            $this->db->where($searchThis);
+            $result = $this->db->get()->result_array();
+        }
 
-		return $result;
+        return $result;
     }
 
      public function searchEquipmentAll(){
@@ -138,17 +182,33 @@ class EquipmentModel extends CI_Model {
         $this->db->where($searchThis);
         $result = $this->db->get()->result_array();
 
+        if($result[0]['quantity'] == 0){
+            $this->db->select('count(*) as "quantity", compName as "eqpName"');
+            $this->db->from('component');
+            $searchThis = array('compSerialNum' => $_POST['equipmentSerialNum'], 'compName' => $_POST['equipmentName']);
+            $this->db->where($searchThis);
+            $result = $this->db->get()->result_array();
+        }
         return $result;
     }
 
     public function getAvailableEquipments(){
+        $result = array();
+
         $labID = $_POST['labID'];
         $where= "labID =".$labID." AND eqpSerialNum NOT IN (SELECT eqpSerialNum FROM damaged_list) AND eqpSerialNum NOT IN (SELECT eqpSerialNum FROM borrowed_list)";
         $this->db->select('*');
         $this->db->from('equipment');
         $this->db->where($where);
         
-        $result = $this->db->get()->result_array();
+        $result[] = $this->db->get()->result_array();
+
+        $where= "labID =".$labID." AND compSerialNum NOT IN (SELECT compSerialNum FROM damaged_list) AND compSerialNum NOT IN (SELECT compSerialNum FROM borrowed_list)";
+        $this->db->select('compSerialNum as "eqpSerialNum", compName as "eqpName", price');
+        $this->db->from('component');
+        $this->db->where($where);
+
+        $result[] = $this->db->get()->result_array();
 
         return $result;
     }

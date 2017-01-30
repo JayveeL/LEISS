@@ -61,13 +61,23 @@
                               </tr>
                             </thead>
                             <tbody id="allEquipments">
-                            <?php if(null != $equipList){
-                                    foreach ($equipList as $key) { ?>
-                                      <tr>
-                                         <td><?php echo $key['eqpName']; ?></td>
-                                         <td><?php echo $key['quantity']; ?></td>
-                                      </tr>
-                             <?php } 
+                            <?php if(null != $equipList[0] || null != $equipList[1]){
+                                    if(null != $equipList[0]){
+                                      foreach ($equipList[0] as $key) { ?>
+                                        <tr>
+                                           <td><?php echo $key['eqpName']; ?></td>
+                                           <td><?php echo $key['quantity']; ?></td>
+                                        </tr>
+                               <?php } 
+                                    }
+                                     if(null != $equipList[1]){
+                                      foreach ($equipList[1] as $key) { ?>
+                                        <tr>
+                                           <td><?php echo $key['compName']; ?></td>
+                                           <td><?php echo $key['quantity']; ?></td>
+                                        </tr>
+                               <?php } 
+                                    } 
                                   }else{?>
                                    <tr>
                                       <td>No records to display..</td><td></td>
