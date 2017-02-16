@@ -389,11 +389,12 @@ class EquipmentModel extends CI_Model {
     }
 
     public function getRecentAction(){
-        $this->db->select('l.*, e.eqpName, S.studentID, S.studentName');
+        $this->db->select('l.*, e.eqpName, c.compName, S.studentID, S.studentName');
         $this->db->from('log l');
         $this->db->join('student S', 'S.studentID = l.studentID', 'left');
         // $this->db->join('laboratory lab', 'lab.labID = l.labID', 'left');
         $this->db->join('equipment e', 'e.eqpSerialNum = l.serialNum', 'left');
+        $this->db->join('component c', 'c.compSerialNum = l.serialNum', 'left');
         $this->db->order_by('l.date', 'DESC');
         // $this->db->where('l.serialNum', $eqpSerial);
         return $this->db->get()->result_array();
@@ -405,11 +406,12 @@ class EquipmentModel extends CI_Model {
         $query = $this->db->get('laboratory');
         $labName = $query->result()[0]->labName;
 
-        $this->db->select('l.*, e.eqpName, S.studentID, S.studentName');
+        $this->db->select('l.*, e.eqpName, c.compName, S.studentID, S.studentName');
         $this->db->from('log l');   
         $this->db->join('student S', 'S.studentID = l.studentID', 'left');
         // $this->db->join('laboratory lab', 'lab.labID = l.labID', 'left');
         $this->db->join('equipment e', 'e.eqpSerialNum = l.serialNum', 'left');
+         $this->db->join('component c', 'c.compSerialNum = l.serialNum', 'left');
         $this->db->where('l.labID', $labName);
         $this->db->order_by('l.date', 'DESC');
         return $this->db->get()->result_array();

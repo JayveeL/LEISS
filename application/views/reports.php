@@ -32,12 +32,12 @@ $(document).ready(function(){
             history += "<tr>";
            
             switch(data[i].action){
-                case "borrow": action += "<td>"+data[i].studentName+" borrowed "+data[i].eqpName+".</td>"; break;
-                case "return": action += "<td>"+data[i].studentName+" returned "+data[i].eqpName+".</td>"; break;
-                case "damage": action += "<td>"+data[i].eqpName+" filed as damage by "+data[i].studentName+".</td>"; break;
-                case "repair": action += "<td>"+data[i].eqpName+" repaired.</td>"; break;
-                case "move": action += "<td>"+data[i].eqpName+" moved to "+data[i].labID+".</td>"; break;
-                case "add": action += (show == 'All')?"<td>Added "+data[i].eqpName+" to "+data[i].labID+".</td>": "<td>Added "+data[i].eqpName+".</td>"; break;
+                case "borrow": action += "<td>"+data[i].studentName+" borrowed "+(data[i].eqpName || data[i].compName)+".</td>"; break;
+                case "return": action += "<td>"+data[i].studentName+" returned "+(data[i].eqpName || data[i].compName)+".</td>"; break;
+                case "damage": action += "<td>"+(data[i].eqpName || data[i].compName)+" filed as damage by "+data[i].studentName+".</td>"; break;
+                case "repair": action += "<td>"+(data[i].eqpName || data[i].compName)+" repaired.</td>"; break;
+                case "move": action += "<td>"+(data[i].eqpName || data[i].compName)+" moved to "+data[i].labID+".</td>"; break;
+                case "add": action += (show == 'All')?"<td>Added "+(data[i].eqpName || data[i].compName)+" to "+data[i].labID+".</td>": "<td>Added "+(data[i].eqpName || data[i].compName)+".</td>"; break;
             }
             history += action;
             history += "<td>"+data[i].date+"</td>";
