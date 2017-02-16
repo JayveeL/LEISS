@@ -172,9 +172,35 @@
 	       		});
 	       	});		
 
+	       	var allEquips = [];
+	        //View All
+	        $.ajax({
+	      		url: "<?php echo site_url('Equipment/getAllEquipments');?>",
+	      		type: 'GET',
+	      		dataType: 'json',
+	      		success: function(data){
+		      		for(var i = 0; i < data.length; i++){
+		      			allEquips.push(data[i].split(" - ")[0]);
+		      		}
+		      		console.log('allEquips', allEquips);
+		      	}
+		     });
+
+	        $("#eqpSerialNum").keyup(function(){
+	        	// console.log($(this).val().length);
+	        	if($(this).val().length > 0){
+	        		if(allEquips.indexOf($(this).val().toLowerCase()) >= 0){
+	        			console.log('exists');
+	        			$("#serialNumValidate").html("Item already exists");
+	        		}else{
+	        			$("#serialNumValidate").html("");
+	        		}
+	        	}
+	       	});
+
 	       	// Add Equipment Module
 			$("#addEquipmentBtn").click(function(e){
-				if($("#eqpSerialNum").val() != '' && $("#eqpName").val() != '' && $("#eqpPrice").val() != ''){
+				if($("#eqpSerialNum").val() != '' && $("#eqpName").val() != '' && $("#eqpPrice").val() != '' && $("#serialNumValidate").html() != "Item already exists"){
 					$(this).unbind('submit').submit();
 					e.preventDefault();
 					if($("input[name=item]:checked").val() === "equipment"){
@@ -240,6 +266,7 @@
 					var url = source+currentLab;
 					$("#frame").attr('src', url);
 				}else{
+					e.preventDefault();
 				}
 			});
 			//END Add Equipment Module
@@ -273,40 +300,42 @@
 	       var eqplist=[];
 	        //View All
 	        $.ajax({
-	      	url: "<?php echo site_url('Equipment/getAllEquipments');?>",
-	      	type: 'GET',
-	      	dataType: 'json',
-	      	success: function(data){
-	      		console.log(data);
-	      		$("#searchAll").autocomplete({
-	      			source: data,
-	                 //if empty results
-	                  response: function(event, ui) {
-	                      if (ui.content.length === 0) {
-	                         var noResult = { value:"",label:"No results found" };
-                			  ui.content.push(noResult);
-	                      } else {
-	                         // $("#empty-message").empty();
-	                      }
-	                  },
-	                  select: function(event, ui) {
-	                  	var thisEquipment = ui.item.value.split(" - ");
-	                  	$.ajax({
-	                  		url: "<?php echo site_url('Equipment/searchEquipmentAll');?>",
-	                  		type: 'POST',
-	                  		data: {'equipmentSerialNum': thisEquipment[0],
-	                  		'equipmentName': thisEquipment[1]
-	                  	},
-	                  	success: function(data){
-	                  		console.log(data);
-	                  		viewAllEquipments(data);
-	                  		eqplist=data;
-	                  	}
-	                  });
-	                  }
-	              });
-	      	}
-	      });
+	      		url: "<?php echo site_url('Equipment/getAllEquipments');?>",
+	      		type: 'GET',
+	      		dataType: 'json',
+	      		success: function(data){
+		      		console.log(data);
+		      		allEquips = data;
+		      		$("#searchAll").autocomplete({
+		      			source: data,
+		                 //if empty results
+		                  response: function(event, ui) {
+		                  	  console.log(event.keyCode);
+		                      if (ui.content.length === 0) {
+		                         var noResult = { value:"",label:"No results found" };
+	                			  ui.content.push(noResult);
+		                      } else {
+		                         // $("#empty-message").empty();
+		                      }
+		                  },
+		                  select: function(event, ui) {
+		                  	var thisEquipment = ui.item.value.split(" - ");
+		                  	$.ajax({
+		                  		url: "<?php echo site_url('Equipment/searchEquipmentAll');?>",
+		                  		type: 'POST',
+		                  		data: {'equipmentSerialNum': thisEquipment[0],
+		                  		'equipmentName': thisEquipment[1]
+		                  	},
+		                  	success: function(data){
+		                  		console.log(data);
+		                  		viewAllEquipments(data);
+		                  		eqplist=data;
+		                  	}
+		                  });
+		                  }
+		              });
+		      	}
+		      });
 	    $("#searchAll").keyup(function(e){
 	      	if(e.which == 13) {
 	      		console.log("enter");
@@ -338,6 +367,7 @@
 	      		});  
 	      	}else{}
 	      }); 
+
 	    function viewAllEquipments(data){
 	      	console.log(data);
  			$("#headEquipments").html('<tr><th class="th"><i class="icon_clipboard"></i> Name</th><th class="th"><i class="icon_datareport_alt"></i> Quantity</th></tr>');
@@ -378,6 +408,7 @@
 	                  		'equipmentName': thisEquipment[1]
 	                  	},
 	                  	success: function(data){
+	                  		console.log(data);
 	                  		viewLaboratoryEquipments(data);
 	                  		eqplist=data;
 	                  	}
@@ -411,23 +442,73 @@
 							};
 							eq.push(item);
 	      				}
-	      				viewLaboratoryEquipments(eq);
+	      				viewLaboratoryEquipments2(eq);
 	      			}
 	      		});  
 	      	}else{}
 	      }); 
+	      	var check = [];
+	      	var checkAll = [];
+	      	var type = [];
+	     	var table = document.getElementById("labEquipmentsTable").getElementsByClassName('itemDetails'); 
+			
+		  	for(var i = 0; i < table.length; i++){
+				if($("#labEquipmentsTable tbody .itemDetails")[i].getElementsByTagName('input').length == 1){
+					check.push(table[i].children[0].textContent);
+				}
+				checkAll.push(table[i].children[0].textContent);
+				type.push(table[i].children[2].textContent);						
+			}
+
 	      function viewLaboratoryEquipments(data){
-	      	console.log(data);
+	      	console.log(type);
 	      	var searchResult = "";
 	      	for(var i = 0; i < data.length; i++){
-	      		searchResult += "<tr>";
+	      		searchResult += "<tr class='itemDetails' id='"+data[i].eqpSerialNum+"tr'>";
 		    	searchResult += "<td>"+data[i].eqpSerialNum+"</td>";
 		    	searchResult += "<td>"+data[i].eqpName+"</td>";
-		    	searchResult += "<td>Equipment</td>";
-		    	searchResult += '<td><div class="btn-group"><a class="btn btn-primary" onclick = "editEquipment(\''+data[i].eqpSerialNum+'\')" rel="tooltip" title="Edit"><i class="icon_pencil"></i></a><a class="btn btn-success" data-target="#vehModal" data-toggle="modal" rel="tooltip" onclick = "viewEquipmentHistory(\''+data[i].eqpSerialNum+'\', \''+data[i].eqpName+'\')" id="'+data[i].eqpSerialNum+'"  value="'+data[i].eqpSerialNum+'" title="View Equipment History"><i class=" icon_search-2" ></i></a></div><input type="checkbox"  class="check" name="checkItem"></td>';
-				searchResult += "</tr>";
+		    	searchResult += "<td>";
+		    	var ndx = checkAll.indexOf(data[i].eqpSerialNum);
+		    	searchResult += type[ndx];
+		    	searchResult +="</td>";
+		    	searchResult += '<td><div class="btn-group"><a class="btn btn-primary" onclick = "editEquipment(\''+data[i].eqpSerialNum+'\')" rel="tooltip" title="Edit"><i class="icon_pencil"></i></a><a class="btn btn-success" data-target="#vehModal" data-toggle="modal" rel="tooltip" onclick = "viewEquipmentHistory(\''+data[i].eqpSerialNum+'\', \''+data[i].eqpName+'\')" id="'+data[i].eqpSerialNum+'"  value="'+data[i].eqpSerialNum+'" title="View Equipment History"><i class=" icon_search-2" ></i></a></div>';
+		    	if(data[i].borrowed == 0 && data[i].damaged == 0){
+		    		searchResult +='<input type="checkbox" class="check equipCheck" name="checkItem" id="'+data[i].eqpSerialNum+'checkbox" onclick="moveAll(this.id)">';
+		    	}
+		    	searchResult += '</td>';
+		    	searchResult += "</tr>";
 			}
 		    $("#labEquipmentsTable tbody").html(searchResult);
+		    var pager = new Pager('labEquipmentsTable', 5);
+	        pager.init(); 
+	        pager.showPageNav('pager', 'pageNavPosition'); 
+	        pager.showPage(1);
+	      }
+
+	      function viewLaboratoryEquipments2(data){
+	      	console.log('check', check);
+	      	var searchResult = "";
+	      	for(var i = 0; i < data.length; i++){
+	      		searchResult += "<tr class='itemDetails' id='"+data[i].eqpSerialNum+"tr'>";
+		    	searchResult += "<td>"+data[i].eqpSerialNum+"</td>";
+		    	searchResult += "<td>"+data[i].eqpName+"</td>";
+		    	searchResult += "<td>";
+		    	var ndx = checkAll.indexOf(data[i].eqpSerialNum);
+		    	searchResult += type[ndx];
+		    	searchResult +="</td>";
+		    	searchResult += '<td><div class="btn-group"><a class="btn btn-primary" onclick = "editEquipment(\''+data[i].eqpSerialNum+'\')" rel="tooltip" title="Edit"><i class="icon_pencil"></i></a><a class="btn btn-success" data-target="#vehModal" data-toggle="modal" rel="tooltip" onclick = "viewEquipmentHistory(\''+data[i].eqpSerialNum+'\', \''+data[i].eqpName+'\')" id="'+data[i].eqpSerialNum+'"  value="'+data[i].eqpSerialNum+'" title="View Equipment History"><i class=" icon_search-2" ></i></a></div>';
+		    	if(check.indexOf(data[i].eqpSerialNum) >= 0){
+		    		searchResult +='<input type="checkbox" class="check equipCheck" name="checkItem" id="'+data[i].eqpSerialNum+'checkbox" onclick="moveAll(this.id)">';
+		    	}
+		    	searchResult += '</td>';
+		    	searchResult += "</tr>";
+			}
+		    $("#labEquipmentsTable tbody").html(searchResult);
+		    check = [];
+	      	var pager = new Pager('labEquipmentsTable', 5);
+	        pager.init(); 
+	        pager.showPageNav('pager', 'pageNavPosition'); 
+	        pager.showPage(1);
 	      }
 	        //  END Search Equipment module
 
@@ -1489,10 +1570,12 @@
 				if($("#moveAll").is(':checked')){
 					$(".equipCheck").prop('checked', true);
 					for(var i = 0; i < table.length; i++){
-						itemsToMoveList.push(table[i].children[0].textContent);
-						itemsToMove += table[i].children[0].textContent+' - '+table[i].children[1].textContent;
-			        	itemsToMove += '\n';
-			        	numItems++;
+						if($("#labEquipmentsTable tbody .itemDetails")[i].getElementsByTagName('input').length == 1){
+							itemsToMoveList.push(table[i].children[0].textContent);
+							itemsToMove += table[i].children[0].textContent+' - '+table[i].children[1].textContent;
+				        	itemsToMove += '\n';
+				        	numItems++;
+						}						
 					}
 					$("#moveItemList").html(numItems+' item(s)');
 					$("#moveItemList").attr('title', itemsToMove);

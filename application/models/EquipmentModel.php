@@ -171,19 +171,25 @@ class EquipmentModel extends CI_Model {
     }
 
     public function searchEquipment(){
-        $this->db->select('*');
+        $this->db->select('equipment.*, count(borrowed_list.bListID) as "borrowed", count(damaged_list.dListID) as "damaged"');
         $this->db->from('equipment');
-        $searchThis = array('eqpSerialNum' => $_POST['equipmentSerialNum'], 'eqpName' => $_POST['equipmentName']);
+        $this->db->join('borrowed_list', 'borrowed_list.eqpSerialNum = equipment.eqpSerialNum', 'left');
+        $this->db->join('damaged_list', 'damaged_list.eqpSerialNum = equipment.eqpSerialNum', 'left');
+        $searchThis = array('equipment.eqpSerialNum' => $_POST['equipmentSerialNum'], 'equipment.eqpName' => $_POST['equipmentName']);
         $this->db->where($searchThis);
         $result = $this->db->get()->result_array();
-        
-        if(count($result) == 0){
-            $this->db->select('compSerialNum as "eqpSerialNum", compName as "eqpName", price');
+
+        if($result[0]['eqpSerialNum'] == null){
+            $this->db->select('component.compSerialNum as "eqpSerialNum", component.compName as "eqpName", component.price, count(borrowed_list.bListID) as "borrowed", count(damaged_list.dListID) as "damaged"');
             $this->db->from('component');
-            $searchThis = array('compSerialNum' => $_POST['equipmentSerialNum'], 'compName' => $_POST['equipmentName']);
+            $this->db->join('borrowed_list', 'borrowed_list.compSerialNum = component.compSerialNum', 'left');
+            $this->db->join('damaged_list', 'damaged_list.compSerialNum = component.compSerialNum', 'left');
+            $searchThis = array('component.compSerialNum' => $_POST['equipmentSerialNum'], 'component.compName' => $_POST['equipmentName']);
             $this->db->where($searchThis);
             $result = $this->db->get()->result_array();
         }
+
+        // and (compSerialNum IN (SELECT compSerialNum FROM borrowed_list where eqpSerialNum IS NULL) OR compSerialNum IN (SELECT compSerialNum FROM damaged_list where eqpSerialNum IS NULL))
 
         return $result;
     }

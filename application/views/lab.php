@@ -228,7 +228,7 @@
                  </tr><tr>
                    <td align="center">Name </td><td><input type="text" class="input" id="editName" required autofocus="true"></td>
                  </tr><tr>
-                   <td align="center">Price </td><td><input type="text" onkeypress="return isNumberKey(event)" class="input" id="editPrice" required autofocus="true"></td>
+                   <td align="center">Price </td><td><input type="text" onkeypress="return acceptDecimal(event)" class="input" id="editPrice" required autofocus="true"></td>
                  </tr>
               </table>
               <div class="modal-footer">
@@ -510,6 +510,15 @@
           var charCode = (evt.which) ? evt.which : event.keyCode
           if (charCode > 31 && (charCode < 48 || charCode > 57))
               return false;
+          return true;
+        }
+
+        function acceptDecimal(evt){
+          var charCode = (evt.which) ? evt.which : evt.keyCode;
+          if (charCode != 46 && charCode > 31 
+            && (charCode < 48 || charCode > 57))
+             return false;
+
           return true;
         }
     </script>

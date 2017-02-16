@@ -98,14 +98,14 @@
               <form>
                 <table align="center" width="60%">
                   <tr>
-                     <td align="center">Serial No.</td><td><input type="text" name="eqpSerialNum" id="eqpSerialNum" class="input" required autofocus="true"></td>
+                     <td align="center">Serial No.</td><td><input type="text" name="eqpSerialNum" id="eqpSerialNum" class="input" required autofocus="true"><p class="idNumValidate" id="serialNumValidate"></p></td>
                    </tr><br><tr>
                      <td align="center">Name </td><td><input type="text" id="eqpName" name="eqpName" class="input" required autofocus="true"></td>
                    </tr><br><tr align="center">
                      <td><input type="radio" name="item" id="equiptype" value="component"> Component</td>
                      <td><input type="radio" name="item" id="equiptype" value="equipment" checked> Equipment</td>
                    </tr><br><tr>
-                     <td align="center">Price </td><td><input type="text" onkeypress="return isNumberKey(event)" id="eqpPrice" class="input" name="eqpPrice" required autofocus="true"></td>
+                     <td align="center">Price </td><td><input type="text" onkeypress="return acceptDecimal(event)" id="eqpPrice" class="input" name="eqpPrice" required autofocus="true"></td>
                    </tr>
                 </table>
                 <div class="modal-footer">
@@ -130,6 +130,15 @@
               return false;
           return true;
       }
+
+      function acceptDecimal(evt){
+          var charCode = (evt.which) ? evt.which : evt.keyCode;
+          if (charCode != 46 && charCode > 31 
+            && (charCode < 48 || charCode > 57))
+             return false;
+
+          return true;
+        }
     </script>
     
     <script src = "<?php echo base_url();?>js/jquery.js"></script>
