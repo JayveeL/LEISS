@@ -17,9 +17,17 @@ class DamageListModel extends CI_Model {
     public function addDamageEquipments(){
         $return = array();
         foreach ($_POST['equipment'] as $equipment) {
+          $this->db->select('eqpSerialNum');
+          $this->db->from('equipment');
+          $this->db->where('eqpSerialNum', $equipment);
+          $result = $this->db->get()->result_array();
+          if(count($result) == 0){
+             $this->compSerialNum = $equipment;
+          }else{
+             $this->eqpSerialNum = $equipment;
+          }
            $this->damagerIDNum = $_POST['damagerID']; 
            $this->labID = $_POST['labID'];
-           $this->eqpSerialNum = $equipment;
            $this->teacher = $_POST['damagerTeacher'];
            $return[] = $this->db->insert('damaged_list',$this);
         }
@@ -29,9 +37,10 @@ class DamageListModel extends CI_Model {
     public function getDamageEquipmentList(){
 
       $labID=$_POST['labID'];
-      $this->db->select("D.compSerialNum,D.eqpSerialNum,D.dateReported, E.eqpName");
+      $this->db->select("D.compSerialNum, D.eqpSerialNum, D.dateReported, E.eqpName, C.compName");
       $this->db->from('damaged_list D');
       $this->db->join('equipment E', 'E.eqpSerialNum = D.eqpSerialNum', 'left');
+      $this->db->join('component C', 'C.compSerialNum = D.compSerialNum', 'left');
       $this->db->where('D.labID',  $_POST['labID']);
       $result = $this->db->get()->result_array();
 
@@ -45,7 +54,8 @@ class DamageListModel extends CI_Model {
         $result = array();
         foreach ($_POST['equipment'] as $equipment) {
             $this->db->from('damaged_list');
-            $this->db->where('eqpSerialNum', $equipment);
+            $where = 'eqpSerialNum = '.$equipment.' OR compSerialNum = '.$equipment.'';
+            $this->db->where($where);
             $result[] = $this->db->delete();    
         }
         return $result;

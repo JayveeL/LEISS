@@ -65,17 +65,29 @@ class EquipmentModel extends CI_Model {
         $this->db->from('laboratory lab');
         $this->db->join('equipment eqp', 'eqp.labID = lab.labID', 'left');
         $this->db->where('eqp.labID', $labID);
+        $this->db->order_by('dateAdded', 'DESC');
         $result[] = $this->db->get()->result_array();
 
         $this->db->select('comp.*');
         $this->db->from('laboratory labb');
         $this->db->join('component comp', 'comp.labID = labb.labID', 'left');
         $this->db->where('comp.labID', $labID);
+        $this->db->order_by('dateAdded', 'DESC');
         $result[] = $this->db->get()->result_array();
 
         $this->db->select('*');
         $this->db->from('laboratory');
         $this->db->where('labID != '.$labID);
+        $result[] = $this->db->get()->result_array();
+
+        $this->db->select('eqpSerialNum');
+        $this->db->from('equipment');
+        $this->db->where('labID='.$labID.' and eqpSerialNum NOT IN (SELECT eqpSerialNum FROM borrowed_list where eqpSerialNum IS NOT NULL) and eqpSerialNum NOT IN (SELECT eqpSerialNum FROM damaged_list where eqpSerialNum IS NOT NULL)');
+        $result[] = $this->db->get()->result_array();
+
+        $this->db->select('compSerialNum');
+        $this->db->from('component');
+        $this->db->where('labID='.$labID.' and (compSerialNum NOT IN (SELECT compSerialNum FROM borrowed_list where compSerialNum IS NOT NULL) and compSerialNum NOT IN (SELECT compSerialNum FROM damaged_list where compSerialNum IS NOT NULL))');
         $result[] = $this->db->get()->result_array();
 
         return $result;
@@ -106,7 +118,7 @@ class EquipmentModel extends CI_Model {
         }else{ }
 
         if($_POST['labID'] && $filter == 'available'){
-            $this->db->where('labID='.$_POST['labID'].' and eqpSerialNum NOT IN (SELECT eqpSerialNum FROM borrowed_list) and eqpSerialNum NOT IN (SELECT eqpSerialNum FROM damaged_list)');
+            $this->db->where('labID='.$_POST['labID'].' and eqpSerialNum NOT IN (SELECT eqpSerialNum FROM borrowed_list where eqpSerialNum IS NOT NULL) and eqpSerialNum NOT IN (SELECT eqpSerialNum FROM damaged_list where eqpSerialNum IS NOT NULL)');
         }
 
         $list = $this->db->get()->result_array();
@@ -123,7 +135,7 @@ class EquipmentModel extends CI_Model {
         }else{ }
 
         if($_POST['labID'] && $filter == 'available'){
-            $this->db->where('labID='.$_POST['labID'].' and compSerialNum NOT IN (SELECT compSerialNum FROM borrowed_list) and compSerialNum NOT IN (SELECT compSerialNum FROM damaged_list)');
+            $this->db->where('labID='.$_POST['labID'].' and compSerialNum NOT IN (SELECT compSerialNum FROM borrowed_list where compSerialNum IS NOT NULL) and compSerialNum NOT IN (SELECT compSerialNum FROM damaged_list where compSerialNum IS NOT NULL)');
         }
 
         $list = $this->db->get()->result_array();
@@ -165,7 +177,7 @@ class EquipmentModel extends CI_Model {
         $result = $this->db->get()->result_array();
         
         if(count($result) == 0){
-            $this->db->select('compSerialNum as "eqpSerialNum", compName as "eqpName"');
+            $this->db->select('compSerialNum as "eqpSerialNum", compName as "eqpName", price');
             $this->db->from('component');
             $searchThis = array('compSerialNum' => $_POST['equipmentSerialNum'], 'compName' => $_POST['equipmentName']);
             $this->db->where($searchThis);
@@ -196,17 +208,17 @@ class EquipmentModel extends CI_Model {
         $result = array();
 
         $labID = $_POST['labID'];
-        $where= "labID =".$labID." AND eqpSerialNum NOT IN (SELECT eqpSerialNum FROM damaged_list) AND eqpSerialNum NOT IN (SELECT eqpSerialNum FROM borrowed_list)";
+        $where= "labID =".$labID." AND eqpSerialNum NOT IN (SELECT eqpSerialNum FROM damaged_list where eqpSerialNum IS NOT NULL) AND eqpSerialNum NOT IN (SELECT eqpSerialNum FROM borrowed_list where eqpSerialNum IS NOT NULL)";
         $this->db->select('*');
         $this->db->from('equipment');
         $this->db->where($where);
         
         $result[] = $this->db->get()->result_array();
 
-        $where= "labID =".$labID." AND compSerialNum NOT IN (SELECT compSerialNum FROM damaged_list) AND compSerialNum NOT IN (SELECT compSerialNum FROM borrowed_list)";
+        $where2 = 'labID='.$labID.' and (compSerialNum NOT IN (SELECT compSerialNum FROM borrowed_list where compSerialNum IS NOT NULL) and compSerialNum NOT IN (SELECT compSerialNum FROM damaged_list where compSerialNum IS NOT NULL))';
         $this->db->select('compSerialNum as "eqpSerialNum", compName as "eqpName", price');
         $this->db->from('component');
-        $this->db->where($where);
+        $this->db->where($where2);
 
         $result[] = $this->db->get()->result_array();
 
@@ -259,12 +271,13 @@ class EquipmentModel extends CI_Model {
         $eqpSerial = $_POST['equipmentSerialNum'];
         $result;
 
-        $this->db->select('l.*, e.eqpName, lab.labName, S.studentID, S.studentName');
+        $this->db->select('l.*, S.studentID, S.studentName');
         $this->db->from('log l');
-        $this->db->join('student S', 'S.studentID = l.studentID', 'left');
-        $this->db->join('laboratory lab', 'lab.labID = l.labID', 'left');
-        $this->db->join('equipment e', 'e.eqpSerialNum = l.serialNum', 'left');
+        $this->db->join('student S', 'S.studentID = l.studentID', 'left');       
+        // $this->db->join('laboratory lab', 'lab.labID = l.labID', 'left');
+        // $this->db->join('equipment e', 'e.eqpSerialNum = l.serialNum', 'left');
         $this->db->where('l.serialNum', $eqpSerial);
+        $this->db->order_by('l.date', 'DESC');
         $result = $this->db->get()->result_array();
 
         return $result;
@@ -376,10 +389,10 @@ class EquipmentModel extends CI_Model {
     }
 
     public function getRecentAction(){
-        $this->db->select('l.*, e.eqpName, lab.labName, S.studentID, S.studentName');
+        $this->db->select('l.*, e.eqpName, S.studentID, S.studentName');
         $this->db->from('log l');
         $this->db->join('student S', 'S.studentID = l.studentID', 'left');
-        $this->db->join('laboratory lab', 'lab.labID = l.labID', 'left');
+        // $this->db->join('laboratory lab', 'lab.labID = l.labID', 'left');
         $this->db->join('equipment e', 'e.eqpSerialNum = l.serialNum', 'left');
         $this->db->order_by('l.date', 'DESC');
         // $this->db->where('l.serialNum', $eqpSerial);
@@ -387,12 +400,17 @@ class EquipmentModel extends CI_Model {
     }
 
     public function getRecentActionPerLab($lab = null){
-        $this->db->select('l.*, e.eqpName, lab.labName, S.studentID, S.studentName');
-        $this->db->from('log l');
+        $this->db->select('laboratory.labName as "labName"');
+        $this->db->where('laboratory.labID', $lab);
+        $query = $this->db->get('laboratory');
+        $labName = $query->result()[0]->labName;
+
+        $this->db->select('l.*, e.eqpName, S.studentID, S.studentName');
+        $this->db->from('log l');   
         $this->db->join('student S', 'S.studentID = l.studentID', 'left');
-        $this->db->join('laboratory lab', 'lab.labID = l.labID', 'left');
+        // $this->db->join('laboratory lab', 'lab.labID = l.labID', 'left');
         $this->db->join('equipment e', 'e.eqpSerialNum = l.serialNum', 'left');
-        $this->db->where('l.labID', $lab);
+        $this->db->where('l.labID', $labName);
         $this->db->order_by('l.date', 'DESC');
         return $this->db->get()->result_array();
     }

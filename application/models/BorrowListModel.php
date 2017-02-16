@@ -18,9 +18,17 @@ class BorrowListModel extends CI_Model {
     public function addBorrowedEquipments(){
         $return = array();
         foreach ($_POST['equipment'] as $equipment) {
+            $this->db->select('eqpSerialNum');
+            $this->db->from('equipment');
+            $this->db->where('eqpSerialNum', $equipment);
+            $result = $this->db->get()->result_array();
+            if(count($result) == 0){
+             $this->compSerialNum = $equipment;
+            }else{
+             $this->eqpSerialNum = $equipment;
+            }
            $this->borrowerIDNum = $_POST['borrowerID']; 
            $this->labID = $_POST['labID'];
-           $this->eqpSerialNum = $equipment;
            $this->teacher = $_POST['bteacher'];
            $this->inCharge = $_POST['incharge'];
            $return[] = $this->db->insert('borrowed_list',$this);
@@ -37,9 +45,10 @@ class BorrowListModel extends CI_Model {
         $this->db->where('studentID', $borrower);
         $result[] = $this->db->get()->result_array();
 
-        $this->db->select('B.borrowerIDNum, B.borrowedDate, E.eqpSerialNum, E.eqpName, S.studentName');
+        $this->db->select('B.borrowerIDNum, C.compSerialNum, C.compName, B.borrowedDate, E.eqpSerialNum, E.eqpName, S.studentName');
         $this->db->from('borrowed_list B');
         $this->db->join('equipment E', 'E.eqpSerialNum = B.eqpSerialNum', 'left');
+        $this->db->join('component C', 'C.compSerialNum = B.compSerialNum', 'left');
         $this->db->join('student S', 'S.studentID = B.borrowerIDNum', 'left');
         $this->db->where('borrowerIDNum', $borrower);
         
@@ -52,7 +61,8 @@ class BorrowListModel extends CI_Model {
         $result = array();
         foreach ($_POST['equipment'] as $equipment) {
             $this->db->from('borrowed_list');
-            $this->db->where('eqpSerialNum', $equipment);
+            $where = 'eqpSerialNum = '.$equipment.' OR compSerialNum = '.$equipment.'';
+            $this->db->where($where);
             $result[] = $this->db->delete();    
         }
         return $result;

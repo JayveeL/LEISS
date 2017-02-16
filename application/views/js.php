@@ -31,7 +31,7 @@
 		var borrowedEquipListLoad = "";
 		var borrowedEquipmentsArray = [];
 		var damagedEquipmentsArray = [];
-
+		var labNames = [];
 		
 
 		$(document).ready(function(){
@@ -77,6 +77,7 @@
 		        		labList=data;
 		        		var navigateLabs="";
 		        		for(var i=0; i<labList.length; i++){
+		        			labNames.push(labList[i].labName.toLowerCase());
 							navigateLabs += "<tr><td><li class='lab' id='"+labList[i].labID+"' onclick='thisLab(this.id)''>";
 							navigateLabs +="<a><i class='icon_grid-2x2'></i><span style='cursor: pointer;'>";
 							navigateLabs += labList[i].labName + "</span></a></li></td></tr>";
@@ -118,18 +119,27 @@
 
 			// Add Laboratory Module
 			var validLab=false;
-			$("#labName").bind('keyup mouseup',function(){
+			$("#labName").keyup(function(){
 	        	// console.log($(this).val().length);
 	        	if($(this).val().length > 0){
-	        		validLab=true;
-	        		for( var i=0; i< labList.length;i++){
-	        			if($(this).val()==labList[i].labName){
-	        				$("#labNameValidate").html("Laboratory name already exists");
-	        				validLab=false;
-	        			}else{
-	        				$("#labNameValidate").empty();
-	        			}	        			
+	        		if(labNames.indexOf($(this).val().toLowerCase()) >= 0){
+	        			validLab=true;
+	        			console.log("Laboratory name already exists")
+	        			$("#labNameValidate").html("Laboratory name already exists");
+	        			validLab=false;
+	        		}else{
+	        			$("#labNameValidate").html("");
 	        		}
+	        		// for( var i=0; i < labNames.length; i++){
+	        		// 	console.log(labNames[i])
+	        		// 	if($(this).val().toUpperCase() === labNames[i].toUpperCase()){
+	        		// 		console.log("Laboratory name already exists")
+	        		// 		$("#labNameValidate").html("Laboratory name already exists");
+	        		// 		validLab=false;
+	        		// 	}else{
+	        		// 		$("#labNameValidate").html("");
+	        		// 	}	        			
+	        		// }
 	        	}else{
 	        		$("#labNameValidate").html("Laboratory name cannot be empty.");
 	        	}
@@ -137,10 +147,10 @@
 
 	       	$(function(){
 	       		$("#addLabBtn").click(function(){
-	       			if(!$("#description").val()){
-	       				alert("You have left the laboratory desciption empty. Do you wish to proceed?");
+	       			if(!$("#labName").val()){
+	       				alert("You may have left the name empty or the laboratory already exists.");
 	       			}
-		       		if(validLab==true){
+		       		if(validLab==true && $("#labName").val() != ''){
 		       			// alert("bebe");
 		       			$.ajax({
 							url: "<?php echo site_url('Laboratory/addLab');?>",
@@ -155,7 +165,7 @@
 						location.reload();
 		       		}
 		       		else{
-		       			alert("You may have left the name empty or the laboratory already exists.");
+		       			alert("You have left the laboratory desciption empty. Do you wish to proceed?");
 		       		}
 		       		$("#labName").empty();
 		       		$("#description").empty();
@@ -163,76 +173,100 @@
 	       	});		
 
 	       	// Add Equipment Module
-			$("#addEquipment").click(function(){
-			if($("input[name=item]:checked").val() === "equipment"){
-				$.ajax({
-					url: "<?php echo site_url('Equipment/addEquipment');?>",
-					type: 'POST',
-					data: {'eqpSerialNum': $("#eqpSerialNum").val(),
-						'eqpName': $("#eqpName").val(),
-						'labID': currentLab,
-						'type': $("input[name=item]:checked").val(),
-						'eqpPrice':  $("#eqpPrice").val()},
-					success: function(data){
-						var e = [];
-						e.push($("#eqpSerialNum").val());
+			$("#addEquipmentBtn").click(function(e){
+				if($("#eqpSerialNum").val() != '' && $("#eqpName").val() != '' && $("#eqpPrice").val() != ''){
+					$(this).unbind('submit').submit();
+					e.preventDefault();
+					if($("input[name=item]:checked").val() === "equipment"){
 						$.ajax({
-						    url: "<?php echo site_url('Reports/storeLog');?>",
-						    type: 'POST',
-						    data: {
-						    	'studentID': '0',
-						    	'equipment': e,
-						    	'action': 'add',
-						    	'labID': currentLab
-						    },
-						    success: function(data){
-						    }
+							url: "<?php echo site_url('Equipment/addEquipment');?>",
+							type: 'POST',
+							data: {'eqpSerialNum': $("#eqpSerialNum").val(),
+								'eqpName': $("#eqpName").val(),
+								'labID': currentLab,
+								'type': $("input[name=item]:checked").val(),
+								'eqpPrice':  $("#eqpPrice").val()},
+							success: function(data){
+								var e = [];
+								e.push($("#eqpSerialNum").val());
+								$.ajax({
+								    url: "<?php echo site_url('Reports/storeLog');?>",
+								    type: 'POST',
+								    data: {
+								    	'studentID': '0',
+								    	'equipment': e,
+								    	'action': 'add',
+								    	'labID': currentLab
+									    },
+									    success: function(data){
+									    	
+									    }
+								});
+							}
 						});
-						console.log(data);
+					}else {
+						$.ajax({
+							url: "<?php echo site_url('Equipment/addEquipmentComp');?>",
+							type: 'POST',
+							data: {'compSerialNum': $("#eqpSerialNum").val(),
+								'compName': $("#eqpName").val(),
+								'labID': currentLab,
+								'type': $("input[name=item]:checked").val(),
+								'compPrice':  $("#eqpPrice").val()},
+							success: function(data){
+								var e = [];
+								e.push($("#eqpSerialNum").val());
+								$.ajax({
+								    url: "<?php echo site_url('Reports/storeLog');?>",
+								    type: 'POST',
+								    data: {
+								    	'studentID': '0',
+								    	'equipment': e,
+								    	'action': 'add',
+								    	'labID': currentLab
+									    },
+									    success: function(data){
+									    	
+									    }
+								});
+							}
+						});	
 					}
-				});
-			}else {
-				$.ajax({
-					url: "<?php echo site_url('Equipment/addEquipmentComp');?>",
-					type: 'POST',
-					data: {'compSerialNum': $("#eqpSerialNum").val(),
-						'compName': $("#eqpName").val(),
-						'labID': currentLab,
-						'type': $("input[name=item]:checked").val(),
-						'compPrice':  $("#eqpPrice").val()},
-					success: function(data){
-						console.log(data);
-					}
-				});	
+					$("#addEqpmnt").removeClass("in");
+					$(".modal-backdrop").remove();
+					$(".modal-backdrop").hide();
+					alert("Equipment Successfully Added!");
+					var source = "<?php echo site_url('Index/loadIframe/lab/');?>";
+					var url = source+currentLab;
+					$("#frame").attr('src', url);
+				}else{
 				}
-				$("#addEqpmnt").removeClass("in");
-				$(".modal-backdrop").remove();
-				$(".modal-backdrop").hide();
-				alert("Equipment Successfully Added!");
-				var source = "<?php echo site_url('Index/loadIframe/lab/');?>";
-				var url = source+currentLab;
-				$("#frame").attr('src', url);
 			});
 			//END Add Equipment Module
 
 
 			// Edit Equipment Module
-			$("#editSaveBtn").click(function(){
-				$.ajax({
-	        		url: "<?php echo site_url('Equipment/updateEquipment');?>",
-	        		type: 'POST',
-	        		data: {'eqpSerialNum': $("#editSerialNum").val(),
-		        		'eqpName': $("#editName").val(),
-		        		'eqpPrice': $("#editPrice").val()
-		        	},
-		        	success: function(data){
-		        		console.log(data);
-		        		$("#editModal").modal('hide');
-		        		alert('Equipment Successfully Updated!');
-		        		// $("#frame").attr('src', "<?php echo site_url('Index/loadIframe/lab');?>");
-		        		location.reload();
-		        	}
-		        });	
+			$("#editSaveBtn").click(function(e){
+				if($("#editName").val() != '' && $("#editPrice").val() != ''){
+					$(this).unbind('submit').submit();
+					e.preventDefault();
+					$.ajax({
+		        		url: "<?php echo site_url('Equipment/updateEquipment');?>",
+		        		type: 'POST',
+		        		data: {'eqpSerialNum': $("#editSerialNum").val(),
+			        		'eqpName': $("#editName").val(),
+			        		'eqpPrice': $("#editPrice").val()
+			        	},
+			        	success: function(data){
+			        		console.log(data);
+			        		$("#editModal").modal('hide');
+			        		alert('Equipment Successfully Updated!');
+			        		// $("#frame").attr('src', "<?php echo site_url('Index/loadIframe/lab');?>");
+			        		location.reload();
+			        	}
+			        });	
+				}
+				
 			});
 	        // END Edit Equipment Module
 
@@ -517,7 +551,7 @@
 	        		   'labID': $("#currLab").val()},
 	        	dataType: 'json',
 	        	success: function(data){
-	        		console.log(data);
+	        		console.log('fde2', data);
 	        		var equipList = "";
 	        		if(data[0].length > 0 || data[1].length > 0){
 	        			if(data[0].length > 0){
@@ -886,10 +920,10 @@
 		        					 '<th style="padding-right: 140px;">All Equipments</th><th style="padding-right: 147px;">Borrowed Date</th><th><input type="checkbox" class="returnAll" onclick = "checkAllReturn()"></th>');
 		        					var returnEqp = '';
 		        					for(var i = 0; i < data[1].length; i++){
-		        						returnEqp += "<tr id='"+data[1][i].eqpSerialNum+"'>";
-		        						returnEqp += "<td style='padding-right: 60px;'>"+data[1][i].eqpSerialNum+" - "+data[1][i].eqpName+"</td>";
+		        						returnEqp += "<tr id='"+(data[1][i].eqpSerialNum || data[1][i].compSerialNum)+"'>";
+		        						returnEqp += "<td style='padding-right: 60px;'>"+(data[1][i].eqpSerialNum || data[1][i].compSerialNum)+" - "+(data[1][i].eqpName || data[1][i].compName)+"</td>";
 		        						returnEqp += "<td style='padding-left: 70px; padding-right: 130px;'>"+data[1][i].borrowedDate+"</td>";
-		        						returnEqp += "<td><input type='checkbox' class='returnBoxCheck' onclick='clearReturnAll()' id='"+data[1][i].eqpSerialNum+"' value='"+data[1][i].eqpSerialNum+"'></td>";
+		        						returnEqp += "<td><input type='checkbox' class='returnBoxCheck' onclick='clearReturnAll()' id='"+(data[1][i].eqpSerialNum || data[1][i].compSerialNum)+"' value='"+(data[1][i].eqpSerialNum || data[1][i].compSerialNum)+"'></td>";
 		        						returnEqp += "</tr>";
 		        					}
 		        					$("#returnedEquipments").html(returnEqp);	
@@ -963,10 +997,10 @@
 	        		if(data.length != 0){
 		        		var repairEqp = '';
 		        		for(var i = 0; i < data.length; i++){
-		        			repairEqp += "<tr id='"+data[i].eqpSerialNum+"'>";
-		        			repairEqp += "<td>"+data[i].eqpSerialNum+" - "+data[i].eqpName+"</td>";
+		        			repairEqp += "<tr id='"+(data[i].eqpSerialNum || data[i].compSerialNum)+"'>";
+		        			repairEqp += "<td>"+(data[i].eqpSerialNum || data[i].compSerialNum)+" - "+(data[i].eqpName || data[i].compName)+"</td>";
 		        			repairEqp += "<td>"+data[i].dateReported+"</td>";
-		        			repairEqp += "<td><input type='checkbox' class='repairBoxCheck' onclick='clearRepairAll()' id='"+data[i].eqpSerialNum+"' value='"+data[i].eqpSerialNum+"'></td>";
+		        			repairEqp += "<td><input type='checkbox' class='repairBoxCheck' onclick='clearRepairAll()' id='"+(data[i].eqpSerialNum || data[i].compSerialNum)+"' value='"+(data[i].eqpSerialNum || data[i].compSerialNum)+"'></td>";
 		        			repairEqp += "</tr>";
 		        		}
 		        		$("#repairEquipments").html('<tr class="th"><td>Equipment</td><td >Date Reported</td><td><input type="checkbox" class="repairAll" onclick = "checkAllRepair()"></td></tr>'+repairEqp);	
@@ -1079,6 +1113,9 @@
 	         $("#editModal").find("input,textarea,select").val('');
 
 	         $("#addEqpmnt").find("input,textarea,select").val('');
+
+	         // add lab modal reset
+	         $("#labName, #description").val('');
 		});
 
 		
@@ -1086,8 +1123,8 @@
 			console.log('checkDamage');
 			var getValue = thisValue.value.split("-");
 			var id = thisID+"id";
-			console.log(getValue[0]+" "+thisID);
-			if($("#damagedEquipList #"+thisID).is(':checked')){
+			console.log(getValue[0]+" "+getValue[0]);
+			if($("#damagedEquipList #"+getValue[0]).is(':checked')){
 				damagedEquipmentsArray.push(thisID);
 				var newDamage = "<tr id ="+id+" class='damagedListClass'>";
 					newDamage +="<td style='width: 100%'>"+getValue[0]+" "+getValue[1]+"</td>";
@@ -1111,8 +1148,8 @@
 		function checkBorrow(thisValue, thisID){
 			var getValue = thisValue.value.split("-");
 			var id = thisID+"id";
-			console.log(getValue[0]+" "+thisID);
-			if($("#borrowedEquipList #"+thisID).is(':checked')){
+			console.log(getValue[0]+" "+getValue[0]);
+			if($("#borrowedEquipList #"+getValue[0]).is(':checked')){
 				borrowedEquipmentsArray.push(thisID);
 				console.log(borrowedEquipmentsArray);
 				var newDamage = "<tr id ="+id+" class='borrowedListClass'>";
@@ -1252,8 +1289,8 @@
 								case "return": action += "<td>Returned by:<br>Student ID: "+data[i].studentID+"<br>Student Name: "+data[i].studentName+"</td>"; break;
 								case "damage": action += "<td>Filed as damage by:<br>Student ID: "+data[i].studentID+"<br>Student Name: "+data[i].studentName+"</td>"; break;
 								case "repair": action += "<td>Repaired</td>"; break;
-								case "move": action += "<td>Moved to: "+data[i].labName+"</td>"; break;
-								case "add": action += "<td>Added to: "+data[i].labName+"</td>"; break;
+								case "move": action += "<td>Moved to: "+data[i].labID+"</td>"; break;
+								case "add": action += "<td>Added to: "+data[i].labID+"</td>"; break;
 							}
 							history += action;
 							history += "</tr>";

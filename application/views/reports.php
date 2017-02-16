@@ -36,8 +36,8 @@ $(document).ready(function(){
                 case "return": action += "<td>"+data[i].studentName+" returned "+data[i].eqpName+".</td>"; break;
                 case "damage": action += "<td>"+data[i].eqpName+" filed as damage by "+data[i].studentName+".</td>"; break;
                 case "repair": action += "<td>"+data[i].eqpName+" repaired.</td>"; break;
-                case "move": action += "<td>"+data[i].eqpName+" moved to "+data[i].labName+".</td>"; break;
-                case "add": action += (show == 'All')?"<td>Added "+data[i].eqpName+" to "+data[i].labName+".</td>": "<td>Added "+data[i].eqpName+".</td>"; break;
+                case "move": action += "<td>"+data[i].eqpName+" moved to "+data[i].labID+".</td>"; break;
+                case "add": action += (show == 'All')?"<td>Added "+data[i].eqpName+" to "+data[i].labID+".</td>": "<td>Added "+data[i].eqpName+".</td>"; break;
             }
             history += action;
             history += "<td>"+data[i].date+"</td>";

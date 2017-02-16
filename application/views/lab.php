@@ -87,14 +87,25 @@
                                       <a class="btn btn-primary" onclick = "editEquipment('<?php echo $equipList[1][$i]['eqpSerialNum']; ?>')" id="<?php echo $equipList[1][$i]['eqpSerialNum']; ?>"  value="<?php echo $equipList[1][$i]['eqpSerialNum']; ?>" rel="tooltip" title="Edit"><i class="icon_pencil"></i></a>
                                       <a class="btn btn-success" onclick = "viewEquipmentHistory('<?php echo $equipList[1][$i]['eqpSerialNum']; ?>', '<?php echo $equipList[1][$i]['eqpName']; ?>')" id="<?php echo $equipList[1][$i]['eqpSerialNum']; ?>"  value="<?php echo $equipList[1][$i]['eqpSerialNum']; ?>" rel="tooltip" title="View Equipment History"><i class=" icon_search-2" ></i></a>
                                     </div>
-                                    <input type="checkbox" class="check equipCheck" name="checkItem" id="<?php echo $equipList[1][$i]['eqpSerialNum'].'checkbox';?>" onclick = "moveAll(this.id)">
+                                    <?php 
+                                      if(count($equipList[4]) > 0){
+                                        for($j = 0; $j < count($equipList[4]); $j++){
+                                          if($equipList[1][$i]['eqpSerialNum'] == $equipList[4][$j]['eqpSerialNum']){ ?>
+                                            <input type="checkbox" class="check equipCheck" name="checkItem" id="<?php echo $equipList[1][$i]['eqpSerialNum'].'checkbox';?>" onclick = "moveAll(this.id)">
+                                            <?php break;
+                                          }
+                                        }
+                                      }else{ ?>
+                                        <input type="checkbox" class="check equipCheck" name="checkItem" id="<?php echo $equipList[1][$i]['eqpSerialNum'].'checkbox';?>" onclick = "moveAll(this.id)">
+                                      <?php }
+                                    ?>
                                   </td>
                                 </tr>
                           <?php }  
                           }
                           if(null != $equipList[2]){
                               for($i = 0; $i < count($equipList[2]); $i++){ ?>
-                                <tr class="itemDetails">
+                                <tr class="itemDetails" id="<?php echo $equipList[2][$i]['compSerialNum'].'tr';?>">
                                   <td><?php echo $equipList[2][$i]['compSerialNum'];?></td>
                                   <td><?php echo $equipList[2][$i]['compName'];?></td>
                                   <td><?php echo "Component"; ?></td>
@@ -103,7 +114,18 @@
                                       <a class="btn btn-primary" onclick = "editEquipment('<?php echo $equipList[2][$i]['compSerialNum']; ?>')" id="<?php echo $equipList[2][$i]['compSerialNum']; ?>"  value="<?php echo $equipList[2][$i]['compSerialNum']; ?>" rel="tooltip" title="Edit"><i class="icon_pencil"></i></a>
                                       <a class="btn btn-success" onclick = "viewEquipmentHistory('<?php echo $equipList[2][$i]['compSerialNum']; ?>', '<?php echo $equipList[2][$i]['compName']; ?>')" id="<?php echo $equipList[2][$i]['compSerialNum']; ?>"  value="<?php echo $equipList[2][$i]['compSerialNum']; ?>" rel="tooltip" title="View Equipment History"><i class=" icon_search-2" ></i></a>
                                     </div>
-                                    <input type="checkbox" class="check equipCheck" name="checkItem" id="">
+                                    <?php 
+                                      if(count($equipList[5]) > 0){
+                                        for($j = 0; $j < count($equipList[5]); $j++){
+                                          if($equipList[2][$i]['compSerialNum'] == $equipList[5][$j]['compSerialNum']){ ?>
+                                            <input type="checkbox" class="check equipCheck" name="checkItem" id="<?php echo $equipList[2][$i]['compSerialNum'].'checkbox';?>" onclick = "moveAll(this.id)">
+                                            <?php break;
+                                          }
+                                        }
+                                      }else{ ?>
+                                        <input type="checkbox" class="check equipCheck" name="checkItem" id="<?php echo $equipList[2][$i]['compSerialNum'].'checkbox';?>" onclick = "moveAll(this.id)">
+                                      <?php }
+                                    ?>
                                   </td>
                                 </tr>
                         <?php } 
@@ -188,23 +210,25 @@
                 <h2 class="modal-title">Edit Equipment</h2>
               </div>
               <div class="modal-body" >
+              <form>  
                <table align="center" width="60%">
                 <tr>
                    <td align="center">Serial No.</td><td><input type="text" class="input" id="editSerialNum" disabled></td>
                  </tr><tr>
-                   <td align="center">Name </td><td><input type="text" class="input" id="editName"></td>
+                   <td align="center">Name </td><td><input type="text" class="input" id="editName" required autofocus="true"></td>
                  </tr><tr>
-                   <td align="center">Price </td><td><input type="text" onkeypress="return isNumberKey(event)" class="input" id="editPrice"></td>
+                   <td align="center">Price </td><td><input type="text" onkeypress="return isNumberKey(event)" class="input" id="editPrice" required autofocus="true"></td>
                  </tr>
               </table>
-              </div>
               <div class="modal-footer">
-                <button type="button" id="editSaveBtn" class="btn btn-success btn-lg modalBtn" >Save Changes</button>
+                <button type="submit" id="editSaveBtn" class="btn btn-success btn-lg modalBtn" >Save Changes</button>
                  <button type="button" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Close</button>
               </div>
+            </form>
             </div>
           </div>
         </div>
+      </div>
 
         <!-- View Equipment History-->
        <div id="vehModal" class="modal fade" role="dialog">
@@ -216,13 +240,18 @@
               </div>
               <div class="modal-body" >
               <br>
+               <div style="height: 20em; overflow-y: auto">
                <table align="center" class="table" width="80%">
-                  <th>Date</th>
-                  <th>Detail</th>
+                  <thead>
+                    <th>Date</th>
+                    <th>Detail</th>
+                  </thead>
                   <tbody id="equipmentHistory">
                     <tr><td><span id="loadSpinner"><i class="fa fa-spinner fa-spin fa-5x fa-fw"></i></span></td></tr>
-                  </tbody>                            
+                  </tbody> 
+                                       
               </table>
+              </div>    
               </div>
               <div class="modal-footer">                
                  <button type="button" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Close</button>
@@ -243,7 +272,7 @@
               <form>
                <table align="center" width="60%">
                 <tr>
-                   <td align="center">ID number </td><td><input type="number" onmouseup = "checkIDnumber(this.value)" onkeyup = "checkIDnumber(this.value)" class="input" id='borrowerID' required autofocus="true"></td> <td><i class="idNumCheck" aria-hidden="true"></i></td>
+                   <td align="center">ID number </td><td><input type="text" onkeypress="return isNumberKey(event)" onmouseup = "checkIDnumber(this.value)" onkeyup = "checkIDnumber(this.value)" class="input" id='borrowerID' required autofocus="true"></td> <td><i class="idNumCheck" aria-hidden="true"></i></td>
                  </tr>
                   <tr><td></td><td><span class="idNumValidate"></span></td></tr>
                  <tr>
@@ -312,7 +341,7 @@
               <div class="modal-body" >
                <table align="center" width="60%">
                 <tr>
-                   <td align="center">ID number</td><td><input type="number" class="input" id="returnerID"></td>
+                   <td align="center">ID number</td><td><input type="text" onkeypress="return isNumberKey(event)" class="input" id="returnerID"></td>
                    <td><i class="idNumCheck" aria-hidden="true"></i></td>
                    <tr><td></td><td><span class="idNumValidate"></span></td></tr>
                  </tr><tr>
@@ -353,7 +382,7 @@
               <form>
                <table align="center" width="60%">
                 <tr>
-                   <td align="center">ID number </td><td><input type="number" onmouseup = "checkIDnumber(this.value)" onkeyup = "checkIDnumber(this.value)" class="input" id='damagerID' required autofocus="true"></td> <td><i class="idNumCheck" aria-hidden="true"></i></td>
+                   <td align="center">ID number </td><td><input type="text" onkeypress="return isNumberKey(event)" onmouseup = "checkIDnumber(this.value)" onkeyup = "checkIDnumber(this.value)" class="input" id='damagerID' required autofocus="true"></td> <td><i class="idNumCheck" aria-hidden="true"></i></td>
                  </tr>
                  <tr><td></td><td><span class="idNumValidate"></span></td></tr>
                  

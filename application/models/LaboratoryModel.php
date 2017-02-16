@@ -37,9 +37,14 @@ class LaboratoryModel extends CI_Model {
     public function storeLog(){
         $return = array();
         foreach ($_POST['equipment'] as $equipment) {
+            $this->db->select('labName');
+            $this->db->where('labID', $_POST['labID']);
+            $query = $this->db->get('laboratory');
+            $lab = $query->result()[0]->labName;
+
             $data = array(
                 'studentID' => $_POST['studentID'],
-                'labID' => $_POST['labID'],
+                'labID' => $lab,
                 'serialNum' => $equipment,
                 'action' => $_POST['action']
             );
