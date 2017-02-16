@@ -387,11 +387,11 @@
                  <tr><td></td><td><span class="idNumValidate"></span></td></tr>
                  
                  <tr><br>
-                   <td align="center">Name </td><td><input type="text" onkeyup = "validate(this, event)" class="input" id='damagerName' required autofocus="true"></td><td><i class="nameCheck" aria-hidden="true"></i></td>
+                   <td align="center">Name </td><td><input type="text" onkeyup = "validate(this, event)" class="input" id='damagerName' required  maxlength="35" autofocus="true"></td><td><i class="nameCheck" aria-hidden="true"></i></td>
                  </tr>
                  <tr><td></td><td><span class="nameValidate"></span></td></tr>
                  <tr>
-                   <td align="center">Teacher </td><td><input type="text" onkeyup = "validate(this, event)" class="input" id='damagerTeacher' required autofocus="true"></td>
+                   <td align="center">Teacher </td><td><input type="text" onkeyup = "validate(this, event)" class="input" id='damagerTeacher' required  maxlength="35" autofocus="true"></td>
                    <td><i class="teacherCheck" aria-hidden="true"></i></td>
                  </tr>
                  <tr><td></td><td><span class="teacherValidate"></span></td></tr>
