@@ -1053,10 +1053,10 @@
 				}else{
 					alert('Choose equipment(s)...');
 				}
-			});				
+			});		
+			//END Repair Equipment Module	
 		});
-		//END Repair Equipment Module
-
+		
 		// (added by JV)
 		var totalPrice = 0;
 

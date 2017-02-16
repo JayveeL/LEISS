@@ -284,85 +284,101 @@ class EquipmentModel extends CI_Model {
         return $result;
     }
 
-    public function getAllItems(){
+    public function getAllItems($months = null){
         $total = 0;
 
-        $this->db->select('count(*) as "totalEqp"');
-        $query = $this->db->get('equipment');
-        $total += intval($query->result()[0]->totalEqp);
+        for($i = 0; $i < count($months); $i++){
+            $this->db->select('count(*) as "totalEqp"');
+            $this->db->where('DATE_FORMAT(dateAdded,"%M") LIKE "%'.$months[$i].'%" OR DATE_FORMAT(dateAdded,"%Y") LIKE "%'.$months[$i].'%"');
+            $query = $this->db->get('equipment');
+            $total += intval($query->result()[0]->totalEqp);
 
-        $this->db->select('count(*) as "totalComp"');
-        $query = $this->db->get('component');
-        $total += intval($query->result()[0]->totalComp);
+            $this->db->select('count(*) as "totalComp"');
+            $this->db->where('DATE_FORMAT(dateAdded,"%M") LIKE "%'.$months[$i].'%" OR DATE_FORMAT(dateAdded,"%Y") LIKE "%'.$months[$i].'%"');
+            $query = $this->db->get('component');
+            $total += intval($query->result()[0]->totalComp);
+        }
+        return $total;
+    }
+
+    public function getAllLabItems($lab = null, $months = null){
+        $total = 0;
+
+        for($i = 0; $i < count($months); $i++){
+            $this->db->select('count(*) as "totalEqp"');
+            $this->db->where('labID = "'.$lab.'" and (DATE_FORMAT(dateAdded,"%M") LIKE "%'.$months[$i].'%" OR DATE_FORMAT(dateAdded,"%Y") LIKE "%'.$months[$i].'%")');
+            $query = $this->db->get('equipment');
+            $total += intval($query->result()[0]->totalEqp);
+
+            $this->db->select('count(*) as "totalComp"');
+            $this->db->where('labID = "'.$lab.'" and (DATE_FORMAT(dateAdded,"%M") LIKE "%'.$months[$i].'%" OR DATE_FORMAT(dateAdded,"%Y") LIKE "%'.$months[$i].'%")');
+            $query = $this->db->get('component');
+            $total += intval($query->result()[0]->totalComp);
+        }
 
         return $total;
     }
 
-    public function getAllLabItems($lab = null){
-        $total = 0;
-
-        $this->db->select('count(*) as "totalEqp"');
-        $this->db->where('labID', $lab);
-        $query = $this->db->get('equipment');
-        $total += intval($query->result()[0]->totalEqp);
-
-        $this->db->select('count(*) as "totalComp"');
-        $this->db->where('labID', $lab);
-        $query = $this->db->get('component');
-        $total += intval($query->result()[0]->totalComp);
-
-        return $total;
-    }
-
-    public function getLogs(){
+    public function getLogs($months = null){
         $data = 0;
 
-        $this->db->select('count("dListID") as "damagedItems"');
-        $query = $this->db->get('damaged_list');
-        if ($query->num_rows() > 0){
-            $data += intval($query->result()[0]->damagedItems);
+        for($i = 0; $i < count($months); $i++){
+            $this->db->select('count("dListID") as "damagedItems"');
+            $this->db->where('DATE_FORMAT(dateReported,"%M") LIKE "%'.$months[$i].'%" OR DATE_FORMAT(dateReported,"%Y") LIKE "%'.$months[$i].'%"');
+            $query = $this->db->get('damaged_list');
+            if ($query->num_rows() > 0){
+                $data += intval($query->result()[0]->damagedItems);
+            }
         }
         return $data;
     }
 
-    public function getLogsPerLab($lab= null){
+    public function getLogsPerLab($lab= null, $months = null){
         $data = 0;
 
-        $this->db->select('count("dListID") as "damagedItems"');
-        $this->db->where('labID', $lab);
-        $query = $this->db->get('damaged_list');
-        if ($query->num_rows() > 0){
-            $data += intval($query->result()[0]->damagedItems);
+        for($i = 0; $i < count($months); $i++){
+            $this->db->select('count("dListID") as "damagedItems"');
+            $this->db->where('labID = "'.$lab.'" and (DATE_FORMAT(dateReported,"%M") LIKE "%'.$months[$i].'%" OR DATE_FORMAT(dateReported,"%Y") LIKE "%'.$months[$i].'%")');
+            $query = $this->db->get('damaged_list');
+            if ($query->num_rows() > 0){
+                $data += intval($query->result()[0]->damagedItems);
+            }
         }
         return $data;
     }
 
-    public function getmovedItems(){
+    public function getmovedItems($months = null){
         $total = 0;
 
-        $this->db->select('SUM(move) as "items"');
-        $query = $this->db->get('equipment');
-        $total += intval($query->result()[0]->items);
+        for($i = 0; $i < count($months); $i++){
+            $this->db->select('SUM(move) as "items"');
+            $this->db->where('DATE_FORMAT(dateAdded,"%M") LIKE "%'.$months[$i].'%" OR DATE_FORMAT(dateAdded,"%Y") LIKE "%'.$months[$i].'%"');
+            $query = $this->db->get('equipment');
+            $total += intval($query->result()[0]->items);
 
-        $this->db->select('SUM(move) as "items"');
-        $query = $this->db->get('component');
-        $total += intval($query->result()[0]->items);
+            $this->db->select('SUM(move) as "items"');
+            $this->db->where('DATE_FORMAT(dateAdded,"%M") LIKE "%'.$months[$i].'%" OR DATE_FORMAT(dateAdded,"%Y") LIKE "%'.$months[$i].'%"');
+            $query = $this->db->get('component');
+            $total += intval($query->result()[0]->items);
+        }
 
         return $total;
     }
 
-    public function getmovedItemsPerLab($lab = null){
+    public function getmovedItemsPerLab($lab = null, $months = null){
         $total = 0;
 
-        $this->db->select('SUM(move) as "items"');
-        $this->db->where('labID', $lab);
-        $query = $this->db->get('equipment');
-        $total += intval($query->result()[0]->items);
+        for($i = 0; $i < count($months); $i++){
+            $this->db->select('SUM(move) as "items"');
+            $this->db->where('labID = "'.$lab.'" and (DATE_FORMAT(dateAdded,"%M") LIKE "%'.$months[$i].'%" OR DATE_FORMAT(dateAdded,"%Y") LIKE "%'.$months[$i].'%")');
+            $query = $this->db->get('equipment');
+            $total += intval($query->result()[0]->items);
 
-        $this->db->select('SUM(move) as "items"');
-        $this->db->where('labID', $lab);
-        $query = $this->db->get('component');
-        $total += intval($query->result()[0]->items);
+            $this->db->select('SUM(move) as "items"');
+            $this->db->where('labID = "'.$lab.'" and (DATE_FORMAT(dateAdded,"%M") LIKE "%'.$months[$i].'%" OR DATE_FORMAT(dateAdded,"%Y") LIKE "%'.$months[$i].'%")');
+            $query = $this->db->get('component');
+            $total += intval($query->result()[0]->items);
+        }
 
         return $total;
     }
@@ -389,33 +405,52 @@ class EquipmentModel extends CI_Model {
         return $return;
     }
 
-    public function getRecentAction(){
-        $this->db->select('l.*, e.eqpName, c.compName, S.studentID, S.studentName');
-        $this->db->from('log l');
-        $this->db->join('student S', 'S.studentID = l.studentID', 'left');
-        // $this->db->join('laboratory lab', 'lab.labID = l.labID', 'left');
-        $this->db->join('equipment e', 'e.eqpSerialNum = l.serialNum', 'left');
-        $this->db->join('component c', 'c.compSerialNum = l.serialNum', 'left');
-        $this->db->order_by('l.date', 'DESC');
+    public function getRecentAction($months = null){
+        $result = array();
+        for($i = 0; $i < count($months); $i++){
+            $this->db->select('l.*, e.eqpName, c.compName, S.studentID, S.studentName');
+            $this->db->from('log l');
+            $this->db->join('student S', 'S.studentID = l.studentID', 'left');
+            // $this->db->join('laboratory lab', 'lab.labID = l.labID', 'left');
+            $this->db->join('equipment e', 'e.eqpSerialNum = l.serialNum', 'left');
+            $this->db->join('component c', 'c.compSerialNum = l.serialNum', 'left');
+            $this->db->where('DATE_FORMAT(l.date,"%M") LIKE "%'.$months[$i].'%" OR DATE_FORMAT(l.date,"%Y") LIKE "%'.$months[$i].'%"');
+            $this->db->order_by('l.date', 'DESC');
         // $this->db->where('l.serialNum', $eqpSerial);
-        return $this->db->get()->result_array();
+            $data = $this->db->get()->result_array();
+
+            foreach ($data as $key) {
+                $result[] = $key;
+            }
+        }
+        // print_r($result);
+         return $result;
     }
 
-    public function getRecentActionPerLab($lab = null){
-        $this->db->select('laboratory.labName as "labName"');
-        $this->db->where('laboratory.labID', $lab);
-        $query = $this->db->get('laboratory');
-        $labName = $query->result()[0]->labName;
+    public function getRecentActionPerLab($lab = null, $months = null){
+        $result = array();
+        for($i = 0; $i < count($months); $i++){
+            $this->db->select('laboratory.labName as "labName"');
+            $this->db->where('laboratory.labID', $lab);
+            $query = $this->db->get('laboratory');
+            $labName = $query->result()[0]->labName;
 
-        $this->db->select('l.*, e.eqpName, c.compName, S.studentID, S.studentName');
-        $this->db->from('log l');   
-        $this->db->join('student S', 'S.studentID = l.studentID', 'left');
-        // $this->db->join('laboratory lab', 'lab.labID = l.labID', 'left');
-        $this->db->join('equipment e', 'e.eqpSerialNum = l.serialNum', 'left');
-         $this->db->join('component c', 'c.compSerialNum = l.serialNum', 'left');
-        $this->db->where('l.labID', $labName);
-        $this->db->order_by('l.date', 'DESC');
-        return $this->db->get()->result_array();
+            $this->db->select('l.*, e.eqpName, c.compName, S.studentID, S.studentName');
+            $this->db->from('log l');   
+            $this->db->join('student S', 'S.studentID = l.studentID', 'left');
+            // $this->db->join('laboratory lab', 'lab.labID = l.labID', 'left');
+            $this->db->join('equipment e', 'e.eqpSerialNum = l.serialNum', 'left');
+             $this->db->join('component c', 'c.compSerialNum = l.serialNum', 'left');
+            $this->db->where('l.labID = "'.$labName.'" and (DATE_FORMAT(l.date,"%M") LIKE "%'.$months[$i].'%" OR DATE_FORMAT(l.date,"%Y") LIKE "%'.$months[$i].'%")');
+            $this->db->order_by('l.date', 'DESC');
+
+            $data = $this->db->get()->result_array();
+
+            foreach ($data as $key) {
+                $result[] = $key;
+            }
+        }
+        return $result;
     }
     // end
 }

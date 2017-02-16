@@ -18,14 +18,17 @@ class BorrowListModel extends CI_Model {
     public function addBorrowedEquipments(){
         $return = array();
         foreach ($_POST['equipment'] as $equipment) {
+            $this->compSerialNum = NULL;
+            $this->eqpSerialNum = NULL;
+
             $this->db->select('eqpSerialNum');
             $this->db->from('equipment');
             $this->db->where('eqpSerialNum', $equipment);
             $result = $this->db->get()->result_array();
             if(count($result) == 0){
-             $this->compSerialNum = $equipment;
+                $this->compSerialNum = $equipment;
             }else{
-             $this->eqpSerialNum = $equipment;
+                $this->eqpSerialNum = $equipment;
             }
            $this->borrowerIDNum = $_POST['borrowerID']; 
            $this->labID = $_POST['labID'];
@@ -61,7 +64,7 @@ class BorrowListModel extends CI_Model {
         $result = array();
         foreach ($_POST['equipment'] as $equipment) {
             $this->db->from('borrowed_list');
-            $where = 'eqpSerialNum = '.$equipment.' OR compSerialNum = '.$equipment.'';
+            $where = 'eqpSerialNum = "'.$equipment.'" OR compSerialNum = "'.$equipment.'"';
             $this->db->where($where);
             $result[] = $this->db->delete();    
         }
@@ -72,7 +75,7 @@ class BorrowListModel extends CI_Model {
         $data = array();
         for($i = 0; $i < count($months); $i++){
             $this->db->select('count("bListID") as "totalItems"');
-            $this->db->where('DATE_FORMAT(borrowedDate,"%M") LIKE "%'.$months[$i].'%"');
+            $this->db->where('DATE_FORMAT(borrowedDate,"%M") LIKE "%'.$months[$i].'%" OR DATE_FORMAT(borrowedDate,"%Y") LIKE "%'.$months[$i].'%"');
             $this->db->group_by('DATE_FORMAT(borrowedDate,"%M")');
             $query = $this->db->get('borrowed_list');
             if ($query->num_rows() > 0){
@@ -88,7 +91,7 @@ class BorrowListModel extends CI_Model {
         $data = array();
         for($i = 0; $i < count($months); $i++){
             $this->db->select('count("bListID") as "totalItems"');
-            $this->db->where('DATE_FORMAT(borrowedDate,"%M") LIKE "%'.$months[$i].'%" AND labID = '.$lab);
+            $this->db->where('(DATE_FORMAT(borrowedDate,"%M") LIKE "%'.$months[$i].'%" OR DATE_FORMAT(borrowedDate,"%Y") LIKE "%'.$months[$i].'%") AND labID = '.$lab);
             $this->db->group_by('DATE_FORMAT(borrowedDate,"%M")');
             $query = $this->db->get('borrowed_list');
             if ($query->num_rows() > 0){
