@@ -88,14 +88,19 @@
                                       <a class="btn btn-success" onclick = "viewEquipmentHistory('<?php echo $equipList[1][$i]['eqpSerialNum']; ?>', '<?php echo $equipList[1][$i]['eqpName']; ?>')" id="<?php echo $equipList[1][$i]['eqpSerialNum']; ?>"  value="<?php echo $equipList[1][$i]['eqpSerialNum']; ?>" rel="tooltip" title="View Equipment History"><i class=" icon_search-2" ></i></a>
                                     </div>
                                     <?php 
+                                      // print_r($equipList[4]);
+                                      $show = false;
                                       if(count($equipList[4]) > 0){
                                         for($j = 0; $j < count($equipList[4]); $j++){
-                                          if($equipList[1][$i]['eqpSerialNum'] == $equipList[4][$j]['eqpSerialNum']){ ?>
-                                            <input type="checkbox" class="check equipCheck" name="checkItem" id="<?php echo $equipList[1][$i]['eqpSerialNum'].'checkbox';?>" onclick = "moveAll(this.id)">
+                                          if($equipList[1][$i]['eqpSerialNum'] == $equipList[4][$j]['eqpSerialNum']){
+                                              $show = true; ?>
                                             <?php break;
-                                          }
+                                          }else{ ?>
+                                         <?php }
                                         }
-                                      }else{ ?>
+                                        if($show == false){?>
+                                            <input type="checkbox" class="check equipCheck" name="checkItem" id="<?php echo $equipList[1][$i]['eqpSerialNum'].'checkbox';?>" onclick = "moveAll(this.id)">
+                                      <?php }}else{ ?>
                                         <input type="checkbox" class="check equipCheck" name="checkItem" id="<?php echo $equipList[1][$i]['eqpSerialNum'].'checkbox';?>" onclick = "moveAll(this.id)">
                                       <?php }
                                     ?>
@@ -115,14 +120,20 @@
                                       <a class="btn btn-success" onclick = "viewEquipmentHistory('<?php echo $equipList[2][$i]['compSerialNum']; ?>', '<?php echo $equipList[2][$i]['compName']; ?>')" id="<?php echo $equipList[2][$i]['compSerialNum']; ?>"  value="<?php echo $equipList[2][$i]['compSerialNum']; ?>" rel="tooltip" title="View Equipment History"><i class=" icon_search-2" ></i></a>
                                     </div>
                                     <?php 
+                                       // print_r($equipList[5]);
+                                       $show = false;
                                       if(count($equipList[5]) > 0){
                                         for($j = 0; $j < count($equipList[5]); $j++){
-                                          if($equipList[2][$i]['compSerialNum'] == $equipList[5][$j]['compSerialNum']){ ?>
-                                            <input type="checkbox" class="check equipCheck" name="checkItem" id="<?php echo $equipList[2][$i]['compSerialNum'].'checkbox';?>" onclick = "moveAll(this.id)">
+                                          // print_r($equipList[5][$j]['compSerialNum']);
+                                          if($equipList[2][$i]['compSerialNum'] == $equipList[5][$j]['compSerialNum']){ 
+                                            $show = true; ?>
                                             <?php break;
-                                          }
+                                          }else{ ?>
+                                         <?php }
                                         }
-                                      }else{ ?>
+                                        if($show == false){?>
+                                            <input type="checkbox" class="check equipCheck" name="checkItem" id="<?php echo $equipList[2][$i]['compSerialNum'].'checkbox';?>" onclick = "moveAll(this.id)">
+                                      <?php }}else{ ?>
                                         <input type="checkbox" class="check equipCheck" name="checkItem" id="<?php echo $equipList[2][$i]['compSerialNum'].'checkbox';?>" onclick = "moveAll(this.id)">
                                       <?php }
                                     ?>

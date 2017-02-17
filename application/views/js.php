@@ -150,7 +150,7 @@
 	       			if(!$("#labName").val()){
 	       				alert("You may have left the name empty or the laboratory already exists.");
 	       			}
-		       		if(validLab==true && $("#labName").val() != ''){
+		       		else if(validLab==true && $("#labName").val() != ''){
 		       			// alert("bebe");
 		       			$.ajax({
 							url: "<?php echo site_url('Laboratory/addLab');?>",
@@ -164,7 +164,7 @@
 						alert("Laboratory successfully added.");
 						location.reload();
 		       		}
-		       		else{
+		       		else if($("#labName").val() != ''){
 		       			alert("You have left the laboratory desciption empty. Do you wish to proceed?");
 		       		}
 		       		$("#labName").empty();
@@ -1122,10 +1122,10 @@
 		function checkDamage(thisValue, thisID){
 			console.log('checkDamage');
 			var getValue = thisValue.value.split("-");
-			var id = thisID+"id";
+			var id = getValue[0]+"id";
 			console.log(getValue[0]+" "+getValue[0]);
 			if($("#damagedEquipList #"+getValue[0]).is(':checked')){
-				damagedEquipmentsArray.push(thisID);
+				damagedEquipmentsArray.push(getValue[0]);
 				var newDamage = "<tr id ="+id+" class='damagedListClass'>";
 					newDamage +="<td style='width: 100%'>"+getValue[0]+" "+getValue[1]+"</td>";
 					newDamage +="<td>"+getValue[2]+"</td>";
@@ -1135,7 +1135,7 @@
 				$("#damagedEquipments").append(newDamage);
 			}
 			else{
-				damagedEquipmentsArray.splice(damagedEquipmentsArray.indexOf(thisID), 1);
+				damagedEquipmentsArray.splice(damagedEquipmentsArray.indexOf(getValue[0]), 1);
 				if($("#damagedEquipList .damageItem").is(':checked')){
 					$("#damagedEquipList .damageItem").prop('checked', false);
 				}
@@ -1150,7 +1150,7 @@
 			var id = thisID+"id";
 			console.log(getValue[0]+" "+getValue[0]);
 			if($("#borrowedEquipList #"+getValue[0]).is(':checked')){
-				borrowedEquipmentsArray.push(thisID);
+				borrowedEquipmentsArray.push(getValue[0]);
 				console.log(borrowedEquipmentsArray);
 				var newDamage = "<tr id ="+id+" class='borrowedListClass'>";
 					newDamage +="<td style='width: 100%'>"+getValue[0]+" "+getValue[1]+"</td>";
@@ -1159,8 +1159,8 @@
 				$("#borrowedEquipments").append(newDamage);
 			}
 			else{
-				console.log(borrowedEquipmentsArray.indexOf(thisID));
-				borrowedEquipmentsArray.splice(borrowedEquipmentsArray.indexOf(thisID), 1);
+				console.log(borrowedEquipmentsArray.indexOf(getValue[0]));
+				borrowedEquipmentsArray.splice(borrowedEquipmentsArray.indexOf(getValue[0]), 1);
 				console.log(borrowedEquipmentsArray);
 				if($("#borrowedEquipList .returnItem").is(':checked')){
 					$("#borrowedEquipList .returnItem").prop('checked', false);

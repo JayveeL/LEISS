@@ -80,14 +80,15 @@ class EquipmentModel extends CI_Model {
         $this->db->where('labID != '.$labID);
         $result[] = $this->db->get()->result_array();
 
-        $this->db->select('eqpSerialNum');
-        $this->db->from('equipment');
-        $this->db->where('labID='.$labID.' and eqpSerialNum NOT IN (SELECT eqpSerialNum FROM borrowed_list where eqpSerialNum IS NOT NULL) and eqpSerialNum NOT IN (SELECT eqpSerialNum FROM damaged_list where eqpSerialNum IS NOT NULL)');
+        $this->db->select('eqp.eqpSerialNum');
+        $this->db->from('equipment eqp');
+        $this->db->where('eqp.labID='.$labID.' and (eqpSerialNum IN (SELECT eqpSerialNum FROM borrowed_list where compSerialNum IS NULL) OR eqpSerialNum IN (SELECT eqpSerialNum FROM damaged_list where compSerialNum IS NULL))');
         $result[] = $this->db->get()->result_array();
 
-        $this->db->select('compSerialNum');
-        $this->db->from('component');
-        $this->db->where('labID='.$labID.' and (compSerialNum NOT IN (SELECT compSerialNum FROM borrowed_list where compSerialNum IS NOT NULL) and compSerialNum NOT IN (SELECT compSerialNum FROM damaged_list where compSerialNum IS NOT NULL))');
+        $this->db->select('comp.compSerialNum');
+        $this->db->from('component comp');
+        // $this->db->where('compSerialNum IN (SELECT compSerialNum FROM borrowed_list where labID = "'.$labID.'" and compSerialNum IS NOT NULL) OR compSerialNum IN (SELECT compSerialNum FROM damaged_list where labID = "'.$labID.'" and compSerialNum IS NOT NULL)');
+        $this->db->where('comp.labID='.$labID.' and (compSerialNum IN (SELECT compSerialNum FROM borrowed_list where eqpSerialNum IS NULL) OR compSerialNum IN (SELECT compSerialNum FROM damaged_list where eqpSerialNum IS NULL))');
         $result[] = $this->db->get()->result_array();
 
         return $result;
@@ -215,7 +216,7 @@ class EquipmentModel extends CI_Model {
         
         $result[] = $this->db->get()->result_array();
 
-        $where2 = 'labID='.$labID.' and (compSerialNum NOT IN (SELECT compSerialNum FROM borrowed_list where compSerialNum IS NOT NULL) and compSerialNum NOT IN (SELECT compSerialNum FROM damaged_list where compSerialNum IS NOT NULL))';
+        $where2 = 'labID='.$labID.' and compSerialNum NOT IN (SELECT compSerialNum FROM borrowed_list where compSerialNum IS NOT NULL) and compSerialNum NOT IN (SELECT compSerialNum FROM damaged_list where compSerialNum IS NOT NULL)';
         $this->db->select('compSerialNum as "eqpSerialNum", compName as "eqpName", price');
         $this->db->from('component');
         $this->db->where($where2);

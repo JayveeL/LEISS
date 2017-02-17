@@ -17,6 +17,9 @@ class DamageListModel extends CI_Model {
     public function addDamageEquipments(){
         $return = array();
         foreach ($_POST['equipment'] as $equipment) {
+          $this->compSerialNum = NULL;
+          $this->eqpSerialNum = NULL;
+
           $this->db->select('eqpSerialNum');
           $this->db->from('equipment');
           $this->db->where('eqpSerialNum', $equipment);
@@ -54,7 +57,7 @@ class DamageListModel extends CI_Model {
         $result = array();
         foreach ($_POST['equipment'] as $equipment) {
             $this->db->from('damaged_list');
-            $where = 'eqpSerialNum = '.$equipment.' OR compSerialNum = '.$equipment.'';
+            $where = 'eqpSerialNum = "'.$equipment.'" OR compSerialNum = "'.$equipment.'"';
             $this->db->where($where);
             $result[] = $this->db->delete();    
         }
