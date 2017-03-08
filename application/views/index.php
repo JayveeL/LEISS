@@ -46,11 +46,7 @@
                         <i class="icon_grid-3x3"></i>
                         <span style="cursor: pointer;">All</span>                      
                   </a></li> 
-                  <br>
-                  <div style="overflow-y: scroll; height: 28em">
-                      <table id="labList" width="100%"></table>
-                  </div>
-                  <br>
+                  <table id="labList" width="100%"></table>
                   <li id="reports"><a>
                         <i class="icon_piechart"></i>
                         <span style="cursor: pointer;">Reports</span>  
