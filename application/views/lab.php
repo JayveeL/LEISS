@@ -36,7 +36,9 @@
 				<div class="col-lg-12">
           <input type="hidden" value="<?php echo $equipList[0][0]['labID']; ?>" id = "currLab">
 					 <h3 class="page-header" id="pageHeader"><i class="icon_menu-square_alt2"></i><?php echo $equipList[0][0]['labName']; ?>
-            <span style="font-size: 15px; text-align: center"><?php echo $equipList[0][0]['description']; ?></span>
+           <br>
+           <span style="font-size: 15px; text-align: center"><?php echo nl2br($equipList[0][0]['description']); ?></span>
+            <br><br>
           <a class="btn btn-danger btn-lg pull-right" data-toggle="modal" data-target="#deleteModal" style="margin-top: -1%">Delete Laboratory</a></h3>
         </div>
         </div>
