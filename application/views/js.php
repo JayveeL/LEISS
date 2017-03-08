@@ -111,8 +111,8 @@
 			// Add Laboratory Module
 			var validLab=false;
 			$("#labName").keyup(function(){
-				var check = /^[a-zA-Z]+$/.test($(this).val().trim());
-				if($(this).val().length > 0 && check == true){
+				var check = /^[0-9a-zA-Z]+$/;
+				if($(this).val().length > 0 && $(this).val().match(check)){
 					if(labNames.indexOf($(this).val().toLowerCase()) >= 0){
 						validLab=true;
 						console.log("Laboratory name already exists")
@@ -121,7 +121,7 @@
 					}else{
 						$("#labNameValidate").html("");
 					}
-	        	}else if(check == false && $(this).val().length > 0){
+	        	}else if(!$(this).val().match(check) && $(this).val().length > 0){
 	        		$("#labNameValidate").html("Laboratory name contains invalid characters.");
 	        	}else if($(this).val().length == 0){
 	        		$("#labNameValidate").html("Laboratory name cannot be empty.");
