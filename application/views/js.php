@@ -1501,40 +1501,52 @@
 
 
 	    function validate(validateThis, event){
-	    	if(event.keyCode != 9){
-	    		var check =  /^[a-zA-Z ]*$/.test(validateThis.value);
-		    	// console.log(check);
-		    	// console.log(validateThis.value);
-		    	// console.log(validateThis.value == " ")
-		    	if(false == check || validateThis.value == " "){
-		    		switch(validateThis.id){
-		    			case "borrowerName":
-		    			case "damagerName": $(".nameValidate").text('Invalid character(s).');
-		    			$('.nameCheck').removeClass("fa fa-check"); break;
+	    	console.log(validateThis.value.length)
+	    	if(validateThis.value.length == 0){
+	    		switch(validateThis.id){
+	    			case "borrowerName":
+	    			case "damagerName": $(".nameValidate").text('');
+	    			(validateThis.value != '')? $('.nameCheck').addClass("fa fa-check"):  $('.nameCheck').removeClass("fa fa-check"); break;
+	    			case "borrowerTeacher": 
+	    			case "damagerTeacher": $(".teacherValidate").text('');
+	    			(validateThis.value != '')? $('.teacherCheck').addClass("fa fa-check"): $('.teacherCheck').removeClass("fa fa-check"); break;
+					case "incharge": $(".inchargeValidate").text('');
+	    			(validateThis.value != '')? $('.inchargeCheck').addClass("fa fa-check"): $('.inchargeCheck').removeClass("fa fa-check"); break;
+	    		}
+	    	}else{
+	    		if(event.keyCode != 9){
+		    		var check =  /^[a-zA-Z ]*$/.test(validateThis.value);
+			    	// console.log(check);
+			    	// console.log(validateThis.value);
+			    	// console.log(validateThis.value == " ")
+			    	if(false == check || !validateThis.value.replace(/\s/g, '').length){
+			    		switch(validateThis.id){
+			    			case "borrowerName":
+			    			case "damagerName": $(".nameValidate").text('Invalid character(s).');
+			    			$('.nameCheck').removeClass("fa fa-check"); break;
 
-		    			case "borrowerTeacher": 
-		    			case "damagerTeacher": $(".teacherValidate").text('Invalid character(s).');
-		    			$('.teacherCheck').removeClass("fa fa-check"); break;
+			    			case "borrowerTeacher": 
+			    			case "damagerTeacher": $(".teacherValidate").text('Invalid character(s).');
+			    			$('.teacherCheck').removeClass("fa fa-check"); break;
 
-		    			case "incharge": $(".inchargeValidate").text('Invalid character(s).');
-		    			$('.inchargeCheck').removeClass("fa fa-check"); break;
-		    		}
-		    	}else{
-		    		// console.log('value', validateThis.value);
-		    		switch(validateThis.id){
-		    			case "borrowerName":
-		    			case "damagerName": $(".nameValidate").text('');
-		    			(validateThis.value != '')? $('.nameCheck').addClass("fa fa-check"):  $('.nameCheck').removeClass("fa fa-check"); break;
-		    			case "borrowerTeacher": 
-		    			case "damagerTeacher": $(".teacherValidate").text('');
-		    			(validateThis.value != '')? $('.teacherCheck').addClass("fa fa-check"): $('.teacherCheck').removeClass("fa fa-check"); break;
-
-
-		    			case "incharge": $(".inchargeValidate").text('');
-		    			(validateThis.value != '')? $('.inchargeCheck').addClass("fa fa-check"): $('.inchargeCheck').removeClass("fa fa-check"); break;
-		    		}
-		    	}
-		    }
+			    			case "incharge": $(".inchargeValidate").text('Invalid character(s).');
+			    			$('.inchargeCheck').removeClass("fa fa-check"); break;
+			    		}
+			    	}else{
+			    		// console.log('value', validateThis.value);
+			    		switch(validateThis.id){
+			    			case "borrowerName":
+			    			case "damagerName": $(".nameValidate").text('');
+			    			(validateThis.value != '')? $('.nameCheck').addClass("fa fa-check"):  $('.nameCheck').removeClass("fa fa-check"); break;
+			    			case "borrowerTeacher": 
+			    			case "damagerTeacher": $(".teacherValidate").text('');
+			    			(validateThis.value != '')? $('.teacherCheck').addClass("fa fa-check"): $('.teacherCheck').removeClass("fa fa-check"); break;
+							case "incharge": $(".inchargeValidate").text('');
+			    			(validateThis.value != '')? $('.inchargeCheck').addClass("fa fa-check"): $('.inchargeCheck').removeClass("fa fa-check"); break;
+			    		}
+			    	}
+		   		}
+	    	}
 		}
 
 		function thisLab(labID){
