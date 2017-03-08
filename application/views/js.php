@@ -150,7 +150,7 @@
 	       			if(!$("#labName").val()){
 	       				alert("You may have left the name empty or the laboratory already exists.");
 	       			}
-		       		else if(validLab==true && $("#labName").val() != ''){
+		       		else if($("#labNameValidate").html() == ""){
 		       			// alert("bebe");
 		       			$.ajax({
 							url: "<?php echo site_url('Laboratory/addLab');?>",
@@ -163,9 +163,6 @@
 						});
 						alert("Laboratory successfully added.");
 						location.reload();
-		       		}
-		       		else if($("#labName").val() != ''){
-		       			alert("You have left the laboratory desciption empty. Do you wish to proceed?");
 		       		}
 		       		$("#labName").empty();
 		       		$("#description").empty();
