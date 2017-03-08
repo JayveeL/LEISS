@@ -120,8 +120,8 @@
 			// Add Laboratory Module
 			var validLab=false;
 			$("#labName").keyup(function(){
-	        	// console.log($(this).val().length);
-	        	if($(this).val().length > 0){
+	        	var check = /^[a-zA-Z]+$/.test($(this).val().trim());
+	        	if($(this).val().length > 0 && check == true){
 	        		if(labNames.indexOf($(this).val().toLowerCase()) >= 0){
 	        			validLab=true;
 	        			console.log("Laboratory name already exists")
@@ -140,7 +140,9 @@
 	        		// 		$("#labNameValidate").html("");
 	        		// 	}	        			
 	        		// }
-	        	}else{
+	        	}else if(check == false && $(this).val().length > 0){
+	        		$("#labNameValidate").html("Laboratory name contains invalid characters.");
+	        	}else if($(this).val().length == 0){
 	        		$("#labNameValidate").html("Laboratory name cannot be empty.");
 	        	}
 	       	});
@@ -184,14 +186,17 @@
 		     });
 
 	        $("#eqpSerialNum").keyup(function(){
-	        	// console.log($(this).val().length);
+	        	// console.log(allEquips);
 	        	if($(this).val().length > 0){
 	        		if(allEquips.indexOf($(this).val().toLowerCase()) >= 0){
 	        			console.log('exists');
 	        			$("#serialNumValidate").html("Item already exists");
 	        		}else{
+	        			console.log('does not')
 	        			$("#serialNumValidate").html("");
 	        		}
+	        	}else{
+	        		$("#serialNumValidate").html("");
 	        	}
 	       	});
 
