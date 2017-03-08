@@ -263,6 +263,8 @@
 					var source = "<?php echo site_url('Index/loadIframe/lab/');?>";
 					var url = source+currentLab;
 					$("#frame").attr('src', url);
+				}else if($("#serialNumValidate").html() == "Item already exists"){
+					e.preventDefault();
 				}else{
 					// e.preventDefault();
 				}
