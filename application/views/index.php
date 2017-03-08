@@ -102,8 +102,8 @@
                    </tr><br><tr>
                      <td align="center">Name </td><td><input type="text" id="eqpName" name="eqpName" class="input" required autofocus="true"></td>
                    </tr><br><tr align="center">
-                     <td><input type="radio" name="item" id="equiptype" value="component"> Component</td>
-                     <td><input type="radio" name="item" id="equiptype" value="equipment" checked> Equipment</td>
+                     <td><input type="radio" name="item" id="component" value="component"> Component</td>
+                     <td><input type="radio" name="item" id="equipment" value="equipment" checked> Equipment</td>
                    </tr><br><tr>
                      <td align="center">Price </td><td><input type="text" onkeypress="return acceptDecimal(event)" id="eqpPrice" class="input" name="eqpPrice" required autofocus="true"></td>
                    </tr>

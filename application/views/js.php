@@ -258,12 +258,13 @@
 					$("#addEqpmnt").removeClass("in");
 					$(".modal-backdrop").remove();
 					$(".modal-backdrop").hide();
+					$("#addEqpmnt").find("input[value=equipment]").prop('checked', 'checked');
 					alert("Equipment Successfully Added!");
 					var source = "<?php echo site_url('Index/loadIframe/lab/');?>";
 					var url = source+currentLab;
 					$("#frame").attr('src', url);
 				}else{
-					e.preventDefault();
+					// e.preventDefault();
 				}
 			});
 			//END Add Equipment Module
@@ -1193,6 +1194,7 @@
 	         $("#editModal").find("input,textarea,select").val('');
 
 	         $("#addEqpmnt").find("input,textarea,select").val('');
+	         $("#addEqpmnt").find("input[value=equipment]").prop('checked', 'checked');
 
 	         // add lab modal reset
 	         $("#labName, #description").val('');
