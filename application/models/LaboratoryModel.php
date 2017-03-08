@@ -22,13 +22,13 @@ class LaboratoryModel extends CI_Model {
     }
 
     public function deleteLaboratory(){
-
-        return $this->db->delete('laboratory',array('labID' => $_POST['labID']));
+        $data = array('isDeleted' => 1);
+        return $this->db->where('labID', $_POST['labID'])->update('laboratory', $data);
     }
 
     public function getLaboratories(){
 
-        $list = $this->db->get('laboratory');
+        $list = $this->db->where('isDeleted', 0)->get('laboratory');
 
         return $list->result();
 

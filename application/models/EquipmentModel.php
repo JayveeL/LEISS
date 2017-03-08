@@ -107,6 +107,35 @@ class EquipmentModel extends CI_Model {
         return $result;
     }
 
+    public function checkLabData(){
+        $labID = $_POST['labID'];
+        $count = 0;
+
+        $this->db->where('labID', $labID);
+        $query = $this->db->get('equipment')->result_array();
+        if (intval(count($query)) > 0){
+            $count += intval(count($query));
+        }
+
+        $this->db->where('labID', $labID);
+        $query2 = $this->db->get('component')->result_array();
+        if (intval(count($query2)) > 0){
+            $count += intval(count($query2));
+        }
+        
+        if($count == 0){
+            return "canBeDeleted";
+        }else{
+            $this->db->where('labID', $labID);
+            $query3 = $this->db->get('damaged_list')->result_array();
+            if (intval(count($query3)) == $count){
+                return "canBeDeleted";
+            }else{
+                return "unableDelete";
+            }
+        }
+    }
+
     public function getEquipments(){
         $filter = $_POST['search'];
         $equipmentList = array();
@@ -144,8 +173,7 @@ class EquipmentModel extends CI_Model {
         foreach ($list as $key) {
             $equipmentList[] = $key['compSerialNum']." - ".$key['compName'];
         }
-
-
+        
         return $equipmentList;
     }
 

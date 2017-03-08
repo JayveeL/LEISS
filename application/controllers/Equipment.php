@@ -114,5 +114,12 @@ class Equipment extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode($result);	
 	}
+
+	public function checkLabData(){
+		$result = $this->EquipmentModel->checkLabData();
+
+		header('Content-Type: application/json');
+		echo json_encode($result);	
+	}
 	// end
 }

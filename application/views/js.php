@@ -84,13 +84,14 @@
 	        $("#deleteLab").click(function(){
 	        	console.log("labtodelete "+ $("#currLab").val() );
 	        	$.ajax({
-	        		url: "<?php echo site_url('Equipment/getEquipments');?>",
+	        		url: "<?php echo site_url('Equipment/checkLabData');?>",
 	        		type: 'POST',
 	        		data: {'search': 'allEquipments',
 	        				'labID': $("#currLab").val() },
 	        		dataType: 'json',
 	        		success: function(data){
-	        			if(data.length==0){
+	        			console.log(data)
+	        			if(data == 'canBeDeleted'){
 	        				$.ajax({
 	        					url: "<?php echo site_url('Laboratory/deleteLab');?>",
 	        					type: 'POST',
@@ -99,6 +100,7 @@
 	        						console.log("Laboratory "+$("#currLab").val()+" Successfully Deleted");					
 	        					}
 	        				});
+	        				alert("Successfully Deleted Laboratory");	
 	        				window.top.location.href = "http://localhost/liss/"; 
 	        			}else{
 	        				alert("The laboratory cannot be deleted. For a laboratory to be deleted, make sure it contains no equipments.");
