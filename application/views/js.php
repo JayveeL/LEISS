@@ -1519,8 +1519,10 @@
 	    function validate(validateThis, event){
 	    	if(event.keyCode != 9){
 	    		var check =  /^[a-zA-Z ]*$/.test(validateThis.value);
-		    	console.log(check);
-		    	if(false == check){
+		    	// console.log(check);
+		    	// console.log(validateThis.value);
+		    	// console.log(validateThis.value == " ")
+		    	if(false == check || validateThis.value == " "){
 		    		switch(validateThis.id){
 	  					case "borrowerName":
 	  					case "damagerName": $(".nameValidate").text('Invalid character(s).');
@@ -1534,7 +1536,7 @@
 	  									 $('.inchargeCheck').removeClass("fa fa-check"); break;
 		  			}
 		    	}else{
-		    		console.log('value', validateThis.value);
+		    		// console.log('value', validateThis.value);
 		    			switch(validateThis.id){
 		  					case "borrowerName":
 		  					case "damagerName": $(".nameValidate").text('');
