@@ -983,10 +983,12 @@
 	        		$(".idNumValidate").text('');
 	        		$('.idNumCheck').addClass("fa fa-check");
 					$("#returnedEquipments").html('<span id="loadSpinner" style="margin-left: 220px;"><i class="fa fa-spinner fa-spin fa-5x fa-fw"></i></span><br><span style="margin-left: 170px;">Checking borrowed equipments...</span>');
+					// alert($("#currLab").val())
 					$.ajax({
 	        			url:"<?php echo site_url('BorrowList/getBorrowedEquipments');?>",
 	        			type: 'POST',
-	        			data: {'borrower': $(this).val() },
+	        			data: {'borrower': $(this).val(),
+	        					'labID':  $("#currLab").val()},
 	        			dataType: 'json',
 	        			success: function(data){
 	        				if(data[0].length != 0){

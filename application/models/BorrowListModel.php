@@ -42,6 +42,7 @@ class BorrowListModel extends CI_Model {
     public function getBorrowedEquipments(){
         $result = array();
         $borrower = $_POST['borrower'];
+        $lab = $_POST['labID'];
 
         $this->db->select('studentName');
         $this->db->from('student');
@@ -53,7 +54,7 @@ class BorrowListModel extends CI_Model {
         $this->db->join('equipment E', 'E.eqpSerialNum = B.eqpSerialNum', 'left');
         $this->db->join('component C', 'C.compSerialNum = B.compSerialNum', 'left');
         $this->db->join('student S', 'S.studentID = B.borrowerIDNum', 'left');
-        $this->db->where('borrowerIDNum', $borrower);
+        $this->db->where('borrowerIDNum = "'.$borrower.'" AND B.labID = '.$lab);
         
         $result[] = $this->db->get()->result_array();
 
