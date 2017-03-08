@@ -163,6 +163,16 @@
 
 	        $("#eqpSerialNum").keyup(function(){
 	        	if($(this).val().length > 0){
+	        		 $.ajax({
+			        	url: "<?php echo site_url('Equipment/getAllEquipments');?>",
+			        	type: 'GET',
+			        	dataType: 'json',
+			        	success: function(data){
+			        		for(var i = 0; i < data.length; i++){
+			        			allEquips.push(data[i].split(" - ")[0]);
+			        		}
+			        	}
+			        });
 	        		if(allEquips.indexOf($(this).val().toLowerCase()) >= 0){
 	        			$("#serialNumValidate").html("Item already exists");
 	        		}else{
@@ -178,7 +188,7 @@
 	       		if($("#eqpSerialNum").val() != '' && $("#eqpName").val() != '' && $("#eqpPrice").val() != '' && $("#serialNumValidate").html() != "Item already exists"){
 	       			$(this).unbind('submit').submit();
 	       			e.preventDefault();
-	       			if($("input[name=item]:checked").val() === "equipment"){
+	       			if($("input[name=item]:checked")[0].id == "equipment"){
 	       				$.ajax({
 	       					url: "<?php echo site_url('Equipment/addEquipment');?>",
 	       					type: 'POST',
@@ -232,7 +242,7 @@
 	       			$("#addEqpmnt").removeClass("in");
 	       			$(".modal-backdrop").remove();
 	       			$(".modal-backdrop").hide();
-	       			$("#addEqpmnt").find("input[value=equipment]").prop('checked', 'checked');
+	       			$("#addEqpmnt").find("input[id='equipment']").prop('checked', 'checked');
 	       			alert("Equipment Successfully Added!");
 	       			var source = "<?php echo site_url('Index/loadIframe/lab/');?>";
 	       			var url = source+currentLab;
@@ -291,8 +301,8 @@
 	        	type: 'GET',
 	        	dataType: 'json',
 	        	success: function(data){
-	        		console.log(data);
-	        		allEquips = data;
+	        		// console.log(data);
+	        		// allEquips = data;
 	        		$("#searchAll").autocomplete({
 	        			source: data,
 		                 //if empty results
