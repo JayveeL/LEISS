@@ -73,7 +73,7 @@
                 <h2 class="modal-title">Add Laboratory</h2>
               </div>
               <div class="modal-body">
-               Name </br><input type="text" class="input" id="labName" maxlength="20">
+               Name </br><input type="text" class="input" id="labName" maxlength="15">
                <p class="idNumValidate" id="labNameValidate"></p>
                Description <i>(optional)</i></br><textarea id="description" class="input" rows="4"></textarea>
               </div>
