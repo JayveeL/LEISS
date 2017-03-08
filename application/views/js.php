@@ -283,6 +283,19 @@
 			        		'eqpPrice': $("#editPrice").val()
 			        	},
 			        	success: function(data){
+			        		var e = [];
+							e.push($("#editSerialNum").val());
+			        		$.ajax({
+						       	url: "<?php echo site_url('Reports/storeLog');?>",
+						       	type: 'POST',
+						       	data: {
+						       		'studentID':'0',
+						       		'equipment': e,
+						       		'action': 'edit',
+						       		'labID': $("#currLab").val()
+						       		},
+						       	success: function(data){}
+						       	});
 			        		console.log(data);
 			        		$("#editModal").modal('hide');
 			        		alert('Equipment Successfully Updated!');
@@ -1364,6 +1377,7 @@
 					var action = '';
 					if(data.length != 0){
 						for(var i = 0; i < data.length; i++){
+							console.log(data[i].action)
 							history += "<tr>";
 							history += "<td>"+data[i].date+"</td>";
 							switch(data[i].action){
@@ -1373,6 +1387,7 @@
 								case "repair": action += "<td>Repaired</td>"; break;
 								case "move": action += "<td>Moved to: "+data[i].labID+"</td>"; break;
 								case "add": action += "<td>Added to: "+data[i].labID+"</td>"; break;
+								case "edit": action += "<td>Edited</td>"; break;
 							}
 							history += action;
 							history += "</tr>";
