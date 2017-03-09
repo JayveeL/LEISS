@@ -56,7 +56,7 @@
                   <div class="col-lg-12">
                       <section class="panel panel-primary">
                       <div id="page-nav" style="background-color: #EEEEEE;"></div>
-                          <table class="table table-striped" id='listAllEquipments'>
+                          <table class="table table-striped">
                            <thead id="headEquipments">
                               <tr>
                                  <th class="th"><i class="icon_clipboard"></i> Name</th>

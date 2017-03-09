@@ -60,7 +60,7 @@
             <!-- Display Table List -->
             <section class="panel panel-primary">
             <div id="page-nav" style="background-color: #EEEEEE;"></div>
-              <table class="table table-striped table-advance table-hover">
+              <table class="table table-striped table-advance table-hover" id="labEquipmentsTable">
                 <thead><tr>
                      <th class="th"><i class="icon_tag"></i> Serial No.</th>
                      <th class="th"><i class="icon_clipboard"></i> Name</th>
@@ -76,7 +76,7 @@
                    <?php if(null != $equipList[1] || null != $equipList[2]){
                             if(null != $equipList[1]){
                                 for($i = 0; $i < count($equipList[1]); $i++){ ?>
-                                  <tr class="paginate" id="<?php echo $equipList[1][$i]['eqpSerialNum'].'tr';?>">
+                                  <tr class="itemDetails paginate" id="<?php echo $equipList[1][$i]['eqpSerialNum'].'tr';?>">
                                     <td><?php echo $equipList[1][$i]['eqpSerialNum'];?></td>
                                     <td><?php echo $equipList[1][$i]['eqpName'];?></td>
                                     <td><?php echo "Equipment"; ?></td>
@@ -108,7 +108,7 @@
                             }
                             if(null != $equipList[2]){
                                 for($i = 0; $i < count($equipList[2]); $i++){ ?>
-                                  <tr class="paginate" id="<?php echo $equipList[2][$i]['compSerialNum'].'tr';?>">
+                                  <tr class="itemDetails paginate" id="<?php echo $equipList[2][$i]['compSerialNum'].'tr';?>">
                                     <td><?php echo $equipList[2][$i]['compSerialNum'];?></td>
                                     <td><?php echo $equipList[2][$i]['compName'];?></td>
                                     <td><?php echo "Component"; ?></td>
@@ -141,7 +141,7 @@
                           }
                         }else{
                     ?>
-                     <tr class="paginate">
+                     <tr>
                         <td>No records to display..</td>
                         <td></td><td></td><td></td>
                      </tr>
@@ -164,7 +164,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button"  id="deleteLab" class="btn btn-success btn-lg modalBtn" data-dismiss="modal">Delete Laboratory</button>
-                   <button type="button"  class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Close</button>
+                   <button type="button"  class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Cancel</button>
                 </div>
               </div>
             </div>
@@ -202,7 +202,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button"  class="btn btn-success btn-lg modalBtn" onclick="moveEquipments()">Move Equipment(s)</button>
-                   <button type="button" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Close</button>
+                   <button type="button" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Cancel</button>
                 </div>
               </div>
             </div>
@@ -229,7 +229,7 @@
                 </table>
                 <div class="modal-footer">
                   <button type="submit" id="editSaveBtn" class="btn btn-success btn-lg modalBtn" >Save Changes</button>
-                   <button type="button" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Close</button>
+                   <button type="button" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Cancel</button>
                 </div>
               </form>
               </div>
@@ -330,7 +330,7 @@
            </div>
                 <div class="modal-footer">
                   <button type="submit" id="borrowBtn" class="btn btn-success btn-lg modalBtn" >Borrow Equipments</button>
-                   <button type="button" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Close</button>
+                   <button type="button" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Cancel</button>
                 </div>
               </div>
             </div>
@@ -371,7 +371,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" id="returnBtn" class="btn btn-success btn-lg modalBtn" >Return Equipments</button>
-                   <button type="button" id="modalBtn" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Close</button>
+                   <button type="button" id="modalBtn" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Cancel</button>
                 </div>
               </div>
             </div>
@@ -438,7 +438,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="submit" id="damageBtn" class="btn btn-success btn-lg modalBtn" >File Damaged Equipments</button>
-                   <button type="button" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Close</button>
+                   <button type="button" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Cancel</button>
                 </div>
               </div>
             </div>
@@ -469,7 +469,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" id="repairBtn" class="btn btn-success btn-lg modalBtn" >Repair Equipments</button>
-                   <button type="button" id="modalBtn" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Close</button>
+                   <button type="button" id="modalBtn" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Cancel</button>
                 </div>
               </div>
             </div>

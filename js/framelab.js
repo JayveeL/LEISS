@@ -1,6 +1,6 @@
 jQuery(function($) {
     
-   // var pageParts = $("#content tr");
+   //var pageParts = $("#labEquipmentsTable tr");
     var pageParts = $(".paginate");
     var numPages = pageParts.length;
     var perPage = 5;

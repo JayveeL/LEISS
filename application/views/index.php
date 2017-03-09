@@ -79,7 +79,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" id="addLabBtn" class="btn btn-success btn-lg modalBtn">Add Laboratory</button>
-                <button type="button" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Cancel</button>
               </div>
             </div>
           </div>
@@ -110,7 +110,7 @@
                 </table>
                 <div class="modal-footer">
                    <button type="submit" id="addEquipmentBtn" class="btn btn-success btn-lg modalBtn">Add Equipment</button>
-                   <button type="button" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Close</button>
+                   <button type="button" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Cancel</button>
                 </div>
               </form>
             </div>
