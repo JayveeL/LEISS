@@ -42,7 +42,7 @@
 			});			
 
 			$("#addBtn").click(function(){
-				$("#addBtn").attr("data-toggle", "modal");
+				$("#addBtn").attr({"data-toggle": "modal"});
 				var htmlString = $(this).html();
 				if(htmlString=="Add Laboratory"){
 					$("#addBtn").attr("data-target", "#addLab");
@@ -1672,6 +1672,27 @@
 	    			}); 
 	    		}
 	    	} 
+	    }
+
+	    function checkModalContent(thisModal){
+	    	var modalID = thisModal.parents('.modal')[0].id;
+	    	var content = $("#"+modalID).find("input[type=text],textarea");
+	    	var close = false;
+	    	for(var i = 0; i < content.length; i++){
+	    		if(content[i].value.length != 0){
+	    			close = true;
+	    			break;
+	    		}
+	    	}
+	    	if(close == true){
+	    		if(confirm("Some data is present in the modal. Close anyway?")){
+	    				$("#"+modalID).find(".close, .modal-footer .btn-danger").attr("data-dismiss" , "modal");
+	    		}else{
+	    			$("#"+modalID).find(".close, .modal-footer .btn-danger").removeAttr("data-dismiss" , "modal");
+	    		}
+	    	}else{
+	    		$("#"+modalID).find(".close, .modal-footer .btn-danger").attr("data-dismiss" , "modal");
+	    	}
 	    }
 	</script>	
 </head>

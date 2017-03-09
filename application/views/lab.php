@@ -272,7 +272,7 @@
              <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <button type="button" class="close">&times;</button>
                   <h2 class="modal-title">Borrow Equipment</h2>
                 </div>
                 <div class="modal-body" >
@@ -330,7 +330,7 @@
            </div>
                 <div class="modal-footer">
                   <button type="submit" id="borrowBtn" class="btn btn-success btn-lg modalBtn" >Borrow Equipments</button>
-                   <button type="button" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Cancel</button>
+                   <button type="button" class="btn btn-danger btn-lg modalBtn">Cancel</button>
                 </div>
               </div>
             </div>
@@ -342,7 +342,7 @@
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <button type="button" class="close">&times;</button>
                   <h2 class="modal-title">Return Equipment</h2>
                 </div>
                 <div class="modal-body" >
@@ -371,7 +371,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" id="returnBtn" class="btn btn-success btn-lg modalBtn" >Return Equipments</button>
-                   <button type="button" id="modalBtn" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Cancel</button>
+                   <button type="button" id="modalBtn" class="btn btn-danger btn-lg modalBtn">Cancel</button>
                 </div>
               </div>
             </div>
@@ -382,7 +382,7 @@
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <button type="button" class="close">&times;</button>
                   <h2 class="modal-title">File Damaged Equipment</h2>
                 </div>
                 <div class="modal-body" >
@@ -438,7 +438,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="submit" id="damageBtn" class="btn btn-success btn-lg modalBtn" >File Damaged Equipments</button>
-                   <button type="button" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Cancel</button>
+                   <button type="button" class="btn btn-danger btn-lg modalBtn">Cancel</button>
                 </div>
               </div>
             </div>
@@ -456,7 +456,6 @@
                 <div class="modal-body" >
 
                 Damaged Equipments:
-                 <!--  <input type="text" class="input" id="searchDamaged" placeholder="Search equipments"> -->
                   <table class="table" id="returnModalTable">
                     <tbody id="repairEquipments">
                       <tr>
@@ -465,7 +464,6 @@
                       </tr>
                     </tbody>
                   </table>
-
                 </div>
                 <div class="modal-footer">
                   <button type="button" id="repairBtn" class="btn btn-success btn-lg modalBtn" >Repair Equipments</button>
@@ -493,6 +491,17 @@
 
 
       <script type="text/javascript">
+          $(".modal-footer .btn-danger, .close").click(function(){
+              checkModalContent($(this));
+          });
+
+          function isNumberKey(evt){
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+            return true;
+          }
+
           function acceptDecimal(evt){
             var charCode = (evt.which) ? evt.which : evt.keyCode;
             if (charCode != 46 && charCode > 31 

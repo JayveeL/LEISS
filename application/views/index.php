@@ -69,7 +69,7 @@
             <!-- Modal content-->
             <div class="modal-content">
               <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="close">&times;</button>
                 <h2 class="modal-title">Add Laboratory</h2>
               </div>
               <div class="modal-body">
@@ -79,7 +79,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" id="addLabBtn" class="btn btn-success btn-lg modalBtn">Add Laboratory</button>
-                <button type="button" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger btn-lg modalBtn">Cancel</button>
               </div>
             </div>
           </div>
@@ -91,7 +91,7 @@
             <!-- Modal content-->
             <div class="modal-content">
               <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="close">&times;</button>
                 <h2 class="modal-title">Add Equipment</h2>
               </div>
               <div class="modal-body">
@@ -110,7 +110,7 @@
                 </table>
                 <div class="modal-footer">
                    <button type="submit" id="addEquipmentBtn" class="btn btn-success btn-lg modalBtn">Add Equipment</button>
-                   <button type="button" class="btn btn-danger btn-lg modalBtn" data-dismiss="modal">Cancel</button>
+                   <button type="button" class="btn btn-danger btn-lg modalBtn">Cancel</button>
                 </div>
               </form>
             </div>
@@ -124,6 +124,12 @@
     <!-- javascripts -->
 
     <script type="text/javascript">
+      $(".modal-footer .btn-danger, .close").click(function(){
+          $("#addEqpmnt").find("input[id='equipment']").prop('checked', 'checked');
+          checkModalContent($(this));
+      });
+      
+
       function isNumberKey(evt){
           var charCode = (evt.which) ? evt.which : event.keyCode
           if (charCode > 31 && (charCode < 48 || charCode > 57))
@@ -160,10 +166,10 @@
     <!--custome script for all page-->
     <script src="<?php echo base_url();?>js/scripts.js"></script>
     <!-- custom script for this page-->   
-	<script src="<?php echo base_url();?>js/jquery-jvectormap-1.2.2.min.js"></script>
-	<script src="<?php echo base_url();?>js/jquery-jvectormap-world-mill-en.js"></script>
-	<script src="<?php echo base_url();?>js/jquery.autosize.min.js"></script>
-	<script src="<?php echo base_url();?>js/jquery.placeholder.min.js"></script>
-	<script src="<?php echo base_url();?>js/jquery.slimscroll.min.js"></script>
+  	<script src="<?php echo base_url();?>js/jquery-jvectormap-1.2.2.min.js"></script>
+  	<script src="<?php echo base_url();?>js/jquery-jvectormap-world-mill-en.js"></script>
+  	<script src="<?php echo base_url();?>js/jquery.autosize.min.js"></script>
+  	<script src="<?php echo base_url();?>js/jquery.placeholder.min.js"></script>
+  	<script src="<?php echo base_url();?>js/jquery.slimscroll.min.js"></script>
   </body>
 </html>
