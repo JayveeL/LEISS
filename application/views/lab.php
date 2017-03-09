@@ -2,10 +2,8 @@
 
   <!DOCTYPE html>
   <html>
-    <head>
-    
+    <head>    
       <title>Laboratory Equipment Inventory Software System</title>
-
       <!-- Bootstrap CSS -->    
       <link href="<?php echo base_url(); ?>css/bootstrap.min.css" rel="stylesheet">
       <!-- bootstrap theme -->
@@ -14,16 +12,14 @@
       <!-- font icon -->
       <link href="<?php echo base_url(); ?>css/elegant-icons-style.css" rel="stylesheet" />
       <link href="<?php echo base_url(); ?>css/font-awesome.min.css" rel="stylesheet" />    
-
-        <!-- Custom styles -->
+      <!-- Custom styles -->
     	<link href="<?php echo base_url(); ?>css/widgets.css" rel="stylesheet">
       <link href="<?php echo base_url(); ?>css/style.css" rel="stylesheet">
       <link href="<?php echo base_url(); ?>css/style-responsive.css" rel="stylesheet" />
     	<link href="<?php echo base_url(); ?>css/jquery-ui-1.10.4.min.css" rel="stylesheet">
       <link href="<?php echo base_url(); ?>css/custom.css" rel="stylesheet">
-      <script src="<?php echo base_url(); ?>js/paging.js" type="text/javascript"></script>
-      <link href="<?php echo base_url(); ?>css/paging.css" rel="stylesheet">
-
+      <!-- Pagination css -->
+      <link href="<?php echo base_url(); ?>css/simplePagination.css" rel="stylesheet">
     </head>
 
     <body>
@@ -37,7 +33,7 @@
             <input type="hidden" value="<?php echo $equipList[0][0]['labID']; ?>" id = "currLab">
   					 <h3 class="page-header" id="pageHeader"><i class="icon_menu-square_alt2"></i><?php echo $equipList[0][0]['labName']; ?>
              <a class="btn btn-danger btn-lg pull-right" data-toggle="modal" data-target="#deleteModal" style="margin-top: -1%">Delete Laboratory</a>
-             <br><br>
+             <br>
              <span style="font-size: 15px; text-align: center; word-wrap: break-word;"><?php echo nl2br($equipList[0][0]['description']); ?></span>
             </h3>
           </div>
@@ -58,13 +54,13 @@
                       <i class=" icon_search"></i>
                     </span>   
                     <input type="text" style= "margin-left: 5px" class="form-control" placeholder="Search in <?php echo $equipList[0][0]['labName']; ?> for..." id="searchEquipment">    
-            </div>             
-           		
-            </br>              
+            </div>                        		
+            </br>         
              
             <!-- Display Table List -->
             <section class="panel panel-primary">
-              <table class="table table-striped table-advance table-hover" id="labEquipmentsTable">
+            <div id="page-nav" style="background-color: #EEEEEE;"></div>
+              <table class="table table-striped table-advance table-hover">
                 <thead><tr>
                      <th class="th"><i class="icon_tag"></i> Serial No.</th>
                      <th class="th"><i class="icon_clipboard"></i> Name</th>
@@ -80,7 +76,7 @@
                    <?php if(null != $equipList[1] || null != $equipList[2]){
                             if(null != $equipList[1]){
                                 for($i = 0; $i < count($equipList[1]); $i++){ ?>
-                                  <tr class="itemDetails" id="<?php echo $equipList[1][$i]['eqpSerialNum'].'tr';?>">
+                                  <tr class="paginate" id="<?php echo $equipList[1][$i]['eqpSerialNum'].'tr';?>">
                                     <td><?php echo $equipList[1][$i]['eqpSerialNum'];?></td>
                                     <td><?php echo $equipList[1][$i]['eqpName'];?></td>
                                     <td><?php echo "Equipment"; ?></td>
@@ -112,7 +108,7 @@
                             }
                             if(null != $equipList[2]){
                                 for($i = 0; $i < count($equipList[2]); $i++){ ?>
-                                  <tr class="itemDetails" id="<?php echo $equipList[2][$i]['compSerialNum'].'tr';?>">
+                                  <tr class="paginate" id="<?php echo $equipList[2][$i]['compSerialNum'].'tr';?>">
                                     <td><?php echo $equipList[2][$i]['compSerialNum'];?></td>
                                     <td><?php echo $equipList[2][$i]['compName'];?></td>
                                     <td><?php echo "Component"; ?></td>
@@ -145,15 +141,13 @@
                           }
                         }else{
                     ?>
-                     <tr>
+                     <tr class="paginate">
                         <td>No records to display..</td>
                         <td></td><td></td><td></td>
                      </tr>
                     <?php } ?>
                   </tbody>
                </table>
-               <div id="pageNavPosition"></div>
-
             </section>
          </section>
 
@@ -495,26 +489,10 @@
               </div>
             </div>
           </div>
-
          </section>
 
 
-
-
-      <!-- javascript for pagination -->
       <script type="text/javascript">
-          var pager = new Pager('labEquipmentsTable', 5);
-          pager.init(); 
-          pager.showPageNav('pager', 'pageNavPosition'); 
-          pager.showPage(1);
-
-          function isNumberKey(evt){
-            var charCode = (evt.which) ? evt.which : event.keyCode
-            if (charCode > 31 && (charCode < 48 || charCode > 57))
-                return false;
-            return true;
-          }
-
           function acceptDecimal(evt){
             var charCode = (evt.which) ? evt.which : evt.keyCode;
             if (charCode != 46 && charCode > 31 
@@ -529,23 +507,21 @@
       <script src="<?php echo base_url(); ?>js/jquery.js"></script>
       <script src="<?php echo base_url(); ?>js/jquery-ui-1.10.4.min.js"></script>
       <script src="<?php  echo base_url(); ?>js/jquery-1.8.3.min.js"></script>
-      <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-ui-1.9.2.custom.min.js"></script>
-      
+      <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-ui-1.9.2.custom.min.js"></script>      
       <!-- bootstrap -->
       <script src="<?php echo base_url(); ?>js/bootstrap.min.js"></script>
-      <!-- nice scroll -->
-      
+      <!-- nice scroll -->      
       <script src="<?php echo base_url(); ?>js/jquery.scrollTo.min.js"></script>
       <script src="<?php echo base_url(); ?>js/jquery.nicescroll.js" type="text/javascript"></script>
-
-      <!-- custome script for all page -->
-      <script src="<?php echo base_url(); ?>js/scripts.js"></script>
-      
+      <!-- custom script for all page -->
+      <script src="<?php echo base_url(); ?>js/scripts.js"></script>      
       <!-- custom script for this page -->   
       <script src="<?php echo base_url(); ?>js/jquery-jvectormap-1.2.2.min.js"></script>
       <script src="<?php echo base_url(); ?>js/jquery-jvectormap-world-mill-en.js"></script> 
       <script src="<?php echo base_url(); ?>js/jquery.autosize.min.js"></script>
       <script src="<?php echo base_url(); ?>js/jquery.placeholder.min.js"></script> 
-
+      <!-- Pagination plugin and custom script -->
+      <script src="<?php echo base_url(); ?>js/jquery.simplePagination.js"></script>
+      <script src="<?php echo base_url(); ?>js/framelab.js"></script>
     </body>
   </html>

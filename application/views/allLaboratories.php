@@ -21,6 +21,8 @@
     <link href="<?php echo base_url(); ?>css/style-responsive.css" rel="stylesheet" />
     <link href="<?php echo base_url(); ?>css/jquery-ui-1.10.4.min.css" rel="stylesheet">
     <link href="<?php echo base_url(); ?>css/custom.css" rel="stylesheet">
+    <!-- Pagination css -->
+    <link href="<?php echo base_url(); ?>css/simplePagination.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
       <script src="js/html5shiv.js"></script>
@@ -53,6 +55,7 @@
               <div class="row">
                   <div class="col-lg-12">
                       <section class="panel panel-primary">
+                      <div id="page-nav" style="background-color: #EEEEEE;"></div>
                           <table class="table table-striped" id='listAllEquipments'>
                            <thead id="headEquipments">
                               <tr>
@@ -64,7 +67,7 @@
                             <?php if(null != $equipList[0] || null != $equipList[1]){
                                     if(null != $equipList[0]){
                                       foreach ($equipList[0] as $key) { ?>
-                                        <tr>
+                                        <tr class="paginate">
                                            <td><?php echo $key['eqpName']; ?></td>
                                            <td><?php echo $key['quantity']; ?></td>
                                         </tr>
@@ -72,7 +75,7 @@
                                     }
                                      if(null != $equipList[1]){
                                       foreach ($equipList[1] as $key) { ?>
-                                        <tr>
+                                        <tr class="paginate">
                                            <td><?php echo $key['compName']; ?></td>
                                            <td><?php echo $key['quantity']; ?></td>
                                         </tr>
@@ -87,27 +90,22 @@
                         </table>
                       </section>
                   </div>
-              </div>
-            
-    
+              </div>            
                   <div class="widget-foot">
                     <!-- Footer goes here -->
                   </div>
                 </div>
-              </div>
-              
-            </div>
-                        
+              </div>              
+            </div>                        
           </div> 
               <!-- project team & activity end -->
-
           </section>
       </section>
   </section>
  
     <!-- javascripts -->
     <script src="<?php echo base_url(); ?>js/jquery.js"></script>
-  <script src="<?php echo base_url(); ?>js/jquery-ui-1.10.4.min.js"></script>
+    <script src="<?php echo base_url(); ?>js/jquery-ui-1.10.4.min.js"></script>
     <script src="<?php echo base_url(); ?>js/jquery-1.8.3.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-ui-1.9.2.custom.min.js"></script>
     <!-- bootstrap -->
@@ -115,15 +113,15 @@
     <!-- nice scroll -->
     <script src="<?php echo base_url(); ?>js/jquery.scrollTo.min.js"></script>
     <script src="<?php echo base_url(); ?>js/jquery.nicescroll.js" type="text/javascript"></script>
-
-   
-    <!--custome script for all page-->
     <!-- custom script for this page-->   
-  <script src="<?php echo base_url(); ?>js/jquery-jvectormap-1.2.2.min.js"></script>
-  <script src="<?php echo base_url(); ?>js/jquery-jvectormap-world-mill-en.js"></script>  
-  <script src="<?php echo base_url(); ?>js/jquery.autosize.min.js"></script>
-  <script src="<?php echo base_url(); ?>js/jquery.placeholder.min.js"></script> 
-  <script src="<?php echo base_url(); ?>js/jquery.slimscroll.min.js"></script>
+    <script src="<?php echo base_url(); ?>js/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="<?php echo base_url(); ?>js/jquery-jvectormap-world-mill-en.js"></script>  
+    <script src="<?php echo base_url(); ?>js/jquery.autosize.min.js"></script>
+    <script src="<?php echo base_url(); ?>js/jquery.placeholder.min.js"></script> 
+    <script src="<?php echo base_url(); ?>js/jquery.slimscroll.min.js"></script>
+    <!-- Pagination plugin and custom script -->
+    <script src="<?php echo base_url(); ?>js/jquery.simplePagination.js"></script>
+    <script src="<?php echo base_url(); ?>js/main.js"></script>
   
   </body>
 </html>

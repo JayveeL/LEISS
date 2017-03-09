@@ -42,15 +42,15 @@
           <div id="sidebar"  class="nav-collapse ">
               <!-- sidebar menu start-->
               <ul class="sidebar-menu">                
-                  <li id="all" class="active"><a>
-                        <i class="icon_grid-3x3"></i>
-                        <span style="cursor: pointer;">All</span>                      
-                  </a></li> 
+                  <span style="cursor: pointer;"><li id="all" class="active"><a>
+                      <i class="icon_grid-3x3"></i>All</a></li>
+                  </span>
+                  <span style="cursor: pointer;">
                   <table id="labList" width="100%"></table>
-                  <li id="reports"><a>
-                        <i class="icon_piechart"></i>
-                        <span style="cursor: pointer;">Reports</span>  
-                  </a></li>
+                  </span>
+                  <span style="cursor: pointer;"><li id="reports"><a>
+                        <i class="icon_piechart"></i>Reports</a></li>
+                  </span>
               </ul>
               <!-- sidebar menu end-->
           </div>
