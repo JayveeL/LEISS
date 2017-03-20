@@ -180,11 +180,11 @@
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
                   <h2 class="modal-title">Move Equipment</h2>
                 </div>
-                <div class="modal-body" >
+                <div class="modal-body">
                  <table align="center" width="60%">
                   <tr>
                      <td align="center">Item(s)</td>
-                     <td><span id="moveItemList">No item(s)</span></td>
+                     <td><span><button id="viewItems" onclick="showBorrowed()" disabled type="button" class="btn btn-primary btn-xs">No items</button></span></td>
                    </tr><tr>
                      <td align="center">From </td><td> <?php echo $equipList[0][0]['labName']; ?> </td>
                    </tr><tr>
@@ -496,7 +496,11 @@
           $(document).ready(function(){
               $('#labEquipmentsTable').DataTable({
                 "pageLength": 5,
-                "lengthMenu": [[5, 15, 25, 100], [5, 15, 25, "All"]]
+                "lengthMenu": [[5, 15, 25, 100], [5, 15, 25, "All"]],
+                "columnDefs": [ {
+                              "targets": 3,
+                              "orderable": false
+                              } ]
               });
           });
           $(".modal-footer .btn-danger, .close").click(function(){

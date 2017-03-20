@@ -1609,47 +1609,60 @@
 						if($("#labEquipmentsTable tbody .itemDetails")[i].getElementsByTagName('input').length == 1){
 							itemsToMoveList.push(table[i].children[0].textContent);
 							itemsToMove += table[i].children[0].textContent+' - '+table[i].children[1].textContent;
-							itemsToMove += '\n';
+							itemsToMove += '<br>';
 							numItems++;
 						}						
 					}
-					$("#moveItemList").html(numItems+' item(s)');
-					$("#moveItemList").attr('title', itemsToMove);
+					// $("#moveItemList").html(numItems+' item(s)');
+					// $("#moveItemList").attr('title', itemsToMove);
+					$("#viewItems").prop("disabled", false).html("View");
 				}else{
 					$(".equipCheck").prop('checked', false);
 					numItems = 0;
 					itemsToMove = '';
 					itemsToMoveList = [];
-					$("#moveItemList").html('No item(s)');
-					$("#moveItemList").removeAttr( "title" );
+					// $("#moveItemList").html('No item(s)');
+					// $("#moveItemList").removeAttr( "title" );
+					$("#viewItems").prop("disabled", true).html("No items");
 				}
 			}else{
 				var id = option.replace('checkbox', 'tr');
 				if($("#"+option).is(':checked')){
 					itemsToMoveList.push($("#"+id)[0].children[0].textContent);
 					itemsToMove += $("#"+id)[0].children[0].textContent+' - '+$("#"+id)[0].children[1].textContent;
-					itemsToMove += '\n';
+					itemsToMove += '<br>';
 					numItems++;
 
-					$("#moveItemList").html(numItems+' item(s)');
-					$("#moveItemList").attr('title', itemsToMove);
+					// $("#moveItemList").html(numItems+' item(s)');
+					// $("#moveItemList").attr('title', itemsToMove);
+					$("#viewItems").prop("disabled", false).html("View");
 				}else{
 					$("#moveAll").prop('checked', false);
 					numItems--;
 					numItems = (numItems <= 0)? 0: numItems;
 					if(numItems == 0){
 						itemsToMoveList = [];
-						$("#moveItemList").html('No item(s)');
-						$("#moveItemList").removeAttr( "title" );
+						// $("#moveItemList").html('No item(s)');
+						// $("#moveItemList").removeAttr( "title" );
+						itemsToMove = '';
+						$("#viewItems").prop("disabled", true).html("No items");
 					}else{
 						itemsToMoveList.splice(itemsToMoveList.indexOf($("#"+id)[0].children[0].textContent), 1);
-						var remove = $("#"+id)[0].children[0].textContent+' - '+$("#"+id)[0].children[1].textContent+'\n';
+						var remove = $("#"+id)[0].children[0].textContent+' - '+$("#"+id)[0].children[1].textContent+'<br>';
 						itemsToMove = itemsToMove.replace(remove, '');
-						$("#moveItemList").html(numItems+' item(s)');
-						$("#moveItemList").attr('title', itemsToMove);
+						// $("#moveItemList").html(numItems+' item(s)');
+						// $("#moveItemList").attr('title', itemsToMove);
+						$("#viewItems").prop("disabled", false).html("View");
 					}
 				}
 			}
+		}
+
+		function showBorrowed(){
+			bootbox.alert({
+					message: "<p align='center'>Item(s) to move: <br><br>"+itemsToMove+"</p>",
+					backdrop: true
+			});	 
 		}
 
 		function clearError(){
