@@ -62,7 +62,7 @@
             <iframe id="frame" src="<?php echo site_url('Index/loadIframe/all');?>"></iframe>
       </section>
       <!--main content end-->
-      <a id="addBtn" class="btn btn-success btn-lg add-btn">Add Laboratory</a>
+      <a id="addBtn" name="lab" class="btn btn-success btn-lg add-btn">Add Laboratory</a>
 
       <div id="addLab" class="modal fade" role="dialog">
           <div class="modal-dialog">
@@ -84,40 +84,6 @@
             </div>
           </div>
         </div>
-
-
-      <div id="addEqpmnt" class="modal fade" role="dialog">
-          <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close">&times;</button>
-                <h2 class="modal-title">Add Equipment</h2>
-              </div>
-              <div class="modal-body">
-              <form>
-                <table align="center" width="60%">
-                  <tr>
-                     <td align="center">Serial No.</td><td><input type="text" maxlength="35" name="eqpSerialNum" id="eqpSerialNum" class="input" required autofocus="true"><p class="idNumValidate" id="serialNumValidate"></p></td>
-                   </tr><br><tr>
-                     <td align="center">Name </td><td><input type="text" maxlength="35" id="eqpName" name="eqpName" class="input" required autofocus="true"></td>
-                   </tr><br><tr align="center">
-                     <td><input type="radio" name="item" id="component" value="component"> Component</td>
-                     <td><input type="radio" name="item" id="equipment" value="equipment" checked> Equipment</td>
-                   </tr><br><tr>
-                     <td align="center">Price </td><td><input type="text" maxlength="35" onkeypress="return acceptDecimal(event)" id="eqpPrice" class="input" name="eqpPrice" required autofocus="true"></td>
-                   </tr>
-                </table>
-                <div class="modal-footer">
-                   <button type="submit" id="addEquipmentBtn" class="btn btn-success btn-lg modalBtn">Add Equipment</button>
-                   <button type="button" class="btn btn-danger btn-lg modalBtn">Cancel</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-
-
 
   </section>  
 

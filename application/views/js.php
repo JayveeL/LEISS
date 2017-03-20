@@ -214,10 +214,11 @@
 	       					type: 'POST',
 	       					data: {'eqpSerialNum': $("#eqpSerialNum").val(),
 			       					'eqpName': $("#eqpName").val(),
-			       					'labID': currentLab,
+			       					'labID': $("#currLab").val(),
 			       					'type': $("input[name=item]:checked").val(),
 			       					'eqpPrice':  $("#eqpPrice").val()},
 	       					success: function(data){
+	       						console.log(data);
 	       						var e = [];
 	       						e.push($("#eqpSerialNum").val());
 	       						$.ajax({
@@ -227,11 +228,11 @@
 	       								'studentID': '0',
 	       								'equipment': e,
 	       								'action': 'add',
-	       								'labID': currentLab
+	       								'labID': $("#currLab").val()
 	       							},
 	       							success: function(data){}
 	       						});
-	       					}
+	       					}	
 	       				});
 	       			}else {
 	       				$.ajax({
@@ -239,7 +240,7 @@
 	       					type: 'POST',
 	       					data: {'compSerialNum': $("#eqpSerialNum").val(),
 			       					'compName': $("#eqpName").val(),
-			       					'labID': currentLab,
+			       					'labID': $("#currLab").val(),
 			       					'type': $("input[name=item]:checked").val(),
 			       					'compPrice':  $("#eqpPrice").val()},
 	       					success: function(data){
@@ -252,7 +253,7 @@
 	       								'studentID': '0',
 	       								'equipment': e,
 	       								'action': 'add',
-	       								'labID': currentLab
+	       								'labID': $("#currLab").val()
 	       							},
 	       							success: function(data){}
 	       						});
@@ -265,7 +266,7 @@
 	       			$("#addEqpmnt").find("input[id='equipment']").prop('checked', 'checked');
 	       			alert("Equipment Successfully Added!");
 	       			var source = "<?php echo site_url('Index/loadIframe/lab/');?>";
-	       			var url = source+currentLab;
+	       			var url = source+("#currLab").val();
 	       			$("#frame").attr('src', url);
 	       		}else if($("#serialNumValidate").html() == "Item already exists"){
 	       			e.preventDefault();
@@ -1576,8 +1577,8 @@
 			$(".lab").removeClass("active");
 			$("#reports").removeClass("active");
 			$("#"+labID).addClass("active");
-			$("#addBtn").show();			
-			$("#addBtn").text("Add Equipment");
+			$("#addBtn").hide();			
+			// $("#addBtn").text("Add Equipment");
 			var source = "<?php echo site_url('Index/loadIframe/lab/');?>";
 			var url = source+labID;
 			$("#frame").attr('src', url);

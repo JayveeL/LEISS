@@ -35,6 +35,7 @@
             <input type="hidden" value="<?php echo $equipList[0][0]['labID']; ?>" id = "currLab">
   					 <h3 class="page-header" id="pageHeader"><i class="icon_menu-square_alt2"></i><?php echo $equipList[0][0]['labName']; ?>
              <a class="btn btn-danger btn-lg pull-right" data-toggle="modal" data-target="#deleteModal" style="margin-top: -1%">Delete Laboratory</a>
+               <a class="btn btn-success btn-lg pull-right" data-toggle="modal" data-target="#addEqpmnt" style="margin-top: -1%">Add Equipment</a>
              <br>
              <span style="font-size: 15px; text-align: center; word-wrap: break-word;"><?php echo nl2br($equipList[0][0]['description']); ?></span>
             </h3>
@@ -481,6 +482,38 @@
             </div>
           </div>
 
+
+      <div id="addEqpmnt" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close">&times;</button>
+                <h2 class="modal-title">Add Equipment</h2>
+              </div>
+              <div class="modal-body">
+              <form>
+                <table align="center" width="60%">
+                  <tr>
+                     <td align="center">Serial No.</td><td><input type="text" maxlength="35" name="eqpSerialNum" id="eqpSerialNum" class="input" required autofocus="true"><p class="idNumValidate" id="serialNumValidate"></p></td>
+                   </tr><br><tr>
+                     <td align="center">Name </td><td><input type="text" maxlength="35" id="eqpName" name="eqpName" class="input" required autofocus="true"></td>
+                   </tr><br><tr align="center">
+                     <td><input type="radio" name="item" id="component" value="component"> Component</td>
+                     <td><input type="radio" name="item" id="equipment" value="equipment" checked> Equipment</td>
+                   </tr><br><tr>
+                     <td align="center">Price </td><td><input type="text" maxlength="35" onkeypress="return acceptDecimal(event)" id="eqpPrice" class="input" name="eqpPrice" required autofocus="true"></td>
+                   </tr>
+                </table>
+                <div class="modal-footer">
+                   <button type="submit" id="addEquipmentBtn" class="btn btn-success btn-lg modalBtn">Add Equipment</button>
+                   <button type="button" class="btn btn-danger btn-lg modalBtn">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
           <!-- Modal -->
            <div class="modal fade" id="notifyModal" tabindex="-1" role="dialog" aria-labelledby="notifyModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-sm">
@@ -533,7 +566,7 @@
       <!-- javascript imports -->
       <script src="<?php echo base_url(); ?>js/jquery.js"></script>
       <script src="<?php echo base_url(); ?>js/jquery-ui-1.10.4.min.js"></script>
-      <script src="<?php  echo base_url(); ?>js/jquery-1.12.4.js"></script>
+      <script src="<?php  echo base_url(); ?>js/jquery-1.8.3.js"></script>
       <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-ui-1.9.2.custom.min.js"></script>      
       <!-- bootstrap -->
       <script src="<?php echo base_url(); ?>js/bootstrap.min.js"></script>
