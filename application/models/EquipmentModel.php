@@ -77,7 +77,7 @@ class EquipmentModel extends CI_Model {
 
         $this->db->select('*');
         $this->db->from('laboratory');
-        $this->db->where('labID != '.$labID);
+        $this->db->where('labID != '.$labID.' and isDeleted = 0');
         $result[] = $this->db->get()->result_array();
 
         $this->db->select('eqp.eqpSerialNum');

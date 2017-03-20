@@ -22,7 +22,8 @@
     <link href="<?php echo base_url(); ?>css/jquery-ui-1.10.4.min.css" rel="stylesheet">
     <link href="<?php echo base_url(); ?>css/custom.css" rel="stylesheet">
     <!-- Pagination css -->
-    <link href="<?php echo base_url(); ?>css/simplePagination.css" rel="stylesheet">
+<!--     <link href="<?php echo base_url(); ?>css/simplePagination.css" rel="stylesheet"> -->
+    <link href="<?php echo base_url(); ?>css/dataTables.bootstrap.min.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 -->
     <!--[if lt IE 9]>
       <script src="js/html5shiv.js"></script>
@@ -40,14 +41,14 @@
               <div class="row">
                 <div class="col-lg-12">
                     <h3 class="page-header"><i class="fa fa-list-alt"></i>List of All Equipments</h3>
-                     <div class="input-group">
+                     <!-- <div class="input-group">
 
                       <span class="input-group-btn">
                     <i class=" icon_search"></i>
                   </span>   
                   <input type="text" style= "margin-left: 5px" input type="text" class="form-control" placeholder="Search all laboratories for..." id="searchAll">
                       
-                    </div>
+                    </div> -->
                              
                 </div>
              </div>
@@ -56,7 +57,7 @@
                   <div class="col-lg-12">
                       <section class="panel panel-primary">
                       <div id="page-nav" style="background-color: #EEEEEE;"></div>
-                          <table class="table table-striped">
+                          <table class="table table-striped" id="labEquipmentsTable">
                            <thead id="headEquipments">
                               <tr>
                                  <th class="th"><i class="icon_clipboard"></i> Name</th>
@@ -102,11 +103,20 @@
           </section>
       </section>
   </section>
+
+    <script type="text/javascript">
+                $(document).ready(function(){
+                $('#labEquipmentsTable').DataTable({
+                  "pageLength": 10,
+                  "lengthMenu": [[10, 20, 30, 100], [10, 20, 30, "All"]]
+                });
+            });
+    </script>
  
     <!-- javascripts -->
     <script src="<?php echo base_url(); ?>js/jquery.js"></script>
     <script src="<?php echo base_url(); ?>js/jquery-ui-1.10.4.min.js"></script>
-    <script src="<?php echo base_url(); ?>js/jquery-1.8.3.min.js"></script>
+    <script src="<?php  echo base_url(); ?>js/jquery-1.12.4.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-ui-1.9.2.custom.min.js"></script>
     <!-- bootstrap -->
     <script src="<?php echo base_url(); ?>js/bootstrap.min.js"></script>
@@ -120,8 +130,10 @@
     <script src="<?php echo base_url(); ?>js/jquery.placeholder.min.js"></script> 
     <script src="<?php echo base_url(); ?>js/jquery.slimscroll.min.js"></script>
     <!-- Pagination plugin and custom script -->
-    <script src="<?php echo base_url(); ?>js/jquery.simplePagination.js"></script>
-    <script src="<?php echo base_url(); ?>js/main.js"></script>
+<!--     <script src="<?php echo base_url(); ?>js/jquery.simplePagination.js"></script>
+    <script src="<?php echo base_url(); ?>js/main.js"></script> -->
+    <script src="<?php echo base_url(); ?>js/jquery.dataTables.min.js"></script>
+    <script src="<?php echo base_url(); ?>js/dataTables.bootstrap.min.js"></script>
   
   </body>
 </html>

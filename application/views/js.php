@@ -17,6 +17,7 @@
 	<script src="<?php echo base_url(); ?>js/jquery-jvectormap-world-mill-en.js"></script> 
 	<script src="<?php echo base_url(); ?>js/jquery.autosize.min.js"></script>
 	<script src="<?php echo base_url(); ?>js/jquery.placeholder.min.js"></script> 
+	<script src="<?php echo base_url(); ?>js/bootbox.min.js"></script> 
 
 	<script type="text/javascript">
 
@@ -31,6 +32,7 @@
 		var labNames = [];
 		
 		$(document).ready(function(){
+			
 			$("#all").click(function(){
 				$("#all").addClass("active");
 				$("#reports").removeClass("active");
@@ -100,10 +102,18 @@
 	        						console.log("Laboratory "+$("#currLab").val()+" Successfully Deleted");					
 	        					}
 	        				});
-	        				alert("Successfully Deleted Laboratory");	
+	        				// alert("Successfully Deleted Laboratory");
+	        				bootbox.alert({
+							    message: "<p align='center'>Successfully Deleted Laboratory!</p>",
+							    backdrop: true
+							});	
 	        				window.top.location.href = "http://localhost/liss/"; 
 	        			}else{
-	        				alert("The laboratory cannot be deleted. For a laboratory to be deleted, make sure it contains no equipments.");
+	        				// alert("The laboratory cannot be deleted. For a laboratory to be deleted, make sure it contains no equipments.");
+	        				bootbox.alert({
+							    message: "<p align='center'>The laboratory cannot be deleted. For a laboratory to be deleted, make sure it contains no equipments.</p>",
+							    backdrop: true
+							});	
 	        			}
 	        		}
 	        	});
@@ -133,7 +143,11 @@
 			$(function(){
 				$("#addLabBtn").click(function(){
 					if(!$("#labName").val()){
-						alert("You may have left the name empty or the laboratory already exists.");
+						// alert("You may have left the name empty or the laboratory already exists.");
+						bootbox.alert({
+							message: "<p align='center'>You may have left the name empty or the laboratory already exists.</p>",
+							backdrop: true
+						});	
 					}
 					else if($("#labNameValidate").html() == ""){
 		       			$.ajax({
@@ -143,7 +157,11 @@
 		       				'description': $("#description").val()},						
 		       				success: function(data){}
 		       			});
-		       			alert("Laboratory successfully added.");
+		       			// alert("Laboratory successfully added.");
+		       			bootbox.alert({
+							message: "<p align='center'>Laboratory successfully added.</p>",
+							backdrop: true
+						});	
 		       			location.reload();
 		       		}
 		       		$("#labName").empty();

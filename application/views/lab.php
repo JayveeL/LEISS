@@ -18,8 +18,10 @@
       <link href="<?php echo base_url(); ?>css/style-responsive.css" rel="stylesheet" />
     	<link href="<?php echo base_url(); ?>css/jquery-ui-1.10.4.min.css" rel="stylesheet">
       <link href="<?php echo base_url(); ?>css/custom.css" rel="stylesheet">
+      <link href="<?php echo base_url(); ?>css/dataTables.bootstrap.min.css" rel="stylesheet">
+
       <!-- Pagination css -->
-      <link href="<?php echo base_url(); ?>css/simplePagination.css" rel="stylesheet">
+      <!-- <link href="<?php echo base_url(); ?>css/simplePagination.css" rel="stylesheet"> -->
     </head>
 
     <body>
@@ -49,13 +51,13 @@
                  <li class="pointer"><i class=" icon_check_alt2"></i><a data-toggle="modal" data-target="#repairModal" id="repair">Repair Equipment</a></li>          
               </ol>
 
-            <div class="input-group">               
+           <!--  <div class="input-group">               
                     <span class="input-group-btn">
                       <i class=" icon_search"></i>
                     </span>   
                     <input type="text" style= "margin-left: 5px" class="form-control" placeholder="Search in <?php echo $equipList[0][0]['labName']; ?> for..." id="searchEquipment">    
             </div>                        		
-            </br>         
+            </br>      -->    
              
             <!-- Display Table List -->
             <section class="panel panel-primary">
@@ -491,6 +493,12 @@
 
 
       <script type="text/javascript">
+          $(document).ready(function(){
+              $('#labEquipmentsTable').DataTable({
+                "pageLength": 5,
+                "lengthMenu": [[5, 15, 25, 100], [5, 15, 25, "All"]]
+              });
+          });
           $(".modal-footer .btn-danger, .close").click(function(){
               checkModalContent($(this));
           });
@@ -515,7 +523,7 @@
       <!-- javascript imports -->
       <script src="<?php echo base_url(); ?>js/jquery.js"></script>
       <script src="<?php echo base_url(); ?>js/jquery-ui-1.10.4.min.js"></script>
-      <script src="<?php  echo base_url(); ?>js/jquery-1.8.3.min.js"></script>
+      <script src="<?php  echo base_url(); ?>js/jquery-1.12.4.js"></script>
       <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-ui-1.9.2.custom.min.js"></script>      
       <!-- bootstrap -->
       <script src="<?php echo base_url(); ?>js/bootstrap.min.js"></script>
@@ -530,7 +538,9 @@
       <script src="<?php echo base_url(); ?>js/jquery.autosize.min.js"></script>
       <script src="<?php echo base_url(); ?>js/jquery.placeholder.min.js"></script> 
       <!-- Pagination plugin and custom script -->
-      <script src="<?php echo base_url(); ?>js/jquery.simplePagination.js"></script>
-      <script src="<?php echo base_url(); ?>js/framelab.js"></script>
+      <!-- <script src="<?php echo base_url(); ?>js/jquery.simplePagination.js"></script> -->
+      <!-- <script src="<?php echo base_url(); ?>js/framelab.js"></script> -->
+      <script src="<?php echo base_url(); ?>js/jquery.dataTables.min.js"></script>
+      <script src="<?php echo base_url(); ?>js/dataTables.bootstrap.min.js"></script>
     </body>
   </html>
