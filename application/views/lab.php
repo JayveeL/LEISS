@@ -67,6 +67,8 @@
                      <th class="th"><i class="icon_tag"></i> Serial No.</th>
                      <th class="th"><i class="icon_clipboard"></i> Name</th>
                      <th class="th"><i class="icon_clipboard"></i> Type</th>
+                     <th class="th"><i class="icon_clipboard"></i> Price (₱)</th>
+                     <th class="th"><i class="icon_clipboard"></i> Last Updated</th>
                      <th class="th"><i class="icon_cogs"></i> Actions
 
                         <input type="checkbox" id="moveAll" onclick="moveAll('all')" class="check">
@@ -82,6 +84,8 @@
                                     <td><?php echo $equipList[1][$i]['eqpSerialNum'];?></td>
                                     <td><?php echo $equipList[1][$i]['eqpName'];?></td>
                                     <td><?php echo "Equipment"; ?></td>
+                                    <td><?php echo $equipList[1][$i]['price'];?></td>
+                                    <td><?php echo $equipList[6][$i][0]['date'];?></td>
                                     <td>
                                       <div class="btn-group">
                                         <a class="btn btn-primary" onclick = "editEquipment('<?php echo $equipList[1][$i]['eqpSerialNum']; ?>')" id="<?php echo $equipList[1][$i]['eqpSerialNum']; ?>"  value="<?php echo $equipList[1][$i]['eqpSerialNum']; ?>" rel="tooltip" title="Edit"><i class="icon_pencil"></i></a>
@@ -114,6 +118,8 @@
                                     <td><?php echo $equipList[2][$i]['compSerialNum'];?></td>
                                     <td><?php echo $equipList[2][$i]['compName'];?></td>
                                     <td><?php echo "Component"; ?></td>
+                                    <td><?php echo $equipList[2][$i]['price'];?></td>
+                                    <td><?php echo $equipList[7][$i][0]['date'];?></td>
                                     <td>
                                       <div class="btn-group">
                                         <a class="btn btn-primary" onclick = "editEquipment('<?php echo $equipList[2][$i]['compSerialNum']; ?>')" id="<?php echo $equipList[2][$i]['compSerialNum']; ?>"  value="<?php echo $equipList[2][$i]['compSerialNum']; ?>" rel="tooltip" title="Edit"><i class="icon_pencil"></i></a>

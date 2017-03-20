@@ -55,6 +55,7 @@ class EquipmentModel extends CI_Model {
 
     public function getEquipmentList($labID){
         $result = array();
+        $res = array();
 
         $this->db->select('*');
         $this->db->from('laboratory');
@@ -91,6 +92,36 @@ class EquipmentModel extends CI_Model {
         $this->db->where('comp.labID='.$labID.' and (compSerialNum IN (SELECT compSerialNum FROM borrowed_list where eqpSerialNum IS NULL) OR compSerialNum IN (SELECT compSerialNum FROM damaged_list where eqpSerialNum IS NULL))');
         $result[] = $this->db->get()->result_array();
 
+
+        $this->db->select('eqp.eqpSerialNum');
+        $this->db->from('laboratory lab');
+        $this->db->join('equipment eqp', 'eqp.labID = lab.labID', 'left');
+        $this->db->where('eqp.labID', $labID);
+        $this->db->order_by('dateAdded', 'DESC');
+        $equip = $this->db->get()->result_array();
+        foreach ($equip as $key) {
+            $this->db->select('MAX(date) as date, serialNum');
+            $this->db->from('log');
+            $this->db->where('serialNum', $key['eqpSerialNum']);
+            $res[] = $this->db->get()->result_array();
+        }
+        $result[] = $res;
+        $res = array();
+
+        $this->db->select('comp.compSerialNum');
+        $this->db->from('laboratory labb');
+        $this->db->join('component comp', 'comp.labID = labb.labID', 'left');
+        $this->db->where('comp.labID', $labID);
+        $this->db->order_by('dateAdded', 'DESC');
+        $comp = $this->db->get()->result_array();
+        foreach ($comp as $key) {
+            $this->db->select('MAX(date) as date, serialNum');
+            $this->db->from('log');
+            $this->db->where('serialNum', $key['compSerialNum']);
+            $res[] = $this->db->get()->result_array();
+        }
+        $result[] = $res;
+        // print_r($result); exit();
         return $result;
     }
 
