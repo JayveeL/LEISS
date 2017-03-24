@@ -49,7 +49,7 @@
      </select>
 
 </div>
-<div style="display: inline-block; height: 15em; margin-left: 80px;">
+<div style="display: inline-block; height: 15em; margin-left: 0px;">
         <span style="font-size: 90px; padding-left: 50px;" id="totalItems"><?php echo $totalItems;?></span><br>
         <span style="font-size: 20px;">equipment(s) & component(s)</span>
 </div>
@@ -66,7 +66,11 @@
 <div style="display: flex; width: 35%; height: 53%;">
    <!--  <div style="width: 100%; height: 15%;"><span style="color: white;font-size: 25px;font-weight: bold;">Recent Actions</span></div>
     <br> -->
-    <div style="background-color: white; width: 100%; height: 85%; overflow-y: scroll;" id="recentActions"></div>
+    <div style="background-color: white; width: 100%;">
+        <div style="height: 20em; overflow-y: scroll;">
+            <table id="recentActions"></table>
+        <div>
+    </div>
 </div>
 </div>
 
@@ -165,7 +169,7 @@
                 var history = '';
                 var action = '';
                 if(data.length != 0){
-                    history += "<table>";
+                    history += "";
                     for(var i = 0; i < data.length; i++){
                         history += "<tr>";
                        
@@ -182,7 +186,7 @@
                         history += "</tr>";
                         action = '';
                     }
-                    history += "</table>";
+                    history += "";
                     $("#recentActions").html(history);
                 }else{
                     $("#recentActions").html('No record(s) to display...');

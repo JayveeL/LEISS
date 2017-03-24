@@ -35,7 +35,7 @@
             <input type="hidden" value="<?php echo $equipList[0][0]['labID']; ?>" id = "currLab">
   					 <h3 class="page-header" id="pageHeader"><i class="icon_menu-square_alt2"></i><?php echo $equipList[0][0]['labName']; ?>
              <a class="btn btn-danger btn-lg pull-right" data-toggle="modal" data-target="#deleteModal" style="margin-top: -1%">Delete Laboratory</a>
-               <a class="btn btn-success btn-lg pull-right" data-toggle="modal" data-target="#addEqpmnt" style="margin-top: -1%">Add Equipment</a>
+               <a class="btn btn-success btn-lg pull-right" data-toggle="modal" data-target="#addEqpmnt" style="margin-top: -1%; margin-right: 1em;">Add Equipment</a>
              <br>
              <span style="font-size: 15px; text-align: center; word-wrap: break-word;"><?php echo nl2br($equipList[0][0]['description']); ?></span>
             </h3>
@@ -61,7 +61,7 @@
             </br>      -->    
              
             <!-- Display Table List -->
-            <section class="panel panel-primary">
+            <section class="panel panel-primary" style="background-color: transparent;">
             <div id="page-nav" style="background-color: #EEEEEE;"></div>
               <table class="table table-striped table-advance table-hover" id="labEquipmentsTable">
                 <thead><tr>
@@ -152,7 +152,7 @@
                     ?>
                      <tr>
                         <td>No records to display..</td>
-                        <td></td><td></td><td></td>
+                        <td></td><td></td><td></td><td></td><td></td>
                      </tr>
                     <?php } ?>
                   </tbody>

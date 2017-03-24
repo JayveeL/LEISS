@@ -42,7 +42,7 @@
 
               <div class="tab-content">
                 <div id="report" class="tab-pane fade in active">
-                    <iframe id="labReportFrame" src="<?php echo site_url('Reports/loadReports/all');?>" style="height: 45em; width: 100%; border: none;"></iframe>
+                    <iframe id="labReportFrame" src="<?php echo site_url('Reports/loadReports/all');?>" style="height: 75em; width: 100%; border: none;"></iframe>
                 </div>
               </div>
             </div>

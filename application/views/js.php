@@ -102,11 +102,11 @@
 	        						console.log("Laboratory "+$("#currLab").val()+" Successfully Deleted");					
 	        					}
 	        				});
-	        				// alert("Successfully Deleted Laboratory");
-	        				bootbox.alert({
-							    message: "<p align='center'>Successfully Deleted Laboratory!</p>",
-							    backdrop: true
-							});	
+	        				alert("Successfully Deleted Laboratory");
+	      //   				bootbox.alert({
+							//     message: "<p align='center'>Successfully Deleted Laboratory!</p>",
+							//     backdrop: true
+							// });	
 	        				window.top.location.href = "http://localhost/liss/"; 
 	        			}else{
 	        				// alert("The laboratory cannot be deleted. For a laboratory to be deleted, make sure it contains no equipments.");
@@ -157,11 +157,11 @@
 		       				'description': $("#description").val()},						
 		       				success: function(data){}
 		       			});
-		       			// alert("Laboratory successfully added.");
-		       			bootbox.alert({
-							message: "<p align='center'>Laboratory successfully added.</p>",
-							backdrop: true
-						});	
+		       			alert("Laboratory successfully added.");
+		    //    			bootbox.alert({
+						// 	message: "<p align='center'>Laboratory successfully added.</p>",
+						// 	backdrop: true
+						// });	
 		       			location.reload();
 		       		}
 		       		$("#labName").empty();
@@ -265,9 +265,11 @@
 	       			$(".modal-backdrop").hide();
 	       			$("#addEqpmnt").find("input[id='equipment']").prop('checked', 'checked');
 	       			alert("Equipment Successfully Added!");
-	       			var source = "<?php echo site_url('Index/loadIframe/lab/');?>";
-	       			var url = source+("#currLab").val();
-	       			$("#frame").attr('src', url);
+	    //    			bootbox.alert({
+					// 		    message: "<p align='center'>Equipment Successfully Added!</p>",
+					// 		    backdrop: true
+					// });
+	       			location.reload();
 	       		}else if($("#serialNumValidate").html() == "Item already exists"){
 	       			e.preventDefault();
 	       		}else{
@@ -305,7 +307,11 @@
 						});
 						console.log(data);
 						$("#editModal").modal('hide');
-						alert('Equipment Successfully Updated!');
+						alert("Equipment Successfully Updated!");
+						// bootbox.alert({
+						// 	    message: "<p align='center'>Equipment Successfully Updated!</p>",
+						// 	    backdrop: true
+						// });	
 			        		// $("#frame").attr('src', "<?php echo site_url('Index/loadIframe/lab');?>");
 			        		location.reload();
 			        	}
@@ -745,11 +751,19 @@
 	        				}
 	        			});
 	        		}else{
-	        			alert('Choose equipment(s)');
+	        			//alert('Choose equipment(s)');
+	        			bootbox.alert({
+							    message: "<p align='center'>Choose equipment(s)</p>",
+							    backdrop: true
+						});
 	        			e.preventDefault();
 	        		}   					
 	        	}else if($(".nameValidate").text() != '' || $(".teacherValidate").text() != ''){
-	        		alert('Something went wrong. Check inputs.');
+	        		//alert('Something went wrong. Check inputs.');
+	        		bootbox.alert({
+							    message: "<p align='center'>Something went wrong. Check inputs.</p>",
+							    backdrop: true
+					});
 	        		e.preventDefault();
 	        	}
 	        });
@@ -970,11 +984,19 @@
 							}
 						});	
 					}else{
-						alert('Choose equipment(s)');
+						//alert('Choose equipment(s)');
+						bootbox.alert({
+							    message: "<p align='center'>Choose equipment(s)</p>",
+							    backdrop: true
+						});
 						e.preventDefault();
 					}   
 				}else if($(".nameValidate").text() != '' || $(".teacherValidate").text() != '' || $(".inchargeValidate").text() != ''){
-					alert('Something went wrong. Check inputs.');
+					//alert('Something went wrong. Check inputs.');
+					bootbox.alert({
+							    message: "<p align='center'>Something went wrong. Check inputs.</p>",
+							    backdrop: true
+					});
 					e.preventDefault();
 				}
 			});
@@ -1080,7 +1102,11 @@
 	        			}
 	        		});  
 	        	}else{
-	        		alert('Choose equipment(s)...');
+	        		//alert('Choose equipment(s)...');
+	        		bootbox.alert({
+							    message: "<p align='center'>Choose equipment(s)...</p>",
+							    backdrop: true
+					});
 	        	}
 	        });
 	        //END Return Equipment Module
@@ -1152,7 +1178,11 @@
 	        			}
 	        		});  
 	        	}else{
-	        		alert('Choose equipment(s)...');
+	        		//alert('Choose equipment(s)...');
+	        		bootbox.alert({
+							    message: "<p align='center'>Choose equipment(s)...</p>",
+							    backdrop: true
+					});
 	        	}
 	        });		
 			//END Repair Equipment Module	
@@ -1673,7 +1703,11 @@
 		function moveEquipments(){
 	    	// console.log(itemsToMoveList); 	
 	    	if(numItems==0){
-	    		alert("There are no items to move.");
+	    		//alert("There are no items to move.");
+	    		bootbox.alert({
+							    message: "<p align='center'>There are no items to move.</p>",
+							    backdrop: true
+				});
 	    	}else{
 	    		if(!$("#moveLabList").val()){
 	    			$("#moveValidate").html("Choose a laboratory");
@@ -1697,7 +1731,11 @@
 	    							success: function(data){
 	    							}
 	    						});									
-	    						alert('Item(s) moved..');
+	    						//alert('Item(s) moved..');
+	    						bootbox.alert({
+							    	message: "<p align='center'>Item(s) moved..</p>",
+							    	backdrop: true
+								});
 	    						location.reload();
 	    					}
 	    				}

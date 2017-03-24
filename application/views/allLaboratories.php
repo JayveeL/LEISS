@@ -52,10 +52,10 @@
                              
                 </div>
              </div>
-             </br>
+             
               <div class="row">
                   <div class="col-lg-12">
-                      <section class="panel panel-primary">
+                      <section class="panel panel-primary" style="background-color: transparent;">
                       <div id="page-nav" style="background-color: #EEEEEE;"></div>
                           <table class="table table-striped" id="labEquipmentsTable">
                            <thead id="headEquipments">
